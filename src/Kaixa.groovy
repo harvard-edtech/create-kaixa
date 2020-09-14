@@ -500,9 +500,11 @@ public class Kaixa {
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @param {String} [message=generated message] - a human-readable message to
 	 *   display if the test fails
+	 * @param {int} [gracePeriodSecs=10] - the number of seconds to wait before
+	 *   throwing an error
 	 * @return {boolean} true if the element exists on the page
 	 */
-	public static boolean assertExistsWithContents(String contents, String selector, String message = '') {
+	public static boolean assertExistsWithContents(String contents, String selector, String message = '', int gracePeriodSecs = 10) {
 		try {
 			Kaixa.waitForElementWithContentsVisible(contents, selector, gracePeriodSecs);
 		} catch (Exception e) {
