@@ -73,13 +73,28 @@ public class Kaixa {
 	/* -------------------- Variables, Names, URLs -------------------- */
 
 	/**
-	 * Create an event name for the current test run
+	 * Add a unique tag to an object name
 	 * @author Gabe Abrams
-	 * @param {int} index - the number of the event
-	 * @return {String} name of the event
+	 * @param {String} name - the name of the item
+	 * @return {String} the new name of the item with the unique tag
 	 */
-	public static String genEventName(int index = 1) {
-		return 'Test Event #' + (index) + ' [' + msSinceEpoch + ']';
+	public static String uniquify(String name) {
+		// Start tracking name if not already in map
+		if (!nameToNumInstances.containsKey(name)) {
+			nameToNumInstances.put(name, 0);
+		}
+		
+		// Increment the number of instances
+		int numInstances = nameToNumInstances.get(name) + 1;
+		nameToNumInstances.put(name, numInstances);
+		
+		// Create a unique tag
+		DateFormat dateFormat = new SimpleDateFormat('yyyy-mm-dd hh:mm:ss.SSS');
+		String strDate = dateFormat.format(start);
+		String tag = ' [#' + numInstances + ' ' + strDate + ']';
+		
+		// Concatenate
+		return name + tag;
 	}
 
 
@@ -785,6 +800,11 @@ public class Kaixa {
 	 * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav
 	 */
 	public static void launchAs(String name, int courseId = defaultCourseId, String appName = defaultAppName) {
+		// Make sure the user exists
+		if (!GlobalVariable.metaClass.hasProperty(GlobalVariable, name)) {
+			throw new Exception('Could not launch as "' + name + '" because that user is not listed in the profile variables.');
+		}
+
 		// Get the user info
 		JSONObject obj = new JSONObject(GlobalVariable[name]);
 		String username = obj.getString('username');
