@@ -791,7 +791,39 @@ public class Kaixa {
 		if (obj.has('password')) {
 			password = obj.getString('password');
 		} else {
-			password = (JOptionPane.showInputDialog('What is the password for "' + name + '"?')).trim();
+			// Create a password input pane
+			JPanel panel = new JPanel();
+			// > Label
+			JLabel label = new JLabel('Password:');
+			// > Password field
+			JPasswordField pass = new JPasswordField(30);
+			// > Add the label and password field to the panel
+			panel.add(label);
+			panel.add(pass);
+			
+			// Create the continue button
+			String[] options = new String[1];
+			options[0] = 'Continue';
+
+			// Prompt user
+			JOptionPane.showOptionDialog(
+				null,
+				panel,
+				'Password for "' + name + '"',
+				JOptionPane.NO_OPTION,
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				options,
+				options[0]
+			);
+
+			// Get the password
+			password = new String(pass.getPassword());
+		}
+		
+		// Make sure there is a password
+		if (password == '') {
+			throw new Exception('Password cannot be empty.');
 		}
 
 		boolean isXID = (
