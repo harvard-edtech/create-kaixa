@@ -441,7 +441,36 @@ public class Kaixa {
 	 */
 	public static void waitForElementWithContentsVisible(String contents, String selector, int timeoutSec) {
 		try {
-			WebUI.waitForElementVisible(Kaixa.findByContents(contents, selector), timeoutSec);
+			assert WebUI.waitForElementVisible(Kaixa.findByContents(contents, selector), timeoutSec);
+		} catch (AssertionError e) {
+			throw new Exception('Element "' + selector + '" with contents "' + contents + '" did not become visible within ' + timeoutSec + ' second(s)');
+		}
+	}
+
+	/**
+	 * Wait for an element to be present (on the page, it does not have to be visible)
+	 * @author Gabe Abrams
+	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
+	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
+	 */
+	public static void waitForElementPresent(Object item, int timeoutSec = 10) {
+		try {
+			assert WebUI.waitForElementPresent(Kaixa.ensureTestObject(item), timeoutSec);
+		} catch (AssertionError e) {
+			throw new Exception('Element "' + item + '" not become visible within ' + timeoutSec + ' second(s)');
+		}
+	}
+
+	/**
+	 * Wait for an element with specific contents to be present (on the page, it does not have to be visible)
+	 * @author Gabe Abrams
+	 * @param {String} contents - the contents to search for
+	 * @param {String} selector - a CSS selector corresponding to the item
+	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
+	 */
+	public static void waitForElementWithContentsPresent(String contents, String selector, int timeoutSec) {
+		try {
+			assert WebUI.waitForElementPresent(Kaixa.findByContents(contents, selector), timeoutSec);
 		} catch (AssertionError e) {
 			throw new Exception('Element "' + selector + '" with contents "' + contents + '" did not become visible within ' + timeoutSec + ' second(s)');
 		}
@@ -460,7 +489,7 @@ public class Kaixa {
 	 */
 	public static boolean assertExists(Object item, String message = '', int gracePeriodSecs = 10) {
 		try {
-			Kaixa.waitForElementVisible(item, gracePeriodSecs);
+			Kaixa.waitForElementPresent(item, gracePeriodSecs);
 		} catch (Exception e) {
 			// Could not find!
 			throw new Exception(
@@ -506,7 +535,7 @@ public class Kaixa {
 	 */
 	public static boolean assertExistsWithContents(String contents, String selector, String message = '', int gracePeriodSecs = 10) {
 		try {
-			Kaixa.waitForElementWithContentsVisible(contents, selector, gracePeriodSecs);
+			Kaixa.waitForElementWithContentsPresent(contents, selector, gracePeriodSecs);
 		} catch (Exception e) {
 			// Could not find!
 			throw new Exception(
