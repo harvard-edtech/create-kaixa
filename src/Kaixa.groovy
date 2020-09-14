@@ -455,7 +455,7 @@ public class Kaixa {
 	 */
 	public static void waitForElementPresent(Object item, int timeoutSec = 10) {
 		try {
-			assert WebUI.waitForElementPresent(Kaixa.ensureTestObject(item), timeoutSec);
+			assert WebUI.waitForElementPresent(Kaixa.ensureTestObject(item), timeoutSec, FailureHandling.OPTIONAL);
 		} catch (AssertionError e) {
 			throw new Exception('Element "' + item + '" not become visible within ' + timeoutSec + ' second(s)');
 		}
@@ -470,7 +470,7 @@ public class Kaixa {
 	 */
 	public static void waitForElementWithContentsPresent(String contents, String selector, int timeoutSec) {
 		try {
-			assert WebUI.waitForElementPresent(Kaixa.findByContents(contents, selector), timeoutSec);
+			assert WebUI.waitForElementPresent(Kaixa.findByContents(contents, selector), timeoutSec, FailureHandling.OPTIONAL);
 		} catch (AssertionError e) {
 			throw new Exception('Element "' + selector + '" with contents "' + contents + '" did not become visible within ' + timeoutSec + ' second(s)');
 		}
@@ -699,6 +699,14 @@ public class Kaixa {
 
 		// Close the window
 		WebUI.closeWindowIndex(index);
+	}
+
+	/**
+	 * Close the browser
+	 * @author Gabe Abrams
+	 */
+	public static void done() {
+		WebUI.closeBrowser();
 	}
 
 	/* -------------------- Data -------------------- */
