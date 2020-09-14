@@ -314,6 +314,7 @@ public class Kaixa {
 
 	/**
 	 * Check if an element exists
+	 * @author Gabe Abrams
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @return {boolean} true if the element exists on the page
 	 */
@@ -323,12 +324,36 @@ public class Kaixa {
 	}
 
 	/**
-	 * Check if an element does not exists
+	 * Check if an element does not exist
+	 * @author Gabe Abrams
 	 * @param {TestObject|String} item - the TestObject or CSS selector
-	 * @return {boolean} true if the element exists on the page
+	 * @return {boolean} true if the element does not exist on the page
 	 */
 	public static boolean elementAbsent(Object item) {
 		TestObject obj = Kaixa.ensureTestObject(item);
+		return !WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
+	}
+	
+	/**
+	 * Check if an element with specific contents exists
+	 * @author Gabe Abrams
+	 * @param {String} contents - the contents to search for
+	 * @param {String} selector - a CSS selector corresponding to the item
+	 * @return {boolean} true if the element exists on the page
+	 */
+	public static boolean elementWithContentsExists(String contents, String selector) {
+		TestObject obj = Kaixa.findByContents(contents, selector);
+		return WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
+	}
+
+	/**
+	 * Check if an element with specific contents does not exist
+	 * @param {String} contents - the contents to search for
+	 * @param {String} selector - a CSS selector corresponding to the item
+	 * @return {boolean} true if the element does not exist on the page
+	 */
+	public static boolean elementWithContentsAbsent(String contents, String selector) {
+		TestObject obj = Kaixa.findByContents(contents, selector);
 		return !WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
 	}
 
@@ -400,7 +425,11 @@ public class Kaixa {
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
 	public static void waitForElementVisible(Object item, int timeoutSec = 10) {
-		WebUI.waitForElementVisible(Kaixa.ensureTestObject(item), timeoutSec);
+		try {
+			assert WebUI.waitForElementVisible(Kaixa.ensureTestObject(item), timeoutSec);
+		} catch (AssertionError e) {
+			throw new Exception('Element "' + item + '" not become visible within ' + timeoutSec + ' second(s)');
+		}
 	}
 
 	/**
@@ -411,7 +440,101 @@ public class Kaixa {
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
 	public static void waitForElementWithContentsVisible(String contents, String selector, int timeoutSec) {
-		WebUI.waitForElementVisible(Kaixa.findByContents(contents, selector), timeoutSec);
+		try {
+			WebUI.waitForElementVisible(Kaixa.findByContents(contents, selector), timeoutSec);
+		} catch (AssertionError e) {
+			throw new Exception('Element "' + selector + '" with contents "' + contents + '" did not become visible within ' + timeoutSec + ' second(s)');
+		}
+	}
+
+	/* -------------------- Assertions -------------------- */
+
+	/**
+	 * Make sure an element exists
+	 * @author Gabe Abrams
+	 * @param {TestObject|String} item - the TestObject or CSS selector
+	 * @param {String} [message=generated message] - a human-readable message to
+	 *   display if the test fails
+	 * @param {int} [gracePeriodSecs=10] - the number of seconds to wait before
+	 *   throwing an error
+	 */
+	public static boolean assertExists(Object item, String message = '', int gracePeriodSecs = 10) {
+		try {
+			Kaixa.waitForElementVisible(item, gracePeriodSecs);
+		} catch (Exception e) {
+			// Could not find!
+			throw new Exception(
+				message == ''
+					? 'Element "' + item + '" did not exist, but it should have been there.'
+					: message
+			);
+		}
+	}
+
+	/**
+	 * Make sure an element does not exist
+	 * @author Gabe Abrams
+	 * @param {TestObject|String} item - the TestObject or CSS selector
+	 * @param {String} [message=generated message] - a human-readable message to
+	 *   display if the test fails
+	 * @return {boolean} true if the element does not exist on the page
+	 */
+	public static boolean assertAbsent(Object item, String message = '') {
+		TestObject obj = Kaixa.ensureTestObject(item);
+		boolean exists = !WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
+
+		if (exists) {
+			// Found but shouldn't have
+			throw new Exception(
+				message == ''
+					? 'Element "' + item + '" exist, but it should have been absent.'
+					: message
+			);
+		}
+	}
+	
+	/**
+	 * Make sure an element with specific contents exists
+	 * @author Gabe Abrams
+	 * @param {String} contents - the contents to search for
+	 * @param {String} selector - a CSS selector corresponding to the item
+	 * @param {String} [message=generated message] - a human-readable message to
+	 *   display if the test fails
+	 * @return {boolean} true if the element exists on the page
+	 */
+	public static boolean assertExistsWithContents(String contents, String selector, String message = '') {
+		try {
+			Kaixa.waitForElementWithContentsVisible(contents, selector, gracePeriodSecs);
+		} catch (Exception e) {
+			// Could not find!
+			throw new Exception(
+				message == ''
+					? 'Element "' + selector + '" with contents + "' + contents + '" did not exist, but it should have been there.'
+					: message
+			);
+		}
+	}
+
+	/**
+	 * Make sure an element with specific contents does not exist
+	 * @param {String} contents - the contents to search for
+	 * @param {String} selector - a CSS selector corresponding to the item
+	 * @param {String} [message=generated message] - a human-readable message to
+	 *   display if the test fails
+	 * @return {boolean} true if the element does not exist on the page
+	 */
+	public static boolean assertAbsentWithContents(String contents, String selector, String message = '') {
+		TestObject obj = Kaixa.findByContents(contents, selector);
+		boolean exists = WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
+
+		if (exists) {
+			// Found but shouldn't have
+			throw new Exception(
+				message == ''
+					? 'Element "' + selector + '" with contents "' + contents + '" exist, but it should have been absent.'
+					: message
+			);
+		}
 	}
 
 	/* -------------------- Interactions-------------------- */
