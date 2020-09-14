@@ -726,6 +726,9 @@ public class Kaixa {
 		// Click submit
 		Kaixa.click('#submitLogin');
 
+		// Wait for login to finish (wait up to 30s)
+		Kaixa.waitForElementVisible('#global_nav_dashboard_link', 30);
+
 		// Get the external tool URL
 		JSONArray externalTools = Kaixa.visitCanvasEndpoint('/courses/' + courseId + '/external_tools');
 		
