@@ -778,7 +778,7 @@ public class Kaixa {
 	 * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
 	 * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav
 	 */
-	public static void launchLTIAs(String name, int courseId = defaultCourseId, String appName = defaultAppName) {
+	public static void launchAs(String name, int courseId = defaultCourseId, String appName = defaultAppName) {
 		// Get the user info
 		JSONObject obj = new JSONObject(GlobalVariable[name]);
 		String username = obj.getString('username');
