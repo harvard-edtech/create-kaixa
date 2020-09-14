@@ -772,7 +772,7 @@ public class Kaixa {
 
 	/**
 	 * Log into Canvas and launch an LTI app as a specific user from the profile variables.
-	 *   The value should be a JSON object with the following properties: {  username, password, [isXID] }
+	 *   The value should be a JSON object with the following properties: { username, [password], [isXID] }
 	 * @author Gabe Abrams
 	 * @param {String} name - the name of the variable containing the credentials for the user
 	 * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
@@ -782,7 +782,15 @@ public class Kaixa {
 		// Get the user info
 		JSONObject obj = new JSONObject(GlobalVariable[name]);
 		String username = obj.getString('username');
-		String password = obj.getString('password');
+
+		// Prompt user for password if its not included
+		String password = '';
+		if (obj.has('password')) {
+			password = obj.getString('password');
+		} else {
+			password = (JOptionPane.showInputDialog('What is the password for "' + name + '"?')).trim();
+		}
+
 		boolean isXID = (
 			obj.has('isXID')
 			&& obj.getBoolean('isXID')
