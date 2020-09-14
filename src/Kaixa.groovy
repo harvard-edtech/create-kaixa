@@ -72,6 +72,9 @@ public class Kaixa {
 
 	/* -------------------- Variables, Names, URLs -------------------- */
 
+	// Track number of instances for each name
+	static HashMap<String, Integer> nameToNumInstances = new HashMap<String, Integer>();
+
 	/**
 	 * Add a unique tag to an object name
 	 * @author Gabe Abrams
