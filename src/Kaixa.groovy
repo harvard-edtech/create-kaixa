@@ -882,6 +882,48 @@ public class Kaixa {
 		return json;
 	}
 
+	/**
+	 * Extract info from a class
+	 * @author Gabe Abrams
+	 * @param {TestObject|String} item - the TestObject or CSS selector of the element
+	 * @param {String} classPrefix - the prefix of the class. Example: if there is
+	 *   a class "Event-12345" then with classPrefix "Event-" the return of this
+	 *   function would be "12345"
+	 * @return {String} value following the prefix
+	 */
+	public static String extractDataFromClass(Object item, String classPrefix) {
+		TestObject obj = Kaixa.ensureTestObject(item);
+
+		// Get classes
+		String classString = Kaixa.getAttribute(obj, 'class');
+		String[] classes = classString.split(' ');
+
+		// Search for the class
+		for (String cn : classes) {
+			if (cn.startsWith(classPrefix) && cn.length() > classPrefix.length()) {
+				return cn.substring(classPrefix.length());
+			}
+		}
+
+		// No class found
+		throw new Exception('Could not get metadata because class prefix "' + classPrefix + '" could not be found.');
+	}
+
+	/**
+	 * Extract info from a class
+	 * @author Gabe Abrams
+	 * @param {String} contents - the contents to search for
+	 * @param {String} selector - a CSS selector corresponding to the item
+	 * @param {String} classPrefix - the prefix of the class. Example: if there is
+	 *   a class "Event-12345" then with classPrefix "Event-" the return of this
+	 *   function would be "12345"
+	 * @return {String} value following the prefix
+	 */
+	public static String extractDataFromClassByContents(String contents, String selector, String classPrefix) {
+		TestObject obj = Kaixa.findByContents(contents, selector);
+		Kaixa.extractDataFromClass(obj, classPrefix);
+	}
+
 	/* -------------------- Harvard-specific Commands -------------------- */
 
 	/**
