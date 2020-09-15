@@ -575,10 +575,21 @@ public class Kaixa {
 	 * @author Gabe Abrams
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
+	 * @param {boolean} [dontScrollTo] - if true, do not scroll to the element
 	 */
-	public static void click(Object item, int timeoutSec = 10) {
+	public static void click(Object item, int timeoutSec = 10, boolean dontScrollTo = false) {
 		TestObject obj = Kaixa.ensureTestObject(item);
-		Kaixa.waitForElementVisible(obj, timeoutSec);
+		try {
+			Kaixa.waitForElementVisible(obj, timeoutSec);
+		} catch (Exception e) {
+			// Try to scroll then wait again
+			if (!dontScrollTo) {
+				Kaixa.scrollTo(obj);
+				Kaixa.waitForElementVisible(obj, timeoutSec);
+			} else {
+				throw e;
+			}
+		}
 		WebUI.click(obj);
 	}
 
