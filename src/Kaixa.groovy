@@ -921,7 +921,7 @@ public class Kaixa {
 	 */
 	public static String extractDataFromClassByContents(String contents, String selector, String classPrefix) {
 		TestObject obj = Kaixa.findByContents(contents, selector);
-		Kaixa.extractDataFromClass(obj, classPrefix);
+		return Kaixa.extractDataFromClass(obj, classPrefix);
 	}
 
 	/* -------------------- Harvard-specific Commands -------------------- */
