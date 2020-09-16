@@ -510,7 +510,7 @@ public class Kaixa {
 	 */
 	public static boolean assertAbsent(Object item, String message = '') {
 		TestObject obj = Kaixa.ensureTestObject(item);
-		boolean exists = !WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
+		boolean exists = WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
 
 		if (exists) {
 			// Found but shouldn't have
