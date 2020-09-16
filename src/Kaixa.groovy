@@ -26,8 +26,6 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.By
 
 import internal.GlobalVariable
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.nio.file.Paths
 import javax.swing.JFrame
 import javax.swing.JOptionPane
@@ -92,9 +90,7 @@ public class Kaixa {
 		nameToNumInstances.put(name, numInstances);
 		
 		// Create a unique tag
-		DateFormat dateFormat = new SimpleDateFormat('yyyy-mm-dd hh:mm:ss.SSS');
-		String strDate = dateFormat.format(start);
-		String tag = ' [#' + numInstances + ' ' + strDate + ']';
+		String tag = ' [' + numInstances + '-' + (new Date()).getTime() + ']';
 		
 		// Concatenate
 		return name + tag;
