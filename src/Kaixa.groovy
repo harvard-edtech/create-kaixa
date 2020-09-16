@@ -35,6 +35,8 @@ import javax.swing.JPasswordField
 import org.json.JSONObject
 import org.json.JSONArray
 import java.util.regex.Pattern
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 
 /**
  * Kaixa Version [VERSION]
@@ -74,7 +76,7 @@ public class Kaixa {
 	static HashMap<String, Integer> nameToNumInstances = new HashMap<String, Integer>();
 
 	/**
-	 * Add a unique tag to an object name
+	 * Add a unique tag to an object name. Tag may add up to 20 chars.
 	 * @author Gabe Abrams
 	 * @param {String} name - the name of the item
 	 * @return {String} the new name of the item with the unique tag
