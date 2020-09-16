@@ -516,7 +516,7 @@ public class Kaixa {
 			// Found but shouldn't have
 			throw new Exception(
 				message == ''
-					? 'Element "' + item + '" exist, but it should have been absent.'
+					? 'Element "' + item + '" exists, but it should have been absent.'
 					: message
 			);
 		}
@@ -584,7 +584,7 @@ public class Kaixa {
 		} catch (Exception e) {
 			// Try to scroll then wait again
 			if (!dontScrollTo) {
-				Kaixa.scrollTo(obj);
+				Kaixa.scrollTo(item);
 				Kaixa.waitForElementVisible(obj, timeoutSec);
 			} else {
 				throw e;
@@ -828,7 +828,6 @@ public class Kaixa {
 	public static Object getJSON() {
 		// Get the text
 		String jsonString = Kaixa.getJSONString();
-		System.out.println(jsonString);
 
 		// Detect object type
 		if (jsonString.charAt(0) == '[') {
@@ -982,7 +981,6 @@ public class Kaixa {
 			}
 			
 			// Get nav info
-			System.out.println(externalTool.get('course_navigation'));
 			JSONObject courseNavigation = externalTool.getJSONObject('course_navigation');
 			
 			// Skip non-labeled items
