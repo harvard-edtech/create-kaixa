@@ -578,7 +578,7 @@ public class Kaixa {
 	public static void click(Object item, int timeoutSec = 10, boolean dontScrollTo = false) {
 		TestObject obj = Kaixa.ensureTestObject(item);
 		try {
-			Kaixa.waitForElementVisible(obj, timeoutSec);
+			Kaixa.waitForElementVisible(obj, dontScrollTo ? timeoutSec : 1);
 		} catch (Exception e) {
 			// Try to scroll then wait again
 			if (!dontScrollTo) {
