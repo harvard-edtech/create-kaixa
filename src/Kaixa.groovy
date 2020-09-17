@@ -81,21 +81,21 @@ public class Kaixa {
 	 * @param {String} name - the name of the item
 	 * @return {String} the new name of the item with the unique tag
 	 */
-	public static String uniquify(String name) {
+	public static String uniquify(Object name) {
 		// Start tracking name if not already in map
-		if (!nameToNumInstances.containsKey(name)) {
-			nameToNumInstances.put(name, 0);
+		if (!nameToNumInstances.containsKey(name.toString())) {
+			nameToNumInstances.put(name.toString(), 0);
 		}
 		
 		// Increment the number of instances
-		int numInstances = nameToNumInstances.get(name) + 1;
-		nameToNumInstances.put(name, numInstances);
+		int numInstances = nameToNumInstances.get(name.toString()) + 1;
+		nameToNumInstances.put(name.toString(), numInstances);
 		
 		// Create a unique tag
 		String tag = ' [' + numInstances + '-' + (new Date()).getTime() + ']';
 		
 		// Concatenate
-		return name + tag;
+		return name.toString() + tag;
 	}
 
 
@@ -221,6 +221,9 @@ public class Kaixa {
 
 	/**
 	 * Given the contents and a CSS selector for an element, find the TestObject
+	 * @author Gabe Abrams
+	 * @param {String} contents - the contents of the object
+	 * @param {String} selector - a css selector for the element
 	 * Supported css selectors:
 	 * All Elements: null or "*"
 	 * All P Elements: "p"
@@ -230,9 +233,9 @@ public class Kaixa {
 	 * Element With Attribute: "*[title]"
 	 * First Child of P: "p > *:first-child"
 	 * Next Element after P: "p + *"
-	 * @author Gabe Abrams
+	 * @return {TestObject} the matching object
 	 */
-	public static TestObject findByContents(String contents, String selector) {
+	public static TestObject findByContents(Object contents, String selector) {
 		// Generate the xpath
 		String start = '*';
 		if (selector.startsWith('#')) {
@@ -269,12 +272,12 @@ public class Kaixa {
 
 		// Build the xpath
 		String contentsEscaped;
-		if (contents.indexOf('\'') < 0) {
+		if (contents.toString().indexOf('\'') < 0) {
 			contentsEscaped = '\'' + contents + '\'';
-		} else if (contents.indexOf('"') < 0) {
+		} else if (contents.toString().indexOf('"') < 0) {
 			contentsEscaped = '"' + contents + '"';
 		} else {
-			contentsEscaped = 'concat(\'' + contents.replace('\'', '\',"\'", \'') + '\')';
+			contentsEscaped = 'concat(\'' + contents.toString().replace('\'', '\',"\'", \'') + '\')';
 		}
 		String xpath = '//' + start + '[text()[contains(.,' + contentsEscaped + ')]]';
 
@@ -339,7 +342,7 @@ public class Kaixa {
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @return {boolean} true if the element exists on the page
 	 */
-	public static boolean elementWithContentsExists(String contents, String selector) {
+	public static boolean elementWithContentsExists(Object contents, String selector) {
 		TestObject obj = Kaixa.findByContents(contents, selector);
 		return WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
 	}
@@ -350,7 +353,7 @@ public class Kaixa {
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @return {boolean} true if the element does not exist on the page
 	 */
-	public static boolean elementWithContentsAbsent(String contents, String selector) {
+	public static boolean elementWithContentsAbsent(Object contents, String selector) {
 		TestObject obj = Kaixa.findByContents(contents, selector);
 		return !WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
 	}
@@ -437,7 +440,7 @@ public class Kaixa {
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
-	public static void waitForElementWithContentsVisible(String contents, String selector, int timeoutSec) {
+	public static void waitForElementWithContentsVisible(Object contents, String selector, int timeoutSec) {
 		try {
 			assert WebUI.waitForElementVisible(Kaixa.findByContents(contents, selector), timeoutSec);
 		} catch (AssertionError e) {
@@ -466,7 +469,7 @@ public class Kaixa {
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
-	public static void waitForElementWithContentsPresent(String contents, String selector, int timeoutSec) {
+	public static void waitForElementWithContentsPresent(Object contents, String selector, int timeoutSec) {
 		try {
 			assert WebUI.waitForElementPresent(Kaixa.findByContents(contents, selector), timeoutSec, FailureHandling.OPTIONAL);
 		} catch (AssertionError e) {
@@ -531,7 +534,7 @@ public class Kaixa {
 	 *   throwing an error
 	 * @return {boolean} true if the element exists on the page
 	 */
-	public static boolean assertExistsWithContents(String contents, String selector, String message = '', int gracePeriodSecs = 10) {
+	public static boolean assertExistsWithContents(Object contents, String selector, String message = '', int gracePeriodSecs = 10) {
 		try {
 			Kaixa.waitForElementWithContentsPresent(contents, selector, gracePeriodSecs);
 		} catch (Exception e) {
@@ -552,7 +555,7 @@ public class Kaixa {
 	 *   display if the test fails
 	 * @return {boolean} true if the element does not exist on the page
 	 */
-	public static boolean assertAbsentWithContents(String contents, String selector, String message = '') {
+	public static boolean assertAbsentWithContents(Object contents, String selector, String message = '') {
 		TestObject obj = Kaixa.findByContents(contents, selector);
 		boolean exists = WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
 
@@ -608,7 +611,7 @@ public class Kaixa {
 	 * @param {String} contents - the contents to search for
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 */
-	public static void clickByContents(String contents, String selector) {
+	public static void clickByContents(Object contents, String selector) {
 		TestObject obj = Kaixa.findByContents(contents, selector);
 		Kaixa.click(obj);
 	}
@@ -619,10 +622,10 @@ public class Kaixa {
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {String} text - the text to type
 	 */
-	public static void typeInto(Object item, String text) {
+	public static void typeInto(Object item, Object text) {
 		TestObject obj = Kaixa.ensureTestObject(item);
 		Kaixa.waitForElementVisible(obj);
-		WebUI.setText(obj, text);
+		WebUI.setText(obj, text.toString());
 	}
 
 	/**
@@ -641,14 +644,14 @@ public class Kaixa {
 	 * @param {TestObject|String} item - the TestObject or CSS selector of the select element
 	 * @param {String} label - the label to select in the dropdown
 	 */
-	public static void chooseSelectByLabel(Object item, String label) {
+	public static void chooseSelectByLabel(Object item, Object label) {
 		TestObject obj = Kaixa.ensureTestObject(item);
 
 		// Select the option
-		WebUI.selectOptionByLabel(obj, label, false);
+		WebUI.selectOptionByLabel(obj, label.toString(), false);
 
 		// Verify the selection
-		WebUI.verifyOptionSelectedByLabel(obj, label, false, 60);
+		WebUI.verifyOptionSelectedByLabel(obj, label.toString(), false, 60);
 	}
 
 	/**
@@ -657,14 +660,14 @@ public class Kaixa {
 	 * @param {TestObject|String} item - the TestObject or CSS selector of the select element
 	 * @param {String} value - the value of the item to select in the dropdown
 	 */
-	public static void chooseSelectByValue(Object item, String value) {
+	public static void chooseSelectByValue(Object item, Object value) {
 		TestObject obj = Kaixa.ensureTestObject(item);
 
 		// Select the option
-		WebUI.selectOptionByValue(obj, value, false);
+		WebUI.selectOptionByValue(obj, value.toString(), false);
 
 		// Verify the selection
-		WebUI.verifyOptionSelectedByValue(obj, value, false, 60);
+		WebUI.verifyOptionSelectedByValue(obj, value.toString(), false, 10);
 	}
 
 	/**
@@ -927,8 +930,8 @@ public class Kaixa {
 	 *   function would be "12345"
 	 * @return {String} value following the prefix
 	 */
-	public static String extractDataFromClassByContents(String contents, String selector, String classPrefix) {
-		TestObject obj = Kaixa.findByContents(contents, selector);
+	public static String extractDataFromClassByContents(Object contents, String selector, String classPrefix) {
+		TestObject obj = Kaixa.findByContents(contents.toString(), selector);
 		return Kaixa.extractDataFromClass(obj, classPrefix);
 	}
 
@@ -943,7 +946,7 @@ public class Kaixa {
 	 * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav 
 	 * @param {boolean} [isXID] - if true, the user is an XID user
 	 */
-	public static void launchLTIUsingCreds(String username, String password, int courseId = defaultCourseId, String appName = defaultAppName, boolean isXID = false) {
+	public static void launchLTIUsingCreds(Object username, Object password, int courseId = defaultCourseId, String appName = defaultAppName, boolean isXID = false) {
 		// Visit the HarvardKey login service for Canvas
 		Kaixa.visit('https://www.pin1.harvard.edu/cas/login?service=https%3A%2F%2Fcanvas.harvard.edu%2Flogin%2Fcas')
 
