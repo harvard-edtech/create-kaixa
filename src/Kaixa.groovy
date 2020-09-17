@@ -577,7 +577,7 @@ public class Kaixa {
 	public static void assertHasClass(Object item, String className, String message = '') {
 		String classStr = Kaixa.getAttribute(item, 'className');
 		String classes = classStr.split(' ');
-		boolean hasClass = (classes.indexOf(className) >= 0);
+		boolean hasClass = Arrays.asList(classes).contains(className);
 
 		if (!hasClass) {
 			throw new Exception(
@@ -599,7 +599,7 @@ public class Kaixa {
 	public static void assertDoesNotHaveClass(Object item, String className, String message = '') {
 		String classStr = Kaixa.getAttribute(item, 'className');
 		String classes = classStr.split(' ');
-		boolean hasClass = (classes.indexOf(className) >= 0);
+		boolean hasClass = Arrays.asList(classes).contains(className);
 
 		if (hasClass) {
 			throw new Exception(
