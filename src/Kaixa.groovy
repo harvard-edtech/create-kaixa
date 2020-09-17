@@ -733,6 +733,16 @@ public class Kaixa {
 	}
 
 	/**
+	 * Get the text in an element
+	 * @author Gabe Abrams
+	 * @param {TestObject|String} item - the TestObject or CSS selector
+	 * @return {String} the contents of the element as text
+	 */
+	public static String getText(Object item) {
+		return WebUI.getText(Kaixa.ensureTestObject(item));
+	}
+
+	/**
 	 * Get the source of the page
 	 * @author Gabe Abrams
 	 * @return {String} the source of the current page
