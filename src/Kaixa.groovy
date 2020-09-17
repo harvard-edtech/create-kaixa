@@ -510,9 +510,9 @@ public class Kaixa {
 	 */
 	public static void assertAbsent(Object item, String message = '') {
 		TestObject obj = Kaixa.ensureTestObject(item);
-		boolean exists = WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
+		boolean absent = WebUI.verifyElementNotPresent(obj, 1, FailureHandling.OPTIONAL);
 
-		if (exists) {
+		if (!absent) {
 			// Found but shouldn't have
 			throw new Exception(
 				message == ''
@@ -554,9 +554,9 @@ public class Kaixa {
 	 */
 	public static void assertAbsentWithContents(Object contents, String selector, String message = '') {
 		TestObject obj = Kaixa.findByContents(contents, selector);
-		boolean exists = WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
+		boolean absent = WebUI.verifyElementNotPresent(obj, 1, FailureHandling.OPTIONAL);
 
-		if (exists) {
+		if (!absent) {
 			// Found but shouldn't have
 			throw new Exception(
 				message == ''
