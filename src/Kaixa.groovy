@@ -999,7 +999,7 @@ public class Kaixa {
 	 */
 	public static void launchLTIUsingCreds(Object username, Object password, int courseId = defaultCourseId, String appName = defaultAppName, boolean isXID = false) {
 		// Visit the HarvardKey login service for Canvas
-		Kaixa.visit('https://www.pin1.harvard.edu/cas/login?service=https%3A%2F%2Fcanvas.harvard.edu%2Flogin%2Fcas')
+		Kaixa.visit('https://www.pin1.harvard.edu/cas/login?service=https%3A%2F%2Fcanvas.harvard.edu%2Flogin%2Fcas');
 
 		// If isXID, click the "XID" button
 		if (isXID) {
