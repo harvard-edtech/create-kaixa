@@ -488,7 +488,7 @@ public class Kaixa {
 	 * @param {int} [gracePeriodSecs=10] - the number of seconds to wait before
 	 *   throwing an error
 	 */
-	public static boolean assertExists(Object item, String message = '', int gracePeriodSecs = 10) {
+	public static void assertExists(Object item, String message = '', int gracePeriodSecs = 10) {
 		try {
 			Kaixa.waitForElementPresent(item, gracePeriodSecs);
 		} catch (Exception e) {
@@ -507,9 +507,8 @@ public class Kaixa {
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @param {String} [message=generated message] - a human-readable message to
 	 *   display if the test fails
-	 * @return {boolean} true if the element does not exist on the page
 	 */
-	public static boolean assertAbsent(Object item, String message = '') {
+	public static void assertAbsent(Object item, String message = '') {
 		TestObject obj = Kaixa.ensureTestObject(item);
 		boolean exists = WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
 
@@ -532,9 +531,8 @@ public class Kaixa {
 	 *   display if the test fails
 	 * @param {int} [gracePeriodSecs=10] - the number of seconds to wait before
 	 *   throwing an error
-	 * @return {boolean} true if the element exists on the page
 	 */
-	public static boolean assertExistsWithContents(Object contents, String selector, String message = '', int gracePeriodSecs = 10) {
+	public static void assertExistsWithContents(Object contents, String selector, String message = '', int gracePeriodSecs = 10) {
 		try {
 			Kaixa.waitForElementWithContentsPresent(contents, selector, gracePeriodSecs);
 		} catch (Exception e) {
@@ -553,9 +551,8 @@ public class Kaixa {
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @param {String} [message=generated message] - a human-readable message to
 	 *   display if the test fails
-	 * @return {boolean} true if the element does not exist on the page
 	 */
-	public static boolean assertAbsentWithContents(Object contents, String selector, String message = '') {
+	public static void assertAbsentWithContents(Object contents, String selector, String message = '') {
 		TestObject obj = Kaixa.findByContents(contents, selector);
 		boolean exists = WebUI.verifyElementPresent(obj, 1, FailureHandling.OPTIONAL);
 
@@ -564,6 +561,50 @@ public class Kaixa {
 			throw new Exception(
 				message == ''
 					? 'Element "' + selector + '" with contents "' + contents + '" exist, but it should have been absent.'
+					: message
+			);
+		}
+	}
+
+	/**
+	 * Make sure an element has a specific class name
+	 * @author Gabe Abrams
+	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
+	 * @param {String} className - the name of the class to expect
+	 * @param {String} [message=generated message] - a human-readable message to
+	 *   display if the test fails
+	 */
+	public static void assertHasClass(Object item, String className, String message = '') {
+		String classStr = Kaixa.getAttribute(item, 'className');
+		String classes = classStr.split(' ');
+		boolean hasClass = (classes.indexOf(className) >= 0);
+
+		if (!hasClass) {
+			throw new Exception(
+				message == ''
+					? 'Element "' + item + '" did not have class "' + className + '" but it should have had it.'
+					: message
+			);
+		}
+	}
+
+	/**
+	 * Make sure an element has a specific class name
+	 * @author Gabe Abrams
+	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
+	 * @param {String} className - the name of the class to expect
+	 * @param {String} [message=generated message] - a human-readable message to
+	 *   display if the test fails
+	 */
+	public static void assertDoesNotHaveClass(Object item, String className, String message = '') {
+		String classStr = Kaixa.getAttribute(item, 'className');
+		String classes = classStr.split(' ');
+		boolean hasClass = (classes.indexOf(className) >= 0);
+
+		if (hasClass) {
+			throw new Exception(
+				message == ''
+					? 'Element "' + item + '" had class "' + className + '" but it shouldn\'t have had it.'
 					: message
 			);
 		}
