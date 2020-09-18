@@ -151,7 +151,7 @@ public class Kaixa {
 	 */
 	public static log(Object o) {
 		String msg = o.toString();
-		msg = msg.replace('TestObject - \'DynamicObjectWithSelector: ', '');
+		msg = msg.replace('TestObject - \'DynamicObjectWithSelector: ', '\'');
 		// Replace dynamic 
 		WebUI.comment(msg);
 	}
