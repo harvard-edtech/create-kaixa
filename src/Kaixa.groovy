@@ -477,6 +477,20 @@ public class Kaixa {
 		}
 	}
 
+	/**
+	 * Wait for an element to not be present (on the page, it does not have to be visible)
+	 * @author Gabe Abrams
+	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
+	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
+	 */
+	public static void waitForElementAbsent(Object item, int timeoutSec = 10) {
+		try {
+			assert WebUI.waitForElementNotPresent(Kaixa.ensureTestObject(item), timeoutSec, FailureHandling.OPTIONAL);
+		} catch (AssertionError e) {
+			throw new Exception('Element "' + item + '" was present for the whole ' + timeoutSec + ' second(s)');
+		}
+	}
+
 	/* -------------------- Assertions -------------------- */
 
 	/**
