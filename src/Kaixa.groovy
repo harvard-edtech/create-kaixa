@@ -150,10 +150,10 @@ public class Kaixa {
 	 * @param {Object} message - the message to log
 	 */
 	public static log(Object o) {
-		Date now = Calendar.getInstance().getTime();
-		DateFormat dateFormat = new SimpleDateFormat('yyyy-mm-dd hh:mm:ss.SSS');
-		String strDate = dateFormat.format(now);
-		System.out.println(strDate + ' LOG   ' + o);
+		String msg = o.toString();
+		msg = msg.replace('TestObject - \'DynamicObjectWithSelector: ', '');
+		// Replace dynamic 
+		WebUI.comment(msg);
 	}
 
 	/* -------------------- Navigation -------------------- */
@@ -165,6 +165,7 @@ public class Kaixa {
 	 */
 	public static visit(String location) {
 		String url = Kaixa.locationToURL(location);
+		Kaixa.log('🌐 Visit ' + location);
 
 		try {
 			WebUI.navigateToUrl(url)
@@ -404,9 +405,11 @@ public class Kaixa {
 	 * @author Gabe Abrams
 	 */
 	public static void pause() {
+		Kaixa.log('⏸ Pause Started');
 		JFrame frame = new JFrame('Kaixa');
 		frame.requestFocus();
 		JOptionPane.showMessageDialog(null, 'Test case paused. Click "OK" to continue...');
+		Kaixa.log('▶️ Pause Ended');
 	}
 
 	/**
@@ -415,6 +418,7 @@ public class Kaixa {
 	 * @param {int} ms - the number of ms to wait
 	 */
 	public static void waitFor(int ms = 0) {
+		Kaixa.log('⏱ Wait for ' + ms + 'ms');
 		Thread.sleep(ms);
 	}
 
@@ -426,6 +430,7 @@ public class Kaixa {
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
 	public static void waitForElementVisible(Object item, int timeoutSec = 10) {
+		Kaixa.log('⏱👁 Wait for ' + item + ' to be visible');
 		try {
 			assert WebUI.waitForElementVisible(Kaixa.ensureTestObject(item), timeoutSec);
 		} catch (AssertionError e) {
@@ -441,6 +446,7 @@ public class Kaixa {
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
 	public static void waitForElementWithContentsVisible(Object contents, String selector, int timeoutSec) {
+		Kaixa.log('⏱👁 Wait for ' + selector + ' with contents "' + contents + '" to be visible');
 		try {
 			assert WebUI.waitForElementVisible(Kaixa.findByContents(contents, selector), timeoutSec);
 		} catch (AssertionError e) {
@@ -455,6 +461,7 @@ public class Kaixa {
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
 	public static void waitForElementPresent(Object item, int timeoutSec = 10) {
+		Kaixa.log('⏱📍 Wait for ' + item + ' to be present');
 		try {
 			assert WebUI.waitForElementPresent(Kaixa.ensureTestObject(item), timeoutSec, FailureHandling.OPTIONAL);
 		} catch (AssertionError e) {
@@ -470,6 +477,7 @@ public class Kaixa {
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
 	public static void waitForElementWithContentsPresent(Object contents, String selector, int timeoutSec) {
+		Kaixa.log('⏱📍 Wait for ' + selector + ' with contents "' + contents + '" to be present');
 		try {
 			assert WebUI.waitForElementPresent(Kaixa.findByContents(contents, selector), timeoutSec, FailureHandling.OPTIONAL);
 		} catch (AssertionError e) {
@@ -484,6 +492,7 @@ public class Kaixa {
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
 	public static void waitForElementAbsent(Object item, int timeoutSec = 10) {
+		Kaixa.log('⏱✖️ Wait for element ' + item + ' to be absent');
 		try {
 			assert WebUI.waitForElementNotPresent(Kaixa.ensureTestObject(item), timeoutSec, FailureHandling.OPTIONAL);
 		} catch (AssertionError e) {
@@ -503,6 +512,7 @@ public class Kaixa {
 	 *   throwing an error
 	 */
 	public static void assertExists(Object item, String message = '', int gracePeriodSecs = 10) {
+		Kaixa.log('🔎📍 Assert ' + item + ' exists');
 		try {
 			Kaixa.waitForElementPresent(item, gracePeriodSecs);
 		} catch (Exception e) {
@@ -523,6 +533,7 @@ public class Kaixa {
 	 *   display if the test fails
 	 */
 	public static void assertAbsent(Object item, String message = '') {
+		Kaixa.log('🔎✖️ Assert ' + item + ' absent');
 		TestObject obj = Kaixa.ensureTestObject(item);
 		boolean absent = WebUI.verifyElementNotPresent(obj, 1, FailureHandling.OPTIONAL);
 
@@ -547,6 +558,7 @@ public class Kaixa {
 	 *   throwing an error
 	 */
 	public static void assertExistsWithContents(Object contents, String selector, String message = '', int gracePeriodSecs = 10) {
+		Kaixa.log('🔎📍 Assert ' + selector + ' with contents "' + contents + '" exists');
 		try {
 			Kaixa.waitForElementWithContentsPresent(contents, selector, gracePeriodSecs);
 		} catch (Exception e) {
@@ -567,6 +579,7 @@ public class Kaixa {
 	 *   display if the test fails
 	 */
 	public static void assertAbsentWithContents(Object contents, String selector, String message = '') {
+		Kaixa.log('🔎✖️ Assert ' + selector + ' with contents "' + contents + '" absent');
 		TestObject obj = Kaixa.findByContents(contents, selector);
 		boolean absent = WebUI.verifyElementNotPresent(obj, 1, FailureHandling.OPTIONAL);
 
@@ -589,6 +602,7 @@ public class Kaixa {
 	 *   display if the test fails
 	 */
 	public static void assertHasClass(Object item, String className, String message = '') {
+		Kaixa.log('🔎👕 Assert ' + item + ' has class "' + className + '"');
 		String classStr = Kaixa.getAttribute(item, 'className');
 		String[] classes = classStr.split(' ');
 		boolean hasClass = Arrays.asList(classes).contains(className);
@@ -611,6 +625,7 @@ public class Kaixa {
 	 *   display if the test fails
 	 */
 	public static void assertDoesNotHaveClass(Object item, String className, String message = '') {
+		Kaixa.log('🔎✖️👕 Assert ' + item + ' does not have class "' + className + '"');
 		String classStr = Kaixa.getAttribute(item, 'className');
 		String[] classes = classStr.split(' ');
 		boolean hasClass = Arrays.asList(classes).contains(className);
@@ -634,6 +649,7 @@ public class Kaixa {
 	 * @param {boolean} [dontScrollTo] - if true, do not scroll to the element
 	 */
 	public static void click(Object item, int timeoutSec = 10, boolean dontScrollTo = false) {
+		Kaixa.log('🖱 Click ' + item);
 		TestObject obj = Kaixa.ensureTestObject(item);
 		try {
 			Kaixa.waitForElementVisible(obj, dontScrollTo ? timeoutSec : 1);
@@ -655,6 +671,7 @@ public class Kaixa {
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest 
 	 */
 	public static void openAnchorInSameTab(Object item) {
+		Kaixa.log('🖱 Open Anchor in Same Tab ' + item);
 		TestObject obj = Kaixa.ensureTestObject(item);
 		String href = Kaixa.getAttribute(obj, 'href');
 		Kaixa.visit(href);
@@ -678,6 +695,7 @@ public class Kaixa {
 	 * @param {String} text - the text to type
 	 */
 	public static void typeInto(Object item, Object text) {
+		Kaixa.log('⌨️ Type "' + text + '" into ' + item);
 		TestObject obj = Kaixa.ensureTestObject(item);
 		Kaixa.waitForElementVisible(obj);
 		WebUI.setText(obj, text.toString());
@@ -689,6 +707,7 @@ public class Kaixa {
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 */
 	public static void scrollTo(Object item) {
+		Kaixa.log('↕️ Scroll to ' + item);
 		TestObject obj = Kaixa.ensureTestObject(item);
 		WebUI.scrollToElement(obj, 10);
 	}
@@ -700,6 +719,7 @@ public class Kaixa {
 	 * @param {String} label - the label to select in the dropdown
 	 */
 	public static void chooseSelectByLabel(Object item, Object label) {
+		Kaixa.log('▤ Choose Select Item "' + label + '" in dropdown ' + item);
 		TestObject obj = Kaixa.ensureTestObject(item);
 
 		// Select the option
@@ -716,6 +736,7 @@ public class Kaixa {
 	 * @param {String} value - the value of the item to select in the dropdown
 	 */
 	public static void chooseSelectByValue(Object item, Object value) {
+		Kaixa.log('▤ Choose Select Item with value "' + value+ '" in dropdown ' + item);
 		TestObject obj = Kaixa.ensureTestObject(item);
 
 		// Select the option
@@ -732,6 +753,7 @@ public class Kaixa {
 	 * @param {String} filePath - the path of the file
 	 */
 	public static void chooseFile(Object item, String relativePath) {
+		Kaixa.log('📁 Choose file ' + relativePath + ' for file chooser ' + item);
 		TestObject obj = Kaixa.ensureTestObject(item);
 
 		// Get the absolute path of the file
@@ -761,6 +783,7 @@ public class Kaixa {
 	 * @author Gabe Abrams
 	 */
 	public static void closeWindow() {
+		Kaixa.log('✖️ Close Window');
 		// Get the index of the current window
 		int index = WebUI.getWindowIndex();
 
@@ -773,6 +796,7 @@ public class Kaixa {
 	 * @author Gabe Abrams
 	 */
 	public static void done() {
+		Kaixa.log('✔ Done');
 		WebUI.closeBrowser();
 	}
 
@@ -913,6 +937,7 @@ public class Kaixa {
 	 * @return {JSONArray|JSONObject} Canvas response
 	 */
 	public static Object visitCanvasEndpoint(String path) {
+		Kaixa.log('🖥 Canvas API: ' + path);
 		String id = 'Kaixa-open-new-tab-button';
 		String url = 'https://canvas.harvard.edu/api/v1' + path + (path.indexOf('?') >= 0 ? '&per_page=200' : '?per_page=200');
 
@@ -1012,6 +1037,13 @@ public class Kaixa {
 	 * @param {boolean} [isXID] - if true, the user is an XID user
 	 */
 	public static void launchLTIUsingCreds(Object username, Object password, int courseId = defaultCourseId, String appName = defaultAppName, boolean isXID = false) {
+		// Try to quit the previous session
+		try {
+			WebUI.closeBrowser();
+		} catch (Exception e) {
+			// Ignore
+		}
+
 		// Visit the HarvardKey login service for Canvas
 		Kaixa.visit('https://www.pin1.harvard.edu/cas/login?service=https%3A%2F%2Fcanvas.harvard.edu%2Flogin%2Fcas');
 
@@ -1086,6 +1118,8 @@ public class Kaixa {
 		if (!GlobalVariable.metaClass.hasProperty(GlobalVariable, name)) {
 			throw new Exception('Could not launch as "' + name + '" because that user is not listed in the profile variables.');
 		}
+		
+		Kaixa.log('🚀 Launch as ' + name);
 
 		// Get the user info
 		JSONObject obj = new JSONObject(GlobalVariable[name]);
