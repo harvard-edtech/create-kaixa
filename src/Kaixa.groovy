@@ -617,7 +617,7 @@ public class Kaixa {
 	}
 
 	/**
-	 * Make sure an element has a specific class name
+	 * Make sure an element does not have a specific class name
 	 * @author Gabe Abrams
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {String} className - the name of the class to expect
