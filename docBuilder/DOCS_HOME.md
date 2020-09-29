@@ -85,9 +85,7 @@ Kaixa.done();
   </div>
 </h1>
 
-## Interactions
-
-Interact with elements on the page
+## Interactions – interact with stuff on the page
 
 - [chooseFile](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseFile) - set the file for a file chooser
 - [chooseSelectByLabel](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseSelectByLabel) - choose select item by value
@@ -101,18 +99,18 @@ Interact with elements on the page
 - [typeInto](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#typeInto) - type text into an element
 - [visit](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#visit) - visit a page
 
-## Browser Actions
+## Browser Actions – interact with the browser
 
 - [done](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#done) - close the browser and clean up
 - [closeWindow](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#closeWindow) - just close the current window
 
-## Canvas & LTI Functions
+## Canvas & LTI Functions – special functions for Canvas apps
 
 - [launchAs](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#launchAs) - launch an LTI as a user
 - [launchLTIUsingCreds](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#launchLTIUsingCreds) - launch an LTI by providing user creds
 - [visitCanvasEndpoint](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#visitCanvasEndpoint) - visit a Canvas API GET endpoint
 
-## Intelligent Waiting
+## Intelligent Waiting – wait better
 
 - [waitFor](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitFor) - wait for a set amount of time
 - [waitForElementAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementAbsent) - wait until an element is absent
@@ -121,7 +119,7 @@ Interact with elements on the page
 - [waitForElementWithContentsPresent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementWithContentsPresent) - wait for ane element with specific contents to be present (on the page even if offscreen)
 - [waitForElementWithContentsVisible](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementWithContentsVisible) - wait for an element with specific contents to be visible (on the page and visible)
 
-## Assertions
+## Assertions – make sure your app behaves properly
 
 - [assertAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertAbsent) - make sure an element is absent
 - [assertAbsentWithContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertAbsentWithContents) - make sure an element is absent (find it by its contents)
@@ -130,13 +128,11 @@ Interact with elements on the page
 - [assertExistsWithContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertExistsWithContents) - make sure an element exists (find it by its contents)
 - [assertHasClass](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertHasClass) - make sure an element has a certain css class
 
-## Handy Functions
-
-Some useful utility functions for writing tests:
+## Handy Functions – useful utilities
 
 - [uniquify](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#uniquify) - add a unique, random tag to a string
 
-## Elements
+## Elements – deal with elements
 
 - [find](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#find) - find an element by its css selector
 - [findByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#findByContents) - find an element by its contents and selector
@@ -147,7 +143,7 @@ Some useful utility functions for writing tests:
 - [descendantOf](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#descendantOf) - get the descendant of an element
 - [parentOf](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#parentOf) - get the parent of an element
 
-## Data
+## Data – get data from the page or elements
 
 - [extractDataFromClass](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#extractDataFromClass) - extract data from a css class
 - [extractDataFromClassByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#extractDataFromClassByContents) - extract data from a css class (find the element by its contents)
@@ -159,11 +155,11 @@ Some useful utility functions for writing tests:
 - [getTitle](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getTitle) - get the title of the page
 - [getURL](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getURL) - get the URL of the current tab
 
-## Logging
+## Logging – write to the log
 
 - [log](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#log) - add something to the log
 
-## Defaults
+## Defaults – set behavior defaults
 
 - [setDefaultHost](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#setDefaultHost) - set the default hostname
 - [setDontUseHTTPS](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#setDontUseHTTPS) - set whether to use HTTPS by default
