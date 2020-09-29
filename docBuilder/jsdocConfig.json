@@ -1,0 +1,29 @@
+{
+  "source": {
+    "include": [
+      "src"
+    ],
+    "includePattern": ".*\\.groovy"
+  },
+  "opts": {
+    "readme": "./docBuilder/DOCS_HOME.md",
+    "destination": "./docs",
+    "recurse": true,
+    "template": "./docBuilder/template"
+  },
+  "plugins": [
+    "plugins/commentsOnly"
+  ],
+  "templates": {
+    "systemName": "caccl-api",
+    "systemSummary": "A class that defines a set of smart Canvas endpoints that actually behave how you'd expect them to.",
+    "footer": "Created by Gabe Abrams in the Harvard Division of Continuing Education",
+    "copyright": "All code, materials, documentation, and other parts of this project under MIT license",
+    "showTableOfContents": true,
+    "includeDate": false,
+    "default": {
+      "useLongnameInNav": true,
+      "outputSourceFiles": false
+    }
+  }
+}

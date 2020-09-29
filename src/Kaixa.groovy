@@ -1,3 +1,9 @@
+/**
+ * Kaixa commands
+ * @namespace Kaixa
+ * @author Gabe Abrams
+ */
+
 import static com.kms.katalon.core.checkpoint.CheckpointFactory.findCheckpoint
 import static com.kms.katalon.core.testcase.TestCaseFactory.findTestCase
 import static com.kms.katalon.core.testdata.TestDataFactory.findTestData
@@ -78,6 +84,9 @@ public class Kaixa {
 	/**
 	 * Add a unique tag to an object name. Tag may add up to 20 chars.
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method uniquify
 	 * @param {String} name - the name of the item
 	 * @return {String} the new name of the item with the unique tag
 	 */
@@ -102,6 +111,9 @@ public class Kaixa {
 	/**
 	 * Set the default host
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method setDefaultHost
 	 * @param {String} host name
 	 */
 	public static void setDefaultHost(String host) {
@@ -111,6 +123,9 @@ public class Kaixa {
 	/**
 	 * Set whether or not to use HTTPS by default
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method setDontUseHTTPS
 	 * @param {boolean} dontUseHTTPS - true if not using HTTPS by default
 	 */
 	public static void setDontUseHTTPS(boolean dontUseHTTPS) {
@@ -124,6 +139,9 @@ public class Kaixa {
 	/**
 	 * Turn a location into a URL
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method locationToURL
 	 * @param {String} location - the location to translate (may be a path or a full URL)
 	 * @return {String} URL
 	 */
@@ -147,6 +165,9 @@ public class Kaixa {
 	/**
 	 * Log a message to the console
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method log
 	 * @param {Object} message - the message to log
 	 */
 	public static log(Object o) {
@@ -161,6 +182,9 @@ public class Kaixa {
 	/**
 	 * Visit a location in the browser
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method visit
 	 * @param {String} location - path or URL to visit
 	 */
 	public static visit(String location) {
@@ -180,6 +204,9 @@ public class Kaixa {
 	/**
 	 * Convert a TestObject into a Selenium WebElement
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method convertToWebElement
 	 * @param {TestObject} obj - the object to convert
 	 * @return {WebElement} the corresponding element
 	 */
@@ -190,6 +217,9 @@ public class Kaixa {
 	/**
 	 * Convert a Selenium WebElement into a TestObject
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method convertToTestObject
 	 * @param {WebElement} obj - the element to convert
 	 * @return {TestObject} the corresponding object
 	 */
@@ -209,6 +239,9 @@ public class Kaixa {
 	/**
 	 * Given a CSS selector, find the TestObject
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method find
 	 * @param {String} selector - the css selector to search for
 	 * @return {TestObject} the item
 	 */
@@ -223,6 +256,9 @@ public class Kaixa {
 	/**
 	 * Given the contents and a CSS selector for an element, find the TestObject
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method findByContents
 	 * @param {String} contents - the contents of the object
 	 * @param {String} selector - a css selector for the element
 	 * Supported css selectors:
@@ -292,6 +328,9 @@ public class Kaixa {
 	/**
 	 * Make sure an item is a TestObject. If it is a CSS selector, turn it into a TestObject
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method ensureTestObject
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @return {TestObject} a TestObject
 	 */
@@ -305,6 +344,9 @@ public class Kaixa {
 	/**
 	 * Get an attribute of an element
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getAttribute
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @param {String} attribute - the name of the attribute to get
 	 * @return {String} value of the attribute
@@ -317,6 +359,9 @@ public class Kaixa {
 	/**
 	 * Check if an element exists
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method elementExists
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @return {boolean} true if the element exists on the page
 	 */
@@ -328,6 +373,9 @@ public class Kaixa {
 	/**
 	 * Check if an element does not exist
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method elementAbsent
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @return {boolean} true if the element does not exist on the page
 	 */
@@ -339,6 +387,9 @@ public class Kaixa {
 	/**
 	 * Check if an element with specific contents exists
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method elementWithContentsExists
 	 * @param {String} contents - the contents to search for
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @return {boolean} true if the element exists on the page
@@ -350,6 +401,10 @@ public class Kaixa {
 
 	/**
 	 * Check if an element with specific contents does not exist
+	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method elementWithContentsAbsent
 	 * @param {String} contents - the contents to search for
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @return {boolean} true if the element does not exist on the page
@@ -362,6 +417,9 @@ public class Kaixa {
 	/**
 	 * Get the parent of an element
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method parentOf
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @return {TestObject} parent element
 	 */
@@ -381,6 +439,9 @@ public class Kaixa {
 	/**
 	 * Get the first descendant of an element that matches the selector
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method descendantOf
 	 * @param {TestObject|String} item - the TestObject or CSS selector of the parent
 	 * @param {String} selector - the selector to use to search for the descendant
 	 * @return {TestObject} child element 
@@ -403,6 +464,9 @@ public class Kaixa {
 	/**
 	 * Pause until the user clicks okay
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method pause
 	 */
 	public static void pause() {
 		Kaixa.log('⏸ Pause Started');
@@ -415,6 +479,9 @@ public class Kaixa {
 	/**
 	 * Wait for a specific number of milliseconds
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method waitFor
 	 * @param {int} ms - the number of ms to wait
 	 */
 	public static void waitFor(int ms = 0) {
@@ -426,6 +493,9 @@ public class Kaixa {
 	/**
 	 * Wait for an element to be visible
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method waitForElementVisible
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
@@ -441,6 +511,9 @@ public class Kaixa {
 	/**
 	 * Wait for an element with specific contents to be visible
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method waitForElementWithContentsVisible
 	 * @param {String} contents - the contents to search for
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
@@ -457,6 +530,9 @@ public class Kaixa {
 	/**
 	 * Wait for an element to be present (on the page, it does not have to be visible)
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method waitForElementPresent
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
@@ -472,6 +548,9 @@ public class Kaixa {
 	/**
 	 * Wait for an element with specific contents to be present (on the page, it does not have to be visible)
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method waitForElementWithContentsPresent
 	 * @param {String} contents - the contents to search for
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
@@ -488,6 +567,9 @@ public class Kaixa {
 	/**
 	 * Wait for an element to not be present (on the page, it does not have to be visible)
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method waitForElementAbsent
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 */
@@ -505,6 +587,9 @@ public class Kaixa {
 	/**
 	 * Make sure an element exists
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method assertExists
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @param {String} [message=generated message] - a human-readable message to
 	 *   display if the test fails
@@ -528,6 +613,9 @@ public class Kaixa {
 	/**
 	 * Make sure an element does not exist
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method assertAbsent
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @param {String} [message=generated message] - a human-readable message to
 	 *   display if the test fails
@@ -550,6 +638,9 @@ public class Kaixa {
 	/**
 	 * Make sure an element with specific contents exists
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method assertExistsWithContents
 	 * @param {String} contents - the contents to search for
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @param {String} [message=generated message] - a human-readable message to
@@ -573,6 +664,10 @@ public class Kaixa {
 
 	/**
 	 * Make sure an element with specific contents does not exist
+	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method assertAbsentWithContents
 	 * @param {String} contents - the contents to search for
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @param {String} [message=generated message] - a human-readable message to
@@ -596,6 +691,9 @@ public class Kaixa {
 	/**
 	 * Make sure an element has a specific class name
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method assertHasClass
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {String} className - the name of the class to expect
 	 * @param {String} [message=generated message] - a human-readable message to
@@ -619,6 +717,9 @@ public class Kaixa {
 	/**
 	 * Make sure an element does not have a specific class name
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method assertDoesNotHaveClass
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {String} className - the name of the class to expect
 	 * @param {String} [message=generated message] - a human-readable message to
@@ -644,6 +745,9 @@ public class Kaixa {
 	/**
 	 * Click an element
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method click
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
 	 * @param {boolean} [dontScrollTo] - if true, do not scroll to the element
@@ -668,6 +772,9 @@ public class Kaixa {
 	/**
 	 * Open an anchor link in the same tab
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method openAnchorInSameTab
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest 
 	 */
 	public static void openAnchorInSameTab(Object item) {
@@ -680,6 +787,9 @@ public class Kaixa {
 	/**
 	 * Click an item by defining its contents
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method clickByContents
 	 * @param {String} contents - the contents to search for
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 */
@@ -691,6 +801,9 @@ public class Kaixa {
 	/**
 	 * Type text into an element. This function first removes the previous text in the element
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method typeInto
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {String} text - the text to type
 	 */
@@ -704,6 +817,9 @@ public class Kaixa {
 	/**
 	 * Scroll the page to the element
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method scrollTo
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 */
 	public static void scrollTo(Object item) {
@@ -715,6 +831,9 @@ public class Kaixa {
 	/**
 	 * Choose an item in a select element based on its label
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method chooseSelectByLabel
 	 * @param {TestObject|String} item - the TestObject or CSS selector of the select element
 	 * @param {String} label - the label to select in the dropdown
 	 */
@@ -732,6 +851,9 @@ public class Kaixa {
 	/**
 	 * Choose an item in a select element based on its value
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method chooseSelectByValue
 	 * @param {TestObject|String} item - the TestObject or CSS selector of the select element
 	 * @param {String} value - the value of the item to select in the dropdown
 	 */
@@ -749,6 +871,9 @@ public class Kaixa {
 	/**
 	 * Choose a file for a file chooser
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method chooseFile
 	 * @param {TestObject|String} item - the TestObject or CSS selector of the select element
 	 * @param {String} filePath - the path of the file
 	 */
@@ -766,6 +891,9 @@ public class Kaixa {
 	/**
 	 * Run a script on the page
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method runScript
 	 * @param {String} script - the script to run in an anonymous function on the page.
 	 *   If multiple script arguments are included, each argument will be considered a
 	 *   new line of the script.
@@ -781,6 +909,9 @@ public class Kaixa {
 	/**
 	 * Close the current window/tab
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method closeWindow
 	 */
 	public static void closeWindow() {
 		Kaixa.log('✖️ Close Window');
@@ -794,6 +925,9 @@ public class Kaixa {
 	/**
 	 * Close the browser
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method done
 	 */
 	public static void done() {
 		Kaixa.log('✔ Done');
@@ -805,6 +939,9 @@ public class Kaixa {
 	/**
 	 * Get the title of the current window
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getTitle
 	 * @return {String} the title of the window
 	 */
 	public static String getTitle() {
@@ -814,6 +951,9 @@ public class Kaixa {
 	/**
 	 * Get the text in an element
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getText
 	 * @param {TestObject|String} item - the TestObject or CSS selector
 	 * @return {String} the contents of the element as text
 	 */
@@ -824,6 +964,9 @@ public class Kaixa {
 	/**
 	 * Get the source of the page
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getSource
 	 * @return {String} the source of the current page
 	 */
 	public static String getSource() {
@@ -834,6 +977,9 @@ public class Kaixa {
 	/**
 	 * Get the current URL of the page
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getURL
 	 * @return {String} the source of the current page
 	 */
 	public static String getURL() {
@@ -843,6 +989,9 @@ public class Kaixa {
 	/**
 	 * Get the current URL of the page
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getQuery
 	 * @return {Map<String, String>} map of query parameters 
 	 */
 	public static Map<String, String> getQuery() throws UnsupportedEncodingException {
@@ -874,6 +1023,9 @@ public class Kaixa {
 	/**
 	 * Get the JSON string on the current page
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getJSONString
 	 * @return {String} the JSON string
 	 */
 	public static String getJSONString() {
@@ -895,6 +1047,9 @@ public class Kaixa {
 	/**
 	 * Get the JSON object on the page
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getJSONObject
 	 * @return {JSONObject} the JSON object on the page
 	 */
 	public static JSONObject getJSONObject() {
@@ -904,6 +1059,9 @@ public class Kaixa {
 	/**
 	 * Get the JSON array on the page
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getJSONArray
 	 * @return {JSONArray} the JSON array on the page
 	 */
 	public static JSONArray getJSONArray() {
@@ -913,6 +1071,9 @@ public class Kaixa {
 	/**
 	 * Get the JSON object or array on the page
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method getJSON
 	 * @return {JSONObject|JSONArray} the JSON info on the page
 	 */
 	public static Object getJSON() {
@@ -933,6 +1094,9 @@ public class Kaixa {
 	 * Get the value of a Canvas GET API endpoint. Automatically adds a per_page=200 param. A valid Canvas session
 	 *   must be active already.
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method visitCanvasEndpoint
 	 * @param {String} path - the path of the API, excluding https://canvas.harvard.edu/api/v1, example: "/users"
 	 * @return {JSONArray|JSONObject} Canvas response
 	 */
@@ -986,6 +1150,9 @@ public class Kaixa {
 	/**
 	 * Extract info from a class
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method extractDataFromClass
 	 * @param {TestObject|String} item - the TestObject or CSS selector of the element
 	 * @param {String} classPrefix - the prefix of the class. Example: if there is
 	 *   a class "Event-12345" then with classPrefix "Event-" the return of this
@@ -1013,6 +1180,9 @@ public class Kaixa {
 	/**
 	 * Extract info from a class
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method extractDataFromClassByContents
 	 * @param {String} contents - the contents to search for
 	 * @param {String} selector - a CSS selector corresponding to the item
 	 * @param {String} classPrefix - the prefix of the class. Example: if there is
@@ -1030,6 +1200,9 @@ public class Kaixa {
 	/**
 	 * Log into Canvas and launch an LTI app
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method launchLTIUsingCreds
 	 * @param {String} username - the username of the user
 	 * @param {String} password - the password of the user
 	 * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
@@ -1107,8 +1280,13 @@ public class Kaixa {
 
 	/**
 	 * Log into Canvas and launch an LTI app as a specific user from the profile variables.
-	 *   The value should be a JSON object with the following properties: { username, [password], [isXID] }
+	 *   The value should be a JSON string with the following properties: { username, [password], [isXID] }
+	 *   If the password is excluded, the user is prompted to enter a password whenever the test is run.
+	 *   If isXID is true, the user will be logged in using the XID login panel.
 	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method launchAs
 	 * @param {String} name - the name of the variable containing the credentials for the user
 	 * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
 	 * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav
