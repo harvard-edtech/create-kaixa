@@ -61,7 +61,7 @@ modify(path.join(__dirname, 'template/publish.js'), (oldContents) => {
   // Change the link on the top left from 'Home' to 'CACCL API'
   contents = contents.replace(
     /var nav = \'<h2><a href="index\.html">Home<\/a><\/h2>';/g,
-    'let nav = \'<h2><a style="font-size: 30px;" href="index.html">Kaixa Plugin</a></h2>\';'
+    'let nav = \'<h2><a style="font-size: 27px;" href="index.html">Kaixa for Katalon</a></h2>\';'
   );
 
   return contents;
