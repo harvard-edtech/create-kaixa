@@ -75,10 +75,6 @@ Kaixa.click('#close-button');
 Kaixa.done();
 ```
 
-Check out the Kaixa functions below or in the left-hand menu :)
-
-<hr />
-
 <h1 style="display: flex; align-items: center;">
   <div style="flex-grow: 1; height: 1px; background: #ccc; margin-right: 10px;">
   </div>
