@@ -86,83 +86,84 @@ Kaixa.done();
 </h1>
 
 ## Interactions
-https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertAbsentWithContents
 
-[chooseFile](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseFile) - set the file for a file chooser
-[chooseSelectByLabel](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseSelectByLabel) - choose select item by value
-[chooseSelectByValue](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseSelectByValue) - choose select item by value
-[click](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#click) - click something
-[clickByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#clickByContents) - click something (find it by its contents)
-[openAnchorInSameTab](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#openAnchorInSameTab) - click an anchor but force it to open in the same tab
-[pause](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#pause) - wait until the user clicks to continue
-[runScript](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#runScript) - run javascript on the page
-[scrollTo](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#scrollTo) - scroll to an element
-[typeInto](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#typeInto) - type text into an element
-[visit](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#visit) - visit a page
+Interact with elements on the page
+
+- [chooseFile](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseFile) - set the file for a file chooser
+- [chooseSelectByLabel](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseSelectByLabel) - choose select item by value
+- [chooseSelectByValue](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseSelectByValue) - choose select item by value
+- [click](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#click) - click something
+- [clickByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#clickByContents) - click something (find it by its contents)
+- [openAnchorInSameTab](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#openAnchorInSameTab) - click an anchor but force it to open in the same tab
+- [pause](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#pause) - wait until the user clicks to continue
+- [runScript](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#runScript) - run javascript on the page
+- [scrollTo](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#scrollTo) - scroll to an element
+- [typeInto](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#typeInto) - type text into an element
+- [visit](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#visit) - visit a page
 
 ## Browser Actions
 
-[done](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#done) - close the browser and clean up
-[closeWindow](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#closeWindow) - just close the current window
+- [done](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#done) - close the browser and clean up
+- [closeWindow](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#closeWindow) - just close the current window
 
 ## Canvas & LTI Functions
 
-[launchAs](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#launchAs) - launch an LTI as a user
-[launchLTIUsingCreds](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#launchLTIUsingCreds) - launch an LTI by providing user creds
-[visitCanvasEndpoint](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#visitCanvasEndpoint) - visit a Canvas API GET endpoint
+- [launchAs](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#launchAs) - launch an LTI as a user
+- [launchLTIUsingCreds](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#launchLTIUsingCreds) - launch an LTI by providing user creds
+- [visitCanvasEndpoint](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#visitCanvasEndpoint) - visit a Canvas API GET endpoint
 
 ## Intelligent Waiting
 
-[waitFor](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitFor) - wait for a set amount of time
-[waitForElementAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementAbsent) - wait until an element is absent
-[waitForElementPresent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementPresent) - wait until an element is present (on the page even if offscreen)
-[waitForElementVisible](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementVisible) - wait until an element is visible (on the page and visible)
-[waitForElementWithContentsPresent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementWithContentsPresent) - wait for ane element with specific contents to be present (on the page even if offscreen)
-[waitForElementWithContentsVisible](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementWithContentsVisible) - wait for an element with specific contents to be visible (on the page and visible)
+- [waitFor](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitFor) - wait for a set amount of time
+- [waitForElementAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementAbsent) - wait until an element is absent
+- [waitForElementPresent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementPresent) - wait until an element is present (on the page even if offscreen)
+- [waitForElementVisible](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementVisible) - wait until an element is visible (on the page and visible)
+- [waitForElementWithContentsPresent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementWithContentsPresent) - wait for ane element with specific contents to be present (on the page even if offscreen)
+- [waitForElementWithContentsVisible](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#waitForElementWithContentsVisible) - wait for an element with specific contents to be visible (on the page and visible)
 
 ## Assertions
 
-[assertAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertAbsent) - make sure an element is absent
-[assertAbsentWithContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertAbsentWithContents) - make sure an element is absent (find it by its contents)
-[assertDoesNotHaveClass](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertDoesNotHaveClass) - make sure an element does not have a certain css class
-[assertExists](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertExists) - make sure an element exists
-[assertExistsWithContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertExistsWithContents) - make sure an element exists (find it by its contents)
-[assertHasClass](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertHasClass) - make sure an element has a certain css class
+- [assertAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertAbsent) - make sure an element is absent
+- [assertAbsentWithContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertAbsentWithContents) - make sure an element is absent (find it by its contents)
+- [assertDoesNotHaveClass](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertDoesNotHaveClass) - make sure an element does not have a certain css class
+- [assertExists](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertExists) - make sure an element exists
+- [assertExistsWithContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertExistsWithContents) - make sure an element exists (find it by its contents)
+- [assertHasClass](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertHasClass) - make sure an element has a certain css class
 
 ## Handy Functions
 
 Some useful utility functions for writing tests:
 
-[uniquify](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#uniquify) - add a unique, random tag to a string
+- [uniquify](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#uniquify) - add a unique, random tag to a string
 
 ## Elements
 
-[find](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#find) - find an element by its css selector
-[findByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#findByContents) - find an element by its contents and selector
-[elementAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementAbsent) - check if an element is absent
-[elementExists](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementExists) - check if an element exists
-[elementWithContentsAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementWithContentsAbsent) - check if an element is absent (find it by its contents)
-[elementWithContentsExists](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementWithContentsExists) - check if an element exists (find it by its contents)
-[descendantOf](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#descendantOf) - get the descendant of an element
-[parentOf](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#parentOf) - get the parent of an element
+- [find](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#find) - find an element by its css selector
+- [findByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#findByContents) - find an element by its contents and selector
+- [elementAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementAbsent) - check if an element is absent
+- [elementExists](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementExists) - check if an element exists
+- [elementWithContentsAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementWithContentsAbsent) - check if an element is absent (find it by its contents)
+- [elementWithContentsExists](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementWithContentsExists) - check if an element exists (find it by its contents)
+- [descendantOf](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#descendantOf) - get the descendant of an element
+- [parentOf](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#parentOf) - get the parent of an element
 
 ## Data
 
-[extractDataFromClass](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#extractDataFromClass) - extract data from a css class
-[extractDataFromClassByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#extractDataFromClassByContents) - extract data from a css class (find the element by its contents)
-[getAttribute](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getAttribute) - get the value of an element attribute
-[getJSON](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getJSON) - get the JSON on the page
-[getQuery](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getQuery) - get the query parameters
-[getSource](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getSource) - get the page source
-[getText](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getText) - get the text inside an element
-[getTitle](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getTitle) - get the title of the page
-[getURL](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getURL) - get the URL of the current tab
+- [extractDataFromClass](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#extractDataFromClass) - extract data from a css class
+- [extractDataFromClassByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#extractDataFromClassByContents) - extract data from a css class (find the element by its contents)
+- [getAttribute](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getAttribute) - get the value of an element attribute
+- [getJSON](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getJSON) - get the JSON on the page
+- [getQuery](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getQuery) - get the query parameters
+- [getSource](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getSource) - get the page source
+- [getText](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getText) - get the text inside an element
+- [getTitle](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getTitle) - get the title of the page
+- [getURL](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getURL) - get the URL of the current tab
 
 ## Logging
 
-[log](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#log) - add something to the log
+- [log](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#log) - add something to the log
 
 ## Defaults
 
-[setDefaultHost](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#setDefaultHost) - set the default hostname
-[setDontUseHTTPS](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#setDontUseHTTPS) - set whether to use HTTPS by default
+- [setDefaultHost](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#setDefaultHost) - set the default hostname
+- [setDontUseHTTPS](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#setDontUseHTTPS) - set whether to use HTTPS by default
