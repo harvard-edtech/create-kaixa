@@ -1,4 +1,4 @@
-# Kaixa, a simply and customizable way to write Katalon tests
+# Kaixa, a simple and customizable way to write Katalon tests
 
 Kaixa is pronounced "Kaisha" and is taken from the Catalan word for "box" as in "toolbox"
 
