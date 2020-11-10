@@ -69,7 +69,7 @@ module.exports = () => {
   console.log('');
   if (updating) {
     console.log(`We updated to Kaixa version ${packageJSON.version} for this project.`);
-    console.log('NOTE: if Katalon is running, open Keywords > default package > Kaixa.groovy and close it.');
+    console.log('NOTE: if Katalon\'s open, open & close Keywords/default package/Kaixa.groovy');
     console.log('(Katalon is silly and doesn\'t reload resources unless you open and close them)');
   } else {
     console.log(`We added Kaixa version ${packageJSON.version} to this project.`);
