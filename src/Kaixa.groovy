@@ -1029,6 +1029,12 @@ public class Kaixa {
 	 * @return {String} the JSON string
 	 */
 	public static String getJSONString() {
+		// Switch to the raw data tab if on Firefox
+		boolean onFirefox = Kaixa.elementExists('#rawdata-tab');
+		if (onFirefox) {
+			Kaixa.click('#rawdata-tab');
+		}
+
 		// Get the contents of the formatted pre tag
 		return Kaixa.runScript(
 			'const preElems = document.getElementsByTagName("pre");',
