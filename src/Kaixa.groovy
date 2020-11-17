@@ -160,6 +160,23 @@ public class Kaixa {
 		return defaultProtocol + defaultHost + slashSeparator + location;
 	}
 
+	/**
+	 * Get a value from the profile
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method getProfileValue
+	 * @param {String} name - the name of the profile variable
+   * @return {Object} the value
+	 */
+	public static Object getProfileValue(String name) {
+		return (
+			(GlobalVariable.metaClass.hasProperty(GlobalVariable, name))
+				? GlobalVariable[name]
+				: null
+		);
+	}
+
 	/* -------------------- Logging -------------------- */
 
 	/**
