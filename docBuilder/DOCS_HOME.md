@@ -131,6 +131,7 @@ Kaixa.done();
 ## **Handy Functions** – useful utilities
 
 - [uniquify](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#uniquify) - add a unique, random tag to a string
+- [getProfileValue](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getProfileValue) - get a value from the profile
 
 ## **Elements** – deal with elements
 
