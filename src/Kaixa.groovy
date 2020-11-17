@@ -167,7 +167,7 @@ public class Kaixa {
 	 * @memberof Kaixa
 	 * @method getProfileValue
 	 * @param {String} name - the name of the profile variable
-   * @return {Object} the value
+   * @return {String} the value
 	 */
 	public static String getProfileValue(String name) {
 		String value = (
