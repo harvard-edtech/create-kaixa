@@ -169,12 +169,14 @@ public class Kaixa {
 	 * @param {String} name - the name of the profile variable
    * @return {Object} the value
 	 */
-	public static Object getProfileValue(String name) {
-		return (
+	public static String getProfileValue(String name) {
+		String value = (
 			(GlobalVariable.metaClass.hasProperty(GlobalVariable, name))
 				? GlobalVariable[name]
 				: null
 		);
+
+		return value;
 	}
 
 	/* -------------------- Logging -------------------- */
