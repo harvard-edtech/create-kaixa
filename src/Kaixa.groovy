@@ -189,7 +189,7 @@ public class Kaixa {
 	 * @method log
 	 * @param {Object} message - the message to log
 	 */
-	public static log(Object o) {
+	public static void log(Object o) {
 		String msg = o.toString();
 		msg = msg.replace('TestObject - \'DynamicObjectWithSelector: ', '\'');
 		// Replace dynamic 
@@ -206,7 +206,7 @@ public class Kaixa {
 	 * @method visit
 	 * @param {String} location - path or URL to visit
 	 */
-	public static visit(String location) {
+	public static void visit(String location) {
 		String url = Kaixa.locationToURL(location);
 		Kaixa.log('🌐 Visit ' + location);
 
