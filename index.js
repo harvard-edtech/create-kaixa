@@ -54,6 +54,7 @@ module.exports = () => {
   print.title(`${updating ? 'Updating' : 'Adding'} Kaixa`);
   console.log('');
   console.log(`We are about to ${updating ? 'update your Kaixa version to' : 'install Kaixa version'} ${packageJSON.version}.`);
+  console.log(`Project to ${updating ? 'update' : 'set up'}: ${process.env.PWD}`);
   console.log('');
   print.enterToContinue();
 
@@ -68,10 +69,12 @@ module.exports = () => {
   print.title('Done!');
   console.log('');
   if (updating) {
-    console.log(`We updated to Kaixa version ${packageJSON.version} for this project.`);
-    console.log('NOTE: if Katalon\'s running, open & close Keywords/default package/Kaixa.groovy');
-    console.log('(Katalon is silly and doesn\'t reload resources unless you open and close them)');
+    console.log(`We updated to Kaixa version ${packageJSON.version} for this project.\n`);
+    console.log('What to do next:');
+    console.log('In Katalon, open Keywords/default/Kaixa.groovy and check the version.');
   } else {
-    console.log(`We added Kaixa version ${packageJSON.version} to this project.`);
+    console.log(`We added Kaixa version ${packageJSON.version} to this project.\n`);
+    console.log('What to do next:');
+    console.log('In Katalon, make sure there is a Keywords/default/Kaixa.groovy file.');
   }
 };
