@@ -76,6 +76,9 @@ public class Kaixa {
 			: null
 	);
 
+	// Cache passwords
+	static HashMap<String,String> cachedPasswords = new HashMap<String,String>();
+
 	/* -------------------- Variables, Names, URLs -------------------- */
 
 	// Track number of instances for each name
@@ -1332,6 +1335,8 @@ public class Kaixa {
 		String password = '';
 		if (obj.has('password')) {
 			password = obj.getString('password');
+		} else if (cachedPasswords.containsKey(name)) {
+			password = cachedPasswords.get(name);
 		} else {
 			// Create a password input pane
 			JPanel panel = new JPanel();
@@ -1361,11 +1366,14 @@ public class Kaixa {
 
 			// Get the password
 			password = new String(pass.getPassword());
-		}
-		
-		// Make sure there is a password
-		if (password == '') {
-			throw new Exception('Password cannot be empty.');
+
+			// Make sure there is a password
+			if (password == '') {
+				throw new Exception('Password cannot be empty.');
+			}
+
+			// Cache it
+			cachedPasswords.put(name, password);
 		}
 
 		boolean isXID = (
