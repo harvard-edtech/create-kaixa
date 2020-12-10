@@ -71,10 +71,10 @@ module.exports = () => {
   if (updating) {
     console.log(`We updated to Kaixa version ${packageJSON.version} for this project.\n`);
     console.log('What to do next:');
-    console.log('In Katalon, open Keywords/default/Kaixa.groovy and check the version.');
+    console.log('In a text editor, open Keywords/default/Kaixa.groovy and check the version.');
   } else {
     console.log(`We added Kaixa version ${packageJSON.version} to this project.\n`);
     console.log('What to do next:');
-    console.log('In Katalon, make sure there is a Keywords/default/Kaixa.groovy file.');
+    console.log('In Katalon, make sure there is a Keywords/default/Kaixa.groovy file but do not open it.');
   }
 };
