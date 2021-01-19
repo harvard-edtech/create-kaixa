@@ -762,6 +762,50 @@ public class Kaixa {
 		}
 	}
 
+	/**
+	 * Make sure an expression evaluates to true
+	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method assertTrue
+	 * @param {boolean} value - the value that should be true
+	 * @param {String} [message=unknown] - a human-readable message to
+	 *   display if the test fails
+	 */
+	public static void assertTrue(boolean value, String message = 'Something was not true when it should have been') {
+		if (!value) {
+			throw new Exception(message);
+		}
+	}
+
+	/**
+	 * Make sure an expression evaluates to false
+	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method assertFalse
+	 * @param {boolean} value - the value that should be false
+	 * @param {String} [message=unknown] - a human-readable message to
+	 *   display if the test fails
+	 */
+	public static void assertFalse(boolean value, String message = 'Something was not false when it should have been') {
+		if (value) {
+			throw new Exception(message);
+		}
+	}
+
+	/**
+	 * Exit with an error
+	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method exitWithError
+	 * @param {String} message - a human-readable message to display
+	 */
+	public static void exitWithError(String message) {
+		throw new Exception(message);
+	}
+
 	/* -------------------- Interactions-------------------- */
 
 	/**
