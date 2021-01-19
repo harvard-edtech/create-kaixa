@@ -773,6 +773,7 @@ public class Kaixa {
 	 *   display if the test fails
 	 */
 	public static void assertTrue(boolean value, String message = 'Something was not true when it should have been') {
+		Kaixa.log('🔎 Assert true');
 		if (!value) {
 			throw new Exception(message);
 		}
@@ -789,6 +790,7 @@ public class Kaixa {
 	 *   display if the test fails
 	 */
 	public static void assertFalse(boolean value, String message = 'Something was not false when it should have been') {
+		Kaixa.log('🔎 Assert false');
 		if (value) {
 			throw new Exception(message);
 		}
@@ -986,6 +988,20 @@ public class Kaixa {
 
 		// Close the window
 		WebUI.closeWindowIndex(index);
+	}
+
+	/**
+	 * Refresh the page
+	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method refresh
+	 */
+	public static void refresh() {
+		Kaixa.log('⟳ Refresh Page');
+
+		// Refresh the page
+		WebUI.refresh();
 	}
 
 	/**
