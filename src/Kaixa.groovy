@@ -78,6 +78,8 @@ public class Kaixa {
 
 	// Cache passwords
 	static HashMap<String,String> cachedPasswords = new HashMap<String,String>();
+	// Cache access tokens
+	static HashMap<String,String> cachedAccessTokens = new HashMap<String,String>();
 
 	/* -------------------- Variables, Names, URLs -------------------- */
 
@@ -1194,23 +1196,62 @@ public class Kaixa {
 		String id = 'Kaixa-open-new-tab-button';
 		String url = 'https://canvas.harvard.edu/api/v1' + path + (path.indexOf('?') >= 0 ? '&per_page=200' : '?per_page=200');
 		if (accessToken) {
-			url += (path.indexOf('?') >= 0 ? '&access_token=' + accessToken : '?access_token=' + accessToken);
+			url += (url.indexOf('?') >= 0 ? '&access_token=' + accessToken : '?access_token=' + accessToken);
 		}
 
-		// Add a button that opens a new tab
-		Kaixa.runScript(
-			'const elemId = "' + id + '";',
-			// Create the element if it doesn't exist yet
-			'if (!document.getElementById(elemId)) {',
-			'  const a = document.createElement("a");',
-			'  a.id = elemId;',
-			'  a.href = "' + url + '";',
-			'  a.target = "_blank";',
-			'  a.innerHTML = "Open in New Tab (for Testing)";',
-			'  a.style = "position: fixed; top: 0; left: 0; z-index: 20000000";',
-			'  document.body.appendChild(a);',
-			'}'
-		);
+		// Try to run the usual process in a new tab
+		try {
+			// Save the current window index
+			int currentTab = WebUI.getWindowIndex();
+			
+			Kaixa.runScript(
+				'const elemId = "' + id + '";',
+				// Create the element if it doesn't exist yet
+				'if (!document.getElementById(elemId)) {',
+				'  const a = document.createElement("a");',
+				'  a.id = elemId;',
+				'  a.href = "' + url + '";',
+				'  a.target = "_blank";',
+				'  a.innerHTML = "Open in New Tab (for Testing)";',
+				'  a.style = "position: fixed; top: 0; left: 0; z-index: 20000000";',
+				'  document.body.appendChild(a);',
+				'}'
+			);
+
+			// Open the new tab
+			Kaixa.click('#Kaixa-open-new-tab-button');
+			WebUI.switchToWindowIndex(currentTab + 1);
+			
+			// Get the JSON
+			Object json = Kaixa.getJSON();
+	
+			// Close the window
+			Kaixa.closeWindow();
+	
+			// Navigate back to the previous window
+			WebUI.switchToWindowIndex(currentTab);
+	
+			// Remove the new tab button
+			Kaixa.runScript(
+				'const elemId = "' + id + '";',
+				'const elem = document.getElementById(elemId);',
+				'elem.parentElement.removeChild(elem);'
+			);
+	
+			// Return the JSON
+			return json;
+		} catch (BrowserNotOpenedException) {
+			// Browser not opened. Open the browser first
+			WebUI.openBrowser(url);
+			
+			// Get the JSON
+			Object json = Kaixa.getJSON();
+	
+			// Close the window
+			Kaixa.closeWindow();
+			
+			return json;
+		}
 
 		// Save the current window index
 		int currentTab = WebUI.getWindowIndex();
@@ -1307,7 +1348,7 @@ public class Kaixa {
 		}
 
 		// Get the external tool URL
-		JSONArray externalTools = Kaixa.visitCanvasEndpoint('https://canvas.harvard.edu/api/v1/courses/' + courseId + '/external_tools', accessToken);
+		JSONArray externalTools = Kaixa.visitCanvasEndpoint('/courses/' + courseId + '/external_tools', accessToken);
 		
 		// Find the external tool of interest
 		int toolId = 0;
@@ -1346,7 +1387,7 @@ public class Kaixa {
 		}
 
 		// Get a sessionless launch URL
-		JSONObject sessionlessLaunchInfo = Kaixa.visitCanvasEndpoint('https://canvas.harvard.edu/api/v1/courses/' + courseId + '/external_tools/sessionless_launch?id=' + toolId, accessToken);
+		JSONObject sessionlessLaunchInfo = Kaixa.visitCanvasEndpoint('/courses/' + courseId + '/external_tools/sessionless_launch?id=' + toolId, accessToken);
 		String launchURL = sessionlessLaunchInfo.getString('url');
 
 		// Launch the tool
@@ -1436,9 +1477,11 @@ public class Kaixa {
 
 	/**
 	 * Log into Canvas and launch an LTI app as a specific user from the profile variables.
-	 *   The value should be a JSON string with the following properties: { username, [password], [isXID] }
-	 *   If the password is excluded, the user is prompted to enter a password whenever the test is run.
+	 *   The value should be a JSON string with the following properties: { [accessToken], [username], [password], [isXID] }
+	 *   If the accessToken is excluded, we will attempt to launch using the username.
+	 *   If logging in with a username and the password is excluded, the test runner is prompted to run a password.
 	 *   If isXID is true, the user will be logged in using the XID login panel.
+	 *   If both accessToken and username are excluded, the test runner will be prompted to enter an accessToken.
 	 * @author Gabe Abrams
 	 * @instance
    * @memberof Kaixa
@@ -1457,27 +1500,78 @@ public class Kaixa {
 
 		// Get the user info
 		JSONObject obj = new JSONObject(GlobalVariable[name]);
-		String accessToken = obj.getString('accessToken');
+		String accessToken = null;
+		if (obj.has('accessToken')) {
+			accessToken = obj.getString('accessToken');
+		} else if (cachedAccessTokens.containsKey(name)) {
+			accessToken = cachedAccessTokens.get(name);
+		}
+		String username = null;
+		if (obj.has('username')) {
+			username = obj.getString('username');
+		}
 
 		// Handle accessToken-based launch
 		if (accessToken) {
-			return Kaixa.launchLTIUsingToken(accessToken, courseId, appName);
-		}
+			Kaixa.launchLTIUsingToken(accessToken, courseId, appName);
+		} else if (username) {
+			// Prompt user for password if its not included
+			String password = '';
+			if (obj.has('password')) {
+				password = obj.getString('password');
+			} else if (cachedPasswords.containsKey(name)) {
+				password = cachedPasswords.get(name);
+			} else {
+				// Create a password input pane
+				JPanel panel = new JPanel();
+				// > Label
+				JLabel label = new JLabel('Password:');
+				// > Password field
+				JPasswordField pass = new JPasswordField(30);
+				// > Add the label and password field to the panel
+				panel.add(label);
+				panel.add(pass);
+				
+				// Create the continue button
+				String[] options = new String[1];
+				options[0] = 'Continue';
 
-		// Get username (launch using login screen process)
-		String username = obj.getString('username');
+				// Prompt user
+				JOptionPane.showOptionDialog(
+					null,
+					panel,
+					'Password for "' + name + '"',
+					JOptionPane.NO_OPTION,
+					JOptionPane.PLAIN_MESSAGE,
+					null,
+					options,
+					options[0]
+				);
 
-		// Prompt user for password if its not included
-		String password = '';
-		if (obj.has('password')) {
-			password = obj.getString('password');
-		} else if (cachedPasswords.containsKey(name)) {
-			password = cachedPasswords.get(name);
+				// Get the password
+				password = new String(pass.getPassword());
+
+				// Make sure there is a password
+				if (password == '') {
+					throw new Exception('Password cannot be empty.');
+				}
+
+				// Cache it
+				cachedPasswords.put(name, password);
+			}
+
+			boolean isXID = (
+				obj.has('isXID')
+				&& obj.getBoolean('isXID')
+			);
+
+			// Perform launch
+			Kaixa.launchLTIUsingCreds(username, password, courseId, appName, isXID);
 		} else {
-			// Create a password input pane
+			// Ask user for access token
 			JPanel panel = new JPanel();
 			// > Label
-			JLabel label = new JLabel('Password:');
+			JLabel label = new JLabel('Token:');
 			// > Password field
 			JPasswordField pass = new JPasswordField(30);
 			// > Add the label and password field to the panel
@@ -1492,7 +1586,7 @@ public class Kaixa {
 			JOptionPane.showOptionDialog(
 				null,
 				panel,
-				'Password for "' + name + '"',
+				'Access Token for "' + name + '"',
 				JOptionPane.NO_OPTION,
 				JOptionPane.PLAIN_MESSAGE,
 				null,
@@ -1501,23 +1595,18 @@ public class Kaixa {
 			);
 
 			// Get the password
-			password = new String(pass.getPassword());
+			accessToken = new String(pass.getPassword());
 
 			// Make sure there is a password
-			if (password == '') {
-				throw new Exception('Password cannot be empty.');
+			if (accessToken == '') {
+				throw new Exception('Token cannot be empty.');
 			}
 
-			// Cache it
-			cachedPasswords.put(name, password);
+			// Cache
+			cachedAccessTokens.put(name, accessToken);
+
+			// Launch
+			Kaixa.launchLTIUsingToken(accessToken, courseId, appName);
 		}
-
-		boolean isXID = (
-			obj.has('isXID')
-			&& obj.getBoolean('isXID')
-		);
-
-		// Perform launch
-		Kaixa.launchLTIUsingCreds(username, password, courseId, appName, isXID);
 	}
 }
