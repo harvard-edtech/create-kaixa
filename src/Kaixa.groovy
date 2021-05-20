@@ -1186,12 +1186,16 @@ public class Kaixa {
    * @memberof Kaixa
 	 * @method visitCanvasEndpoint
 	 * @param {String} path - the path of the API, excluding https://canvas.harvard.edu/api/v1, example: "/users"
+	 * @param {String} [accessToken] - a Canvas access token. If none is included, user must be logged into Canvas
 	 * @return {JSONArray|JSONObject} Canvas response
 	 */
-	public static Object visitCanvasEndpoint(String path) {
+	public static Object visitCanvasEndpoint(String path, String accessToken) {
 		Kaixa.log('🖥 Canvas API: ' + path);
 		String id = 'Kaixa-open-new-tab-button';
 		String url = 'https://canvas.harvard.edu/api/v1' + path + (path.indexOf('?') >= 0 ? '&per_page=200' : '?per_page=200');
+		if (accessToken) {
+			url += (path.indexOf('?') >= 0 ? '&access_token=' + accessToken : '?access_token=' + accessToken);
+		}
 
 		// Add a button that opens a new tab
 		Kaixa.runScript(
@@ -1284,6 +1288,70 @@ public class Kaixa {
 	}
 
 	/* -------------------- Harvard-specific Commands -------------------- */
+
+	/**
+	 * Log into Canvas using an access token
+	 * @author Gabe Abrams
+	 * @memberof Kaixa
+	 * @method launchLTIUsingToken
+	 * @param {String} accessToken - the user's access token
+	 * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
+	 * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav
+	 */
+	public static void launchLTIUsingToken(String accessToken, int courseId = defaultCourseId, String appName = defaultAppName) {
+		// Try to quit the previous session
+		try {
+			WebUI.closeBrowser();
+		} catch (Exception e) {
+			// Ignore
+		}
+
+		// Get the external tool URL
+		JSONArray externalTools = Kaixa.visitCanvasEndpoint('https://canvas.harvard.edu/api/v1/courses/' + courseId + '/external_tools', accessToken);
+		
+		// Find the external tool of interest
+		int toolId = 0;
+		for (int i = 0; i < externalTools.length(); i++) {
+			JSONObject externalTool = externalTools.getJSONObject(i);
+
+			// Skip non-nav items
+			if (
+				!externalTool.has('course_navigation')
+				|| !(externalTool.get('course_navigation') instanceof JSONObject)
+			) {
+				continue;
+			}
+			
+			// Get nav info
+			JSONObject courseNavigation = externalTool.getJSONObject('course_navigation');
+			
+			// Skip non-labeled items
+			if (!courseNavigation.has('text')) {
+				continue;
+			}
+			
+			// Skip apps that don't match the name
+			String thisAppName = courseNavigation.getString('text').trim().toLowerCase();
+			if (thisAppName != appName.trim().toLowerCase()) {
+				continue;
+			}
+			
+			// Found the app!
+			toolId = externalTool.getInt('id');
+		}
+		
+		// Make sure we found the app
+		if (toolId == 0) {
+			throw new Exception('We could not find any apps named "' + appName + '" in course ' + courseId + '.');
+		}
+
+		// Get a sessionless launch URL
+		JSONObject sessionlessLaunchInfo = Kaixa.visitCanvasEndpoint('https://canvas.harvard.edu/api/v1/courses/' + courseId + '/external_tools/sessionless_launch?id=' + toolId, accessToken);
+		String launchURL = sessionlessLaunchInfo.getString('url');
+
+		// Launch the tool
+		Kaixa.visit(launchURL);
+	}
 
 	/**
 	 * Log into Canvas and launch an LTI app
@@ -1389,6 +1457,14 @@ public class Kaixa {
 
 		// Get the user info
 		JSONObject obj = new JSONObject(GlobalVariable[name]);
+		String accessToken = obj.getString('accessToken');
+
+		// Handle accessToken-based launch
+		if (accessToken) {
+			return Kaixa.launchLTIUsingToken(accessToken, courseId, appName);
+		}
+
+		// Get username (launch using login screen process)
 		String username = obj.getString('username');
 
 		// Prompt user for password if its not included

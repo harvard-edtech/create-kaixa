@@ -32,6 +32,6 @@
   "devDependencies": {
     "docdash": "1.2.0",
     "doctrine": "3.0.0",
-    "jsdoc": "3.6.6"
+    "jsdoc": "^3.6.7"
   }
 }
