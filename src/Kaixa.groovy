@@ -222,7 +222,7 @@ public class Kaixa {
 	 */
 	public static int getCurrentDay() {
 		Date now = new Date();
-		int date = now.getDate(;
+		int date = now.getDate();
 		return date;
 	}
 
