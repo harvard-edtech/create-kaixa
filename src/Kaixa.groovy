@@ -190,9 +190,9 @@ public class Kaixa {
 	 * @instance
 	 * @memberof Kaixa
 	 * @method getCurrentYear
-	 * @return {number} year
+	 * @return {int} year
 	 */
-	public static number getCurrentYear() {
+	public static int getCurrentYear() {
 		Date now = new Date();
 		int year = now.getYear() + 1900;
 		return year;
@@ -204,9 +204,9 @@ public class Kaixa {
 	 * @instance
 	 * @memberof Kaixa
 	 * @method getCurrentMonth
-	 * @return {number} month
+	 * @return {int} month
 	 */
-	public static number getCurrentMonth() {
+	public static int getCurrentMonth() {
 		Date now = new Date();
 		int month = now.getMonth() + 1;
 		return month;
@@ -218,9 +218,9 @@ public class Kaixa {
 	 * @instance
 	 * @memberof Kaixa
 	 * @method getCurrentDay
-	 * @return {number} day
+	 * @return {int} day
 	 */
-	public static number getCurrentDay() {
+	public static int getCurrentDay() {
 		Date now = new Date();
 		int date = now.getDate(;
 		return date;
