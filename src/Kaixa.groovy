@@ -184,6 +184,48 @@ public class Kaixa {
 		return value;
 	}
 
+	/**
+	 * Get the current year
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method getCurrentYear
+	 * @return {number} year
+	 */
+	public static number getCurrentYear() {
+		Date now = new Date();
+		int year = now.getYear() + 1900;
+		return year;
+	}
+
+	/**
+	 * Get the current month
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method getCurrentMonth
+	 * @return {number} month
+	 */
+	public static number getCurrentMonth() {
+		Date now = new Date();
+		int month = now.getMonth() + 1;
+		return month;
+	}
+
+	/**
+	 * Get the current day
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method getCurrentDay
+	 * @return {number} day
+	 */
+	public static number getCurrentDay() {
+		Date now = new Date();
+		int date = now.getDate(;
+		return date;
+	}
+
 	/* -------------------- Logging -------------------- */
 
 	/**
@@ -1191,7 +1233,7 @@ public class Kaixa {
 	 * @param {String} [accessToken] - a Canvas access token. If none is included, user must be logged into Canvas
 	 * @return {JSONArray|JSONObject} Canvas response
 	 */
-	public static Object visitCanvasEndpoint(String path, String accessToken) {
+	public static Object visitCanvasEndpoint(String path, String accessToken = null) {
 		Kaixa.log('🖥 Canvas API: ' + path);
 		String id = 'Kaixa-open-new-tab-button';
 		String url = 'https://canvas.harvard.edu/api/v1' + path + (path.indexOf('?') >= 0 ? '&per_page=200' : '?per_page=200');
