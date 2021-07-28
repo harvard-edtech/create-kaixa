@@ -1437,87 +1437,6 @@ public class Kaixa {
 	}
 
 	/**
-	 * Log into Canvas and launch an LTI app
-	 * @author Gabe Abrams
-	 * @instance
-   * @memberof Kaixa
-	 * @method launchLTIUsingCreds
-	 * @param {String} username - the username of the user
-	 * @param {String} password - the password of the user
-	 * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
-	 * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav 
-	 * @param {boolean} [isXID] - if true, the user is an XID user
-	 */
-	public static void launchLTIUsingCreds(Object username, Object password, int courseId = defaultCourseId, String appName = defaultAppName, boolean isXID = false) {
-		// Try to quit the previous session
-		try {
-			WebUI.closeBrowser();
-		} catch (Exception e) {
-			// Ignore
-		}
-
-		// Visit the HarvardKey login service for Canvas
-		Kaixa.visit('https://www.pin1.harvard.edu/cas/login?service=https%3A%2F%2Fcanvas.harvard.edu%2Flogin%2Fcas');
-
-		// If isXID, click the "XID" button
-		if (isXID) {
-			Kaixa.click('#XID');
-		}
-
-		// Type the username and password
-		Kaixa.typeInto('#username', username);
-		Kaixa.typeInto('#password', password);
-
-		// Click submit
-		Kaixa.click('#submitLogin');
-
-		// Wait for login to finish (wait up to 30s)
-		Kaixa.waitForElementVisible('#global_nav_dashboard_link', 30);
-
-		// Get the external tool URL
-		JSONArray externalTools = Kaixa.visitCanvasEndpoint('/courses/' + courseId + '/external_tools');
-		
-		// Find the external tool of interest
-		int toolId = 0;
-		for (int i = 0; i < externalTools.length(); i++) {
-			JSONObject externalTool = externalTools.getJSONObject(i);
-
-			// Skip non-nav items
-			if (
-				!externalTool.has('course_navigation')
-				|| !(externalTool.get('course_navigation') instanceof JSONObject)
-			) {
-				continue;
-			}
-			
-			// Get nav info
-			JSONObject courseNavigation = externalTool.getJSONObject('course_navigation');
-			
-			// Skip non-labeled items
-			if (!courseNavigation.has('text')) {
-				continue;
-			}
-			
-			// Skip apps that don't match the name
-			String thisAppName = courseNavigation.getString('text').trim().toLowerCase();
-			if (thisAppName != appName.trim().toLowerCase()) {
-				continue;
-			}
-			
-			// Found the app!
-			toolId = externalTool.getInt('id');
-		}
-		
-		// Make sure we found the app
-		if (toolId == 0) {
-			throw new Exception('We could not find any apps named "' + appName + '" in course ' + courseId + '.');
-		}
-
-		// Go to the course
-		Kaixa.visit('https://canvas.harvard.edu/courses/' + courseId + '/external_tools/' + toolId + '?display=borderless');
-	}
-
-	/**
 	 * Log into Canvas and launch an LTI app as a specific user from the profile variables.
 	 *   The value should be a JSON string with the following properties: { [accessToken], [username], [password], [isXID] }
 	 *   If the accessToken is excluded, we will attempt to launch using the username.
@@ -1548,67 +1467,10 @@ public class Kaixa {
 		} else if (cachedAccessTokens.containsKey(name)) {
 			accessToken = cachedAccessTokens.get(name);
 		}
-		String username = null;
-		if (obj.has('username')) {
-			username = obj.getString('username');
-		}
 
 		// Handle accessToken-based launch
 		if (accessToken) {
 			Kaixa.launchLTIUsingToken(accessToken, courseId, appName);
-		} else if (username) {
-			// Prompt user for password if its not included
-			String password = '';
-			if (obj.has('password')) {
-				password = obj.getString('password');
-			} else if (cachedPasswords.containsKey(name)) {
-				password = cachedPasswords.get(name);
-			} else {
-				// Create a password input pane
-				JPanel panel = new JPanel();
-				// > Label
-				JLabel label = new JLabel('Password:');
-				// > Password field
-				JPasswordField pass = new JPasswordField(30);
-				// > Add the label and password field to the panel
-				panel.add(label);
-				panel.add(pass);
-				
-				// Create the continue button
-				String[] options = new String[1];
-				options[0] = 'Continue';
-
-				// Prompt user
-				JOptionPane.showOptionDialog(
-					null,
-					panel,
-					'Password for "' + name + '"',
-					JOptionPane.NO_OPTION,
-					JOptionPane.PLAIN_MESSAGE,
-					null,
-					options,
-					options[0]
-				);
-
-				// Get the password
-				password = new String(pass.getPassword());
-
-				// Make sure there is a password
-				if (password == '') {
-					throw new Exception('Password cannot be empty.');
-				}
-
-				// Cache it
-				cachedPasswords.put(name, password);
-			}
-
-			boolean isXID = (
-				obj.has('isXID')
-				&& obj.getBoolean('isXID')
-			);
-
-			// Perform launch
-			Kaixa.launchLTIUsingCreds(username, password, courseId, appName, isXID);
 		} else {
 			// Ask user for access token
 			JPanel panel = new JPanel();
@@ -1650,5 +1512,34 @@ public class Kaixa {
 			// Launch
 			Kaixa.launchLTIUsingToken(accessToken, courseId, appName);
 		}
+	}
+
+	/**
+	 * Handle a HarvardKey login page for a user
+	 * @author Gabe Abrams
+	 * @instance
+   * @memberof Kaixa
+	 * @method handleHarvardKey
+	 * @param {String} name - the name of the variable containing the credentials for the user
+	 */
+	public static void handleHarvardKey(name) {
+		// Get the user info
+		JSONObject obj = new JSONObject(GlobalVariable[name]);
+		if (!obj.has('username') || !obj.has('password')) {
+			throw new Exception('User "' + name + '" either does not have a username or password');
+		}
+		String username = obj.getString('username');
+		String password = obj.getString('password');
+
+		// Wait for the page to load
+		Kaixa.waitForElementVisible('username');
+		Kaixa.waitForElementVisible('password');
+
+		// Add credentials
+		Kaixa.typeInto('username', username);
+		Kaixa.typeInto('password', password);
+
+		// Click "submit"
+		Kaixa.click('input[type=submit]');
 	}
 }
