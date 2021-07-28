@@ -1540,6 +1540,6 @@ public class Kaixa {
 		Kaixa.typeInto('#password', password);
 
 		// Click "submit"
-		Kaixa.click('input[type=submit]');
+		Kaixa.click('button[type=submit]');
 	}
 }
