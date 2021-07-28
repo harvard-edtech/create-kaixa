@@ -1532,12 +1532,12 @@ public class Kaixa {
 		String password = obj.getString('password');
 
 		// Wait for the page to load
-		Kaixa.waitForElementVisible('username');
-		Kaixa.waitForElementVisible('password');
+		Kaixa.waitForElementVisible('#username');
+		Kaixa.waitForElementVisible('#password');
 
 		// Add credentials
-		Kaixa.typeInto('username', username);
-		Kaixa.typeInto('password', password);
+		Kaixa.typeInto('#username', username);
+		Kaixa.typeInto('#password', password);
 
 		// Click "submit"
 		Kaixa.click('input[type=submit]');
