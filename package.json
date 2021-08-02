@@ -1,6 +1,6 @@
 {
   "name": "create-kaixa",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Katalon Studio wrapper to make manual test writing much easier.",
   "main": "index.js",
   "bin": {
