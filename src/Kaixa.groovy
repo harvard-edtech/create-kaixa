@@ -117,7 +117,7 @@ public class Kaixa {
 		// Ask user for text
 		JPanel panel = new JPanel();
 		// > Label
-		JLabel label = new JLabel(label);
+		JLabel jLabel = new JLabel(label);
 		// > text field
 		JTextField input;
 		if (isPass) {
@@ -126,7 +126,7 @@ public class Kaixa {
 			input = new JTextField(30);
 		}
 		// > Add the label and input field to the panel
-		panel.add(label);
+		panel.add(jLabel);
 		panel.add(input);
 		
 		// Create the continue button
