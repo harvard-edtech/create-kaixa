@@ -38,6 +38,7 @@ import javax.swing.JOptionPane
 import javax.swing.JPanel
 import javax.swing.JLabel
 import javax.swing.JPasswordField
+import javax.swing.JTextField
 import org.json.JSONObject
 import org.json.JSONArray
 import java.util.regex.Pattern
@@ -1602,7 +1603,7 @@ public class Kaixa {
 		if (obj.has('username')) {
 			username = obj.getString('username');
 		} else {
-			username = Kaixa.prompt('Username:', 'Username for "' + name + '"');
+			username = Kaixa.prompt('HarvardKey Email:', 'HarvardKey Email for "' + name + '"');
 		}
 		if (obj.has('password')) {
 			password = obj.getString('password');
