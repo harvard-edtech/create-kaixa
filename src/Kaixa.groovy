@@ -112,6 +112,78 @@ public class Kaixa {
 		return name.toString() + tag;
 	}
 
+	// Prompt helper
+	public static String _prompt(String label, String title, boolean isPass) {
+		// Ask user for text
+		JPanel panel = new JPanel();
+		// > Label
+		JLabel label = new JLabel(label);
+		// > text field
+		JTextField input;
+		if (isPass) {
+			input = new JPasswordField(30);
+		} else {
+			input = new JTextField(30);
+		}
+		// > Add the label and input field to the panel
+		panel.add(label);
+		panel.add(input);
+		
+		// Create the continue button
+		String[] options = new String[1];
+		options[0] = 'Continue';
+
+		// Prompt user
+		JOptionPane.showOptionDialog(
+			null,
+			panel,
+			title,
+			JOptionPane.NO_OPTION,
+			JOptionPane.PLAIN_MESSAGE,
+			null,
+			options,
+			options[0]
+		);
+
+		// Get the value
+		String value = input.getText();
+
+		// Make sure there is a password
+		if (value == '') {
+			throw new Exception('Typed text cannot be empty.');
+		}
+
+		return value;
+	}
+
+	/**
+	 * Get text from a test runner user. Throws an error if the text is empty
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method prompt
+	 * @param {String} label - the label to put in front of the text field
+	 * @param {String} title - the title of the prompt window
+	 * @return {String} the trimmed text that the user entered
+	 */
+	public static String prompt(String label, String title) {
+		return _prompt(label, title, false);
+	}
+
+	/**
+	 * Get a password from a test runner user. Throws an error if the text is
+	 *  empty
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method promptPassword
+	 * @param {String} label - the label to put in front of the text field
+	 * @param {String} title - the title of the prompt window
+	 * @return {String} the trimmed text that the user entered
+	 */
+	public static String promptPassword(String label, String title) {
+		return _prompt(label, title, true);
+	}
 
 	/**
 	 * Set the default host
@@ -1525,11 +1597,18 @@ public class Kaixa {
 	public static void handleHarvardKey(name) {
 		// Get the user info
 		JSONObject obj = new JSONObject(GlobalVariable[name]);
-		if (!obj.has('username') || !obj.has('password')) {
-			throw new Exception('User "' + name + '" either does not have a username or password');
+		String username;
+		String password;
+		if (obj.has('username')) {
+			username = obj.getString('username');
+		} else {
+			username = Kaixa.prompt('Username:', 'Username for "' + name + '"');
 		}
-		String username = obj.getString('username');
-		String password = obj.getString('password');
+		if (obj.has('password')) {
+			password = obj.getString('password');
+		} else {
+			password = Kaixa.promptPassword('Password:', 'Password for "' + name + '"');
+		}
 
 		// Wait for the page to load
 		Kaixa.waitForElementVisible('#username');
