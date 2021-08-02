@@ -104,10 +104,13 @@ Kaixa.done();
 - [done](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#done) - close the browser and clean up
 - [closeWindow](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#closeWindow) - just close the current window
 
+## **Harvard Functions** – special functions for interacting with Harvard services
+
+- [handleHarvardKey](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#handleHarvardKey) - handle a HarvardKey login page
+
 ## **Canvas & LTI Functions** – special functions for Canvas apps
 
 - [launchAs](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#launchAs) - launch an LTI as a user
-- [launchLTIUsingCreds](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#launchLTIUsingCreds) - launch an LTI by providing user creds
 - [visitCanvasEndpoint](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#visitCanvasEndpoint) - visit a Canvas API GET endpoint
 
 ## **Intelligent Waiting** – wait better
@@ -131,6 +134,8 @@ Kaixa.done();
 ## **Handy Functions** – useful utilities
 
 - [uniquify](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#uniquify) - add a unique, random tag to a string
+- [prompt](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#prompt) - ask the user to provide text
+- [promptPassword](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#promptPassword) - ask the user to provide a password
 - [getProfileValue](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getProfileValue) - get a value from the profile
 
 ## **Elements** – deal with elements

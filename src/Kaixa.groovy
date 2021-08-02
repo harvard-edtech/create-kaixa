@@ -77,6 +77,8 @@ public class Kaixa {
 			: null
 	);
 
+	// Cache usernames
+	static HashMap<String,String> cachedUsernames = new HashMap<String,String>();
 	// Cache passwords
 	static HashMap<String,String> cachedPasswords = new HashMap<String,String>();
 	// Cache access tokens
@@ -1602,13 +1604,19 @@ public class Kaixa {
 		String password;
 		if (obj.has('username')) {
 			username = obj.getString('username');
+		} else if (cachedUsernames.containsKey(name)) {
+			username = cachedUsernames.get(name);
 		} else {
 			username = Kaixa.prompt('HarvardKey Email:', 'HarvardKey Email for "' + name + '"');
+			cachedUsernames.put(name, username);
 		}
 		if (obj.has('password')) {
 			password = obj.getString('password');
+		} else if (cachedPasswords.containsKey(name)) {
+			password = cachedPasswords.get(name);
 		} else {
 			password = Kaixa.promptPassword('Password:', 'Password for "' + name + '"');
+			cachedPasswords.put(name, password);
 		}
 
 		// Wait for the page to load
@@ -1621,5 +1629,46 @@ public class Kaixa {
 
 		// Click "submit"
 		Kaixa.click('button[type=submit]');
+
+		// Wait for URL to not be HarvardKey
+		for (int i = 0; i <= 20; i++) {
+			// Wait half a second
+			Kaixa.waitFor(500);
+
+			// Get current URL
+			String url = Kaixa.getURL();
+
+			// Check if URL changed
+			boolean changed = !url.contains('harvard.edu/cas/login');
+			
+			// Check if URL never changed
+			if (i == 20 && !changed) {
+				throw new Error('HarvardKey page was never resolved');
+			}
+
+			// Check if URL changed
+			if (changed) {
+				// Continue execution
+				break;
+			}
+		}
+
+		// Wait for another moment
+		Kaixa.waitFor(1000);
+
+		// Check if two factor showed up
+		boolean handlingTwoFactor = (
+			Kaixa.elementWithContentsExists('Check your phone for a Duo Push', '.instruction-text p')
+			|| Kaixa.getURL().contains('duosecurity.com')
+		);
+
+		// Wait for two factor (max 30s to resolve)
+		if (handlingTwoFactor) {
+			// Wait for continue button
+			Kaixa.waitForElementWithContentsVisible('Continue to application', '.continue-button', 30);
+
+			// Click the continue button
+			Kaixa.click('.continue-button');
+		}
 	}
 }
