@@ -69,12 +69,12 @@ public class Kaixa {
 	static int defaultCourseId = (
 		(GlobalVariable.metaClass.hasProperty(GlobalVariable, 'courseId'))
 			? GlobalVariable.courseId
-			: null
+			: 12345
 	);
 	static String defaultAppName = (
 		(GlobalVariable.metaClass.hasProperty(GlobalVariable, 'appName'))
 			? GlobalVariable.appName
-			: null
+			: 'No App Name'
 	);
 
 	// Cache usernames
