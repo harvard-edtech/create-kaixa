@@ -730,27 +730,20 @@ public class Kaixa {
 	 * @instance
 	 * @memberof Kaixa
 	 * @method waitForAtLeastOneElementPresent
-	 * @param {TestObject[]|String[]} items - list of TestObject or CSS selectors
-	 *   of interest
+	 * @param {ArrayList<Object|String>} items - list of TestObject or CSS
+	 *   selectors of interest
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before
 	 *   timing out
 	 */
-	public static void waitForAtLeastOneElementPresent(Object[] items, int timeoutSec = 10) {
-		String message = '⏱👁 Wait for at least one of the following to be present: ';
-		for (int i = 0; i < items.length; i++) {
-			if (i != 0) {
-				message += ' or ';
-			}
-			message += items[i];
-		}
-		Kaixa.log(message);
+	public static void waitForAtLeastOneElementPresent(ArrayList items, int timeoutSec = 10) {
+		Kaixa.log('⏱👁 Wait for at least one of the following to be present: ' + items);
 
 		// Attempt to check many times
 		int numChecks = (timeoutSec * 10);
 		for (int i = 0; i < numChecks; i++) {
 			// Loop through and look for one of the items
-			for (int j = 0; j < items.length; j++) {
-				if (Kaixa.elementExists(items[j])) {
+			for (item in items) {
+				if (Kaixa.elementExists(item)) {
 					// Found an element that exists! Finish
 					return;
 				}
