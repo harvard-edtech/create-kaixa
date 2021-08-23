@@ -738,7 +738,7 @@ public class Kaixa {
 	public static void waitForAtLeastOneElementPresent(Object[] items, int timeoutSec = 10) {
 		String message = '⏱👁 Wait for at least one of the following to be present: ';
 		for (int i = 0; i < items.length; i++) {
-			if (i !== 0) {
+			if (i != 0) {
 				message += ' or ';
 			}
 			message += items[i];
