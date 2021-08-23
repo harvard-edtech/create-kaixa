@@ -737,7 +737,7 @@ public class Kaixa {
 	 * @return {Object} the item that was found first, ties broken by which item
 	 *   shows up in the list first
 	 */
-	public static void waitForAtLeastOneElementPresent(ArrayList items, int timeoutSec = 10) {
+	public static Object waitForAtLeastOneElementPresent(ArrayList items, int timeoutSec = 10) {
 		Kaixa.log('⏱👁 Wait for at least one of the following to be present: ' + items);
 
 		// Attempt to check many times
