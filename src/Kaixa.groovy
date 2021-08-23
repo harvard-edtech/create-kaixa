@@ -734,6 +734,8 @@ public class Kaixa {
 	 *   selectors of interest
 	 * @param {int} [timeoutSec=10] - the number of seconds to wait before
 	 *   timing out
+	 * @return {Object} the item that was found first, ties broken by which item
+	 *   shows up in the list first
 	 */
 	public static void waitForAtLeastOneElementPresent(ArrayList items, int timeoutSec = 10) {
 		Kaixa.log('⏱👁 Wait for at least one of the following to be present: ' + items);
@@ -745,7 +747,7 @@ public class Kaixa {
 			for (item in items) {
 				if (Kaixa.elementExists(item)) {
 					// Found an element that exists! Finish
-					return;
+					return item;
 				}
 			}
 		}
