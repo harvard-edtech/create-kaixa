@@ -750,7 +750,7 @@ public class Kaixa {
 		for (int i = 0; i < numChecks; i++) {
 			// Loop through and look for one of the items
 			for (int j = 0; j < items.length; j++) {
-				if (Kaixa.elementExists(items[i])) {
+				if (Kaixa.elementExists(items[j])) {
 					// Found an element that exists! Finish
 					return;
 				}
