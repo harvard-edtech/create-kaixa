@@ -1331,6 +1331,38 @@ public class Kaixa {
 	}
 
 	/**
+	 * Send a GET request
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method sendGETRequest
+	 * @param {String} location - path or URL to visit
+	 * @return {JSONArray|JSONObject} response
+	 */
+	public static Object sendGETRequest(String location) {
+		Kaixa.log('🖥 GET Request: ' + path);
+
+		// Get full URL
+		String url = Kaixa.locationToURL(location);
+
+		// Send GET request
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+ 		HttpGet httpGet = new HttpGet(url);
+ 		HttpResponse httpResponse = httpClient.execute(httpGet);
+ 		String content = EntityUtils.toString(httpResponse.getEntity());
+		
+		// Process as JSON
+		if (content.charAt(0) == '[') {
+			// This is an array
+			return new JSONArray(content);
+		} else {
+			// This is an object
+			return new JSONObject(content);
+		}
+	}
+
+
+	/**
 	 * Get the value of a Canvas GET API endpoint. Automatically adds a per_page=200 param. A valid Canvas session
 	 *   must be active already.
 	 * @author Gabe Abrams
@@ -1343,91 +1375,99 @@ public class Kaixa {
 	 */
 	public static Object visitCanvasEndpoint(String path, String accessToken = null) {
 		Kaixa.log('🖥 Canvas API: ' + path);
-		String id = 'Kaixa-open-new-tab-button';
+
+		// Create the Canvas URL
 		String url = 'https://canvas.harvard.edu/api/v1' + path + (path.indexOf('?') >= 0 ? '&per_page=200' : '?per_page=200');
 		if (accessToken) {
 			url += (url.indexOf('?') >= 0 ? '&access_token=' + accessToken : '?access_token=' + accessToken);
 		}
 
-		// Try to run the usual process in a new tab
-		try {
-			// Save the current window index
-			int currentTab = WebUI.getWindowIndex();
+		// Send the GET request
+		return Kaixa.sendGETRequest(url);
+
+		// String id = 'Kaixa-open-new-tab-button';
+		
+		
+
+		// // Try to run the usual process in a new tab
+		// try {
+		// 	// Save the current window index
+		// 	int currentTab = WebUI.getWindowIndex();
 			
-			Kaixa.runScript(
-				'const elemId = "' + id + '";',
-				// Create the element if it doesn't exist yet
-				'if (!document.getElementById(elemId)) {',
-				'  const a = document.createElement("a");',
-				'  a.id = elemId;',
-				'  a.href = "' + url + '";',
-				'  a.target = "_blank";',
-				'  a.innerHTML = "Open in New Tab (for Testing)";',
-				'  a.style = "position: fixed; top: 0; left: 0; z-index: 20000000";',
-				'  document.body.appendChild(a);',
-				'}'
-			);
+		// 	Kaixa.runScript(
+		// 		'const elemId = "' + id + '";',
+		// 		// Create the element if it doesn't exist yet
+		// 		'if (!document.getElementById(elemId)) {',
+		// 		'  const a = document.createElement("a");',
+		// 		'  a.id = elemId;',
+		// 		'  a.href = "' + url + '";',
+		// 		'  a.target = "_blank";',
+		// 		'  a.innerHTML = "Open in New Tab (for Testing)";',
+		// 		'  a.style = "position: fixed; top: 0; left: 0; z-index: 20000000";',
+		// 		'  document.body.appendChild(a);',
+		// 		'}'
+		// 	);
 
-			// Open the new tab
-			Kaixa.click('#Kaixa-open-new-tab-button');
-			WebUI.switchToWindowIndex(currentTab + 1);
+		// 	// Open the new tab
+		// 	Kaixa.click('#Kaixa-open-new-tab-button');
+		// 	WebUI.switchToWindowIndex(currentTab + 1);
 			
-			// Get the JSON
-			Object json = Kaixa.getJSON();
+		// 	// Get the JSON
+		// 	Object json = Kaixa.getJSON();
 	
-			// Close the window
-			Kaixa.closeWindow();
+		// 	// Close the window
+		// 	Kaixa.closeWindow();
 	
-			// Navigate back to the previous window
-			WebUI.switchToWindowIndex(currentTab);
+		// 	// Navigate back to the previous window
+		// 	WebUI.switchToWindowIndex(currentTab);
 	
-			// Remove the new tab button
-			Kaixa.runScript(
-				'const elemId = "' + id + '";',
-				'const elem = document.getElementById(elemId);',
-				'elem.parentElement.removeChild(elem);'
-			);
+		// 	// Remove the new tab button
+		// 	Kaixa.runScript(
+		// 		'const elemId = "' + id + '";',
+		// 		'const elem = document.getElementById(elemId);',
+		// 		'elem.parentElement.removeChild(elem);'
+		// 	);
 	
-			// Return the JSON
-			return json;
-		} catch (BrowserNotOpenedException) {
-			// Browser not opened. Open the browser first
-			WebUI.openBrowser(url);
+		// 	// Return the JSON
+		// 	return json;
+		// } catch (BrowserNotOpenedException) {
+		// 	// Browser not opened. Open the browser first
+		// 	WebUI.openBrowser(url);
 			
-			// Get the JSON
-			Object json = Kaixa.getJSON();
+		// 	// Get the JSON
+		// 	Object json = Kaixa.getJSON();
 	
-			// Close the window
-			Kaixa.closeWindow();
+		// 	// Close the window
+		// 	Kaixa.closeWindow();
 			
-			return json;
-		}
+		// 	return json;
+		// }
 
-		// Save the current window index
-		int currentTab = WebUI.getWindowIndex();
+		// // Save the current window index
+		// int currentTab = WebUI.getWindowIndex();
 
-		// Open the new tab
-		Kaixa.click('#Kaixa-open-new-tab-button');
-		WebUI.switchToWindowIndex(currentTab + 1);
+		// // Open the new tab
+		// Kaixa.click('#Kaixa-open-new-tab-button');
+		// WebUI.switchToWindowIndex(currentTab + 1);
 
-		// Get the JSON
-		Object json = Kaixa.getJSON();
+		// // Get the JSON
+		// Object json = Kaixa.getJSON();
 
-		// Close the window
-		Kaixa.closeWindow();
+		// // Close the window
+		// Kaixa.closeWindow();
 
-		// Navigate back to the previous window
-		WebUI.switchToWindowIndex(currentTab);
+		// // Navigate back to the previous window
+		// WebUI.switchToWindowIndex(currentTab);
 
-		// Remove the new tab button
-		Kaixa.runScript(
-			'const elemId = "' + id + '";',
-			'const elem = document.getElementById(elemId);',
-			'elem.parentElement.removeChild(elem);'
-		);
+		// // Remove the new tab button
+		// Kaixa.runScript(
+		// 	'const elemId = "' + id + '";',
+		// 	'const elem = document.getElementById(elemId);',
+		// 	'elem.parentElement.removeChild(elem);'
+		// );
 
-		// Return the JSON
-		return json;
+		// // Return the JSON
+		// return json;
 	}
 
 	/**
