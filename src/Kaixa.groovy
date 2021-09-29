@@ -395,6 +395,22 @@ public class Kaixa {
 	}
 
 	/**
+	 * Given an XPATH selector, find the TestObject
+	 * @instance
+	 * @memberof Kaixa
+	 * @method findByXPath
+	 * @param {String} xPath - the xpath selector to search for
+	 * @return {TestObject} the item
+	 */
+	public static TestObject findByXPath(String xPath) {
+		TestObject to = new TestObject('DynamicObjectWithSelector: ' + xPath);
+		to.setSelectorValue(SelectorMethod.XPATH, xPath);
+		to.setSelectorMethod(SelectorMethod.XPATH);
+
+		return to;
+	}
+
+	/**
 	 * Given the contents and a CSS selector for an element, find the TestObject
 	 * @author Gabe Abrams
 	 * @instance
