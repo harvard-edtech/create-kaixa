@@ -396,6 +396,7 @@ public class Kaixa {
 
 	/**
 	 * Given an XPATH selector, find the TestObject
+	 * @author Rute Santos
 	 * @instance
 	 * @memberof Kaixa
 	 * @method findByXPath
@@ -403,7 +404,7 @@ public class Kaixa {
 	 * @return {TestObject} the item
 	 */
 	public static TestObject findByXPath(String xPath) {
-		TestObject to = new TestObject('DynamicObjectWithSelector: ' + xPath);
+		TestObject to = new TestObject('DynamicObjectWithXPath: ' + xPath);
 		to.setSelectorValue(SelectorMethod.XPATH, xPath);
 		to.setSelectorMethod(SelectorMethod.XPATH);
 
