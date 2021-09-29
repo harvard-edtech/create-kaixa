@@ -142,6 +142,7 @@ Kaixa.done();
 
 - [find](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#find) - find an element by its css selector
 - [findByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#findByContents) - find an element by its contents and selector
+- [findChildOfAncestor](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#findChildOfAncestor) - find an element by traversing the element tree up to an ancestor and back down to a child
 - [elementAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementAbsent) - check if an element is absent
 - [elementExists](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementExists) - check if an element exists
 - [elementWithContentsAbsent](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementWithContentsAbsent) - check if an element is absent (find it by its contents)

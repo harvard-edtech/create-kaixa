@@ -412,11 +412,11 @@ public class Kaixa {
 	}
 
 	/**
-	 * Given the contents and a CSS selector for an element, find the TestObject
+	 * Get an xpath for finding an element based on a css selector and contents
 	 * @author Gabe Abrams
 	 * @instance
 	 * @memberof Kaixa
-	 * @method findByContents
+	 * @method getContentsXPath
 	 * @param {String} contents - the contents of the object
 	 * @param {String} selector - a css selector for the element
 	 * Supported css selectors:
@@ -428,10 +428,10 @@ public class Kaixa {
 	 * Element With Attribute: "*[title]"
 	 * First Child of P: "p > *:first-child"
 	 * Next Element after P: "p + *"
-	 * @return {TestObject} the matching object
+	 * @return {String} xpath to use to find the element
 	 */
-	public static TestObject findByContents(Object contents, String selector) {
-		// Generate the xpath
+	public static String getContentsXPath(Object contents, String selector) {
+		// Generate the start of the xpath
 		String start = '*';
 		if (selector.startsWith('#')) {
 			// id
@@ -476,11 +476,114 @@ public class Kaixa {
 		}
 		String xpath = '//' + start + '[text()[contains(.,' + contentsEscaped + ')]]';
 
+		return xpath;
+	}
+
+	/**
+	 * Given the contents and a CSS selector for an element, find the TestObject
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method findByContents
+	 * @param {String} contents - the contents of the object
+	 * @param {String} selector - a css selector for the element
+	 * Supported css selectors:
+	 * All Elements: null or "*"
+	 * All P Elements: "p"
+	 * All Child Elements of p: "p > *"
+	 * Element By ID: "#foo"
+	 * Element By Class: ".foo"
+	 * Element With Attribute: "*[title]"
+	 * First Child of P: "p > *:first-child"
+	 * Next Element after P: "p + *"
+	 * @return {TestObject} the matching object
+	 */
+	public static TestObject findByContents(Object contents, String selector) {
+		// Get the xpath
+		String xpath = Kaixa.getContentsXPath(contents, selector);
+
 		// Find the element now that we have its xpath
 		TestObject to = new TestObject('DynamicContentsTestObjectWithContents:' + contents + '_AndSelector:' + selector);
 		to.addProperty('xpath', ConditionType.EQUALS, xpath);
 
 		return to;
+	}
+
+	/**
+	 * Find an element by traversing the element tree: from the start element,
+	 *   traverse up the tree ancestorLevel times (ancestorLevel=1 means
+	 *   up to parent, ancestorLevel=2 means up to grandparent) and then back down
+	 *   any number of levels to the first matching child
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method findChildOfAncestor
+	 * @param {Map} args - all arguments in one map
+	 * @param {TestObject} [args.startElement] - element in the tree to start at.
+	 *   If not included, args.startSelector is required
+	 * @param {String} [args.startSelector] - css selector for the start
+	 *   element. Required if args.startElement is excluded
+	 * @param {String} [args.startContents] - text contents to use to narrow the
+	 *   search for the start element (only relevant if startElement is excluded)
+	 * @param {int} [args.ancestorLevel=1] - the number of generations above the
+	 *   start element to traverse (1 = parent, 2 = grandparent, etc.)
+	 * @param {String} args.childSelector - css selector for the child
+	 *   element
+	 * @param {String} [args.childContents] - text contents to use to narrow the
+	 *   search for the child element
+	 * @return {TestObject} element
+	 */
+	public static TestObject findChildOfAncestor(Map<String,Object> args) {
+		// Get the web element of the start
+		WebElement startElement = null;
+		if (args.containsKey('startElement')) {
+			// Start element is included
+			startElement = Kaixa.convertToWebElement(args.get('startElement'));
+		} else {
+			// Selector is included
+			if (args.containsKey('startContents')) {
+				// Start has contents-based search
+				startElement = Kaixa.convertToWebElement(
+					Kaixa.findByContents(
+						args.get('startContents'),
+						args.get('startSelector')
+					)
+				);
+			} else {
+				// Start is just a selector
+				startElement = Kaixa.convertToWebElement(
+					Kaixa.find(args.get('startSelector'))
+				);
+			}
+		}
+
+		// Traverse up the tree
+		int ancestorLevel = (
+			args.containsKey('ancestorLevel')
+				? args.get('ancestorLevel')
+				: 1
+		);
+		WebElement ancestor = startElement;
+		for (int i = 0; i < ancestorLevel; i++) {
+			ancestor = ancestor.findElement(By.xpath('./..'));
+		}
+
+		// Get the descendant
+		WebElement child = null;
+		if (args.containsKey('childContents')) {
+			// Child has contents-based search
+			String childXPath = Kaixa.getContentsXPath(
+				args.get('childContents'),
+				args.get('childSelector')
+			);
+			child = ancestor.findElement(By.xpath(childXPath));
+		} else {
+			// Child is just a selector
+			child = ancestor.findElement(By.cssSelector(args.childSelector));
+		}
+
+		// Convert to TestObject
+		return Kaixa.convertToTestObject(child);
 	}
 
 	/**
