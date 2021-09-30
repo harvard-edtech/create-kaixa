@@ -485,7 +485,9 @@ public class Kaixa {
 	 * @instance
 	 * @memberof Kaixa
 	 * @method findByContents
-	 * @param {String} contents - the contents of the object
+	 * @param {String} contents - the contents of the object.
+	 *   NOTE: must be the contents of the element,
+	 *   not contents of a child element!
 	 * @param {String} selector - a css selector for the element
 	 * Supported css selectors:
 	 * All Elements: null or "*"
@@ -511,79 +513,116 @@ public class Kaixa {
 
 	/**
 	 * Find an element by traversing the element tree: from the start element,
-	 *   traverse up the tree ancestorLevel times (ancestorLevel=1 means
-	 *   up to parent, ancestorLevel=2 means up to grandparent) and then back down
+	 *   traverse up the tree to the specified ancestor and then back down
 	 *   any number of levels to the first matching child
 	 * @author Gabe Abrams
 	 * @instance
 	 * @memberof Kaixa
 	 * @method findChildOfAncestor
 	 * @param {Map} args - all arguments in one map
-	 * @param {TestObject} [args.startElement] - element in the tree to start at.
-	 *   If not included, args.startSelector is required
-	 * @param {String} [args.startSelector] - css selector for the start
-	 *   element. Required if args.startElement is excluded
+	 * @param {String} args.startSelector - css selector for the start
+	 *   element
 	 * @param {String} [args.startContents] - text contents to use to narrow the
-	 *   search for the start element (only relevant if startElement is excluded)
-	 * @param {int} [args.ancestorLevel=1] - the number of generations above the
-	 *   start element to traverse (1 = parent, 2 = grandparent, etc.)
+	 *   search for the start element. NOTE: must be the contents of the element,
+	 *   not contents of a child element!
+	 * @param {String} [args.ancestor=parent] - the ancestor to traverse
+	 *   up to. Allowed options: "parent" or "grandparent" or "greatgrandparent"
+	 *   or "greatgreatgrandparent"
+	 * @param {int} [args.ancestorLevel=1] - alternative method for identifying
+	 *   the ancestor (1 = parent, 2 = grandparent, 3 = greatgrandparent, ...)
 	 * @param {String} args.childSelector - css selector for the child
 	 *   element
 	 * @param {String} [args.childContents] - text contents to use to narrow the
-	 *   search for the child element
+	 *   search for the child element. NOTE: must be the contents of the element,
+	 *   not contents of a child element!
 	 * @return {TestObject} element
 	 */
 	public static TestObject findChildOfAncestor(Map<String,Object> args) {
-		// Get the web element of the start
-		WebElement startElement = null;
-		if (args.containsKey('startElement')) {
-			// Start element is included
-			startElement = Kaixa.convertToWebElement(args.get('startElement'));
+		String xpath = '//';
+
+		// Add search for start element
+		// > Add selector
+		String startSelector = args.get('startSelector');
+		if (startSelector.startsWith('#')) {
+			// id
+			xpath += '*[@id=\'' + startSelector.substring(1) + '\']';
+		} else if (startSelector.startsWith('.')) {
+			// class
+			xpath += '*[contains(@class,\'' + startSelector.substring(1) + '\')]';
 		} else {
-			// Selector is included
-			if (args.containsKey('startContents')) {
-				// Start has contents-based search
-				startElement = Kaixa.convertToWebElement(
-					Kaixa.findByContents(
-						args.get('startContents'),
-						args.get('startSelector')
-					)
-				);
+			// tag name
+			xpath += startSelector;
+		}
+		// > Optionally add text contents
+		if (args.containsKey('startContents')) {
+			String startContents = args.get('startContents');
+			String contentsEscaped;
+			if (startContents.toString().indexOf('\'') < 0) {
+				contentsEscaped = '\'' + startContents + '\'';
+			} else if (startContents.toString().indexOf('"') < 0) {
+				contentsEscaped = '"' + startContents + '"';
 			} else {
-				// Start is just a selector
-				startElement = Kaixa.convertToWebElement(
-					Kaixa.find(args.get('startSelector'))
-				);
+				contentsEscaped = 'concat(\'' + startContents.toString().replace('\'', '\',"\'", \'') + '\')';
+			}
+			xpath += '[text()[contains(.,' + contentsEscaped + ')]]';
+		}
+
+		// Traverse up to ancestor
+		int ancestorLevel = 1;
+		if (args.containsKey('ancestor') || args.containsKey('ancestorLevel')) {
+			if (args.containsKey('ancestor')) {
+				// String
+				if (args.get('ancestor').toLowerCase() == 'grandparent') {
+					ancestorLevel = 2;
+				} else if (args.get('ancestor').toLowerCase() == 'greatgrandparent') {
+					ancestorLevel = 3;
+				} else if (
+					args.get('ancestor').toLowerCase()
+					== 'greatgreatgrandparent'
+				) {
+					ancestorLevel = 4;
+				} else {
+					throw new Exception('Ancestor level was invalid.');
+				}
+			} else {
+				// Number
+				ancestorLevel = (args.get('ancestorLevel') + '').toInteger();
 			}
 		}
-
-		// Traverse up the tree
-		int ancestorLevel = (
-			args.containsKey('ancestorLevel')
-				? args.get('ancestorLevel')
-				: 1
-		);
-		WebElement ancestor = startElement;
 		for (int i = 0; i < ancestorLevel; i++) {
-			ancestor = ancestor.findElement(By.xpath('./..'));
+			xpath += '/parent::*';
 		}
 
-		// Get the descendant
-		WebElement child = null;
-		if (args.containsKey('childContents')) {
-			// Child has contents-based search
-			String childXPath = Kaixa.getContentsXPath(
-				args.get('childContents'),
-				args.get('childSelector')
-			);
-			child = ancestor.findElement(By.xpath(childXPath));
+		// Find nearest child
+		xpath += '//';
+		// > Add selector
+		String childSelector = args.get('childSelector');
+		if (childSelector.startsWith('#')) {
+			// id
+			xpath += '*[@id=\'' + childSelector.substring(1) + '\']';
+		} else if (childSelector.startsWith('.')) {
+			// class
+			xpath += '*[contains(@class,\'' + childSelector.substring(1) + '\')]';
 		} else {
-			// Child is just a selector
-			child = ancestor.findElement(By.cssSelector(args.childSelector));
+			// tag name
+			xpath += childSelector;
+		}
+		// > Optionally add text contents
+		if (args.containsKey('childContents')) {
+			String childContents = args.get('childContents');
+			String contentsEscaped;
+			if (childContents.toString().indexOf('\'') < 0) {
+				contentsEscaped = '\'' + childContents + '\'';
+			} else if (childContents.toString().indexOf('"') < 0) {
+				contentsEscaped = '"' + childContents + '"';
+			} else {
+				contentsEscaped = 'concat(\'' + childContents.toString().replace('\'', '\',"\'", \'') + '\')';
+			}
+			xpath += '[text()[contains(.,' + contentsEscaped + ')]]';
 		}
 
-		// Convert to TestObject
-		return Kaixa.convertToTestObject(child);
+		// Find the element
+		return Kaixa.findByXPath(xpath);
 	}
 
 	/**

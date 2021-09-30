@@ -5373,7 +5373,9 @@
 
             
 
-            <td class="description last">the contents of the object</td>
+            <td class="description last">the contents of the object.
+  NOTE: must be the contents of the element,
+  not contents of a child element!</td>
         </tr>
 
     
@@ -5672,8 +5674,7 @@ Next Element after P: "p + *"</td>
 
 <div class="description usertext">
     Find an element by traversing the element tree: from the start element,
-  traverse up the tree ancestorLevel times (ancestorLevel=1 means
-  up to parent, ancestorLevel=2 means up to grandparent) and then back down
+  traverse up the tree to the specified ancestor and then back down
   any number of levels to the first matching child
 </div>
 
@@ -5758,44 +5759,6 @@ Next Element after P: "p + *"</td>
 
         <tr>
             
-                <td class="name"><code>startElement</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">TestObject</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">element in the tree to start at.
-  If not included, args.startSelector is required</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>startSelector</code></td>
             
 
@@ -5811,8 +5774,6 @@ Next Element after P: "p + *"</td>
             
                 <td class="attributes">
                 
-                    &lt;optional><br>
-                
 
                 
 
@@ -5827,7 +5788,7 @@ Next Element after P: "p + *"</td>
             
 
             <td class="description last">css selector for the start
-  element. Required if args.startElement is excluded</td>
+  element</td>
         </tr>
 
     
@@ -5865,7 +5826,49 @@ Next Element after P: "p + *"</td>
             
 
             <td class="description last">text contents to use to narrow the
-  search for the start element (only relevant if startElement is excluded)</td>
+  search for the start element. NOTE: must be the contents of the element,
+  not contents of a child element!</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ancestor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>parent</code>
+                
+                </td>
+            
+
+            <td class="description last">the ancestor to traverse
+  up to. Allowed options: "parent" or "grandparent" or "greatgrandparent"
+  or "greatgreatgrandparent"</td>
         </tr>
 
     
@@ -5904,8 +5907,8 @@ Next Element after P: "p + *"</td>
                 </td>
             
 
-            <td class="description last">the number of generations above the
-  start element to traverse (1 = parent, 2 = grandparent, etc.)</td>
+            <td class="description last">alternative method for identifying
+  the ancestor (1 = parent, 2 = grandparent, 3 = greatgrandparent, ...)</td>
         </tr>
 
     
@@ -5979,7 +5982,8 @@ Next Element after P: "p + *"</td>
             
 
             <td class="description last">text contents to use to narrow the
-  search for the child element</td>
+  search for the child element. NOTE: must be the contents of the element,
+  not contents of a child element!</td>
         </tr>
 
     
