@@ -715,6 +715,24 @@ public class Kaixa {
 	}
 
 	/**
+	 * Assert a certain number of elements
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method assertNumElements
+	 * @param {String} selector - a CSS selector corresponding to the item
+	 * @param {Integer} num - the precise number of elements expected
+	 */
+	public static void assertNumElements(String selector, int num) {
+		WebDriver driver = DriverFactory.getWebDriver();
+		int size = driver.findElements(By.selector(selector)).size();
+		
+		if (size != num) {
+			throw new Exception('Expected ' + num + ' element(s) matching selector "' + selector + '" but got ' + size + ' instead');
+		}
+	}
+
+	/**
 	 * Get the parent of an element
 	 * @author Gabe Abrams
 	 * @instance

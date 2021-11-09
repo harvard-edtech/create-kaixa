@@ -130,6 +130,7 @@ Kaixa.done();
 - [assertExists](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertExists) - make sure an element exists
 - [assertExistsWithContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertExistsWithContents) - make sure an element exists (find it by its contents)
 - [assertHasClass](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertHasClass) - make sure an element has a certain css class
+- [assertNumElements](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#assertNumElements) - make sure an element shows up a certain number of times
 
 ## **Handy Functions** – useful utilities
 
