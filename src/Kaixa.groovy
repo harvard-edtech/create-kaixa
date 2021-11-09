@@ -724,8 +724,7 @@ public class Kaixa {
 	 * @param {Integer} num - the precise number of elements expected
 	 */
 	public static void assertNumElements(String selector, int num) {
-		WebDriver driver = DriverFactory.getWebDriver();
-		int size = driver.findElements(By.css(selector)).size();
+		int size = (WebUI.findWebElements((By.css(selector))).size();
 		
 		if (size != num) {
 			throw new Exception('Expected ' + num + ' element(s) matching selector "' + selector + '" but got ' + size + ' instead');
