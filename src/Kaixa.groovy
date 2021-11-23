@@ -715,6 +715,19 @@ public class Kaixa {
 	}
 
 	/**
+	 * Get number of elements
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method assertNumElements
+	 * @param {String} selector - a CSS selector corresponding to the item
+	 * @return {Integer} the number of elements on the page
+	 */
+	public static int getNumElements(String selector) {
+		return WebUI.executeJavaScript('return document.querySelectorAll(\'' + selector + '\').length', null);
+	}
+
+	/**
 	 * Assert a certain number of elements
 	 * @author Gabe Abrams
 	 * @instance
@@ -724,10 +737,10 @@ public class Kaixa {
 	 * @param {Integer} num - the precise number of elements expected
 	 */
 	public static void assertNumElements(String selector, int num) {
-		int size = (WebUI.findWebElements((By.css(selector))).size());
-		
-		if (size != num) {
-			throw new Exception('Expected ' + num + ' element(s) matching selector "' + selector + '" but got ' + size + ' instead');
+		int actualNum = Kaixa.getNumElements(selector);
+
+		if (actualNum != num) {
+			throw new Exception('Expected ' + num + ' element(s) matching selector "' + selector + '" but got ' + actualNum + ' instead');
 		}
 	}
 

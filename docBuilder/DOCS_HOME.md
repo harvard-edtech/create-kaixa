@@ -150,6 +150,7 @@ Kaixa.done();
 - [elementWithContentsExists](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#elementWithContentsExists) - check if an element exists (find it by its contents)
 - [descendantOf](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#descendantOf) - get the descendant of an element
 - [parentOf](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#parentOf) - get the parent of an element
+- [getNumElements](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getNumElements) - get the number of elements on a page that match a selector
 
 ## **Data** – get data from the page or elements
 
