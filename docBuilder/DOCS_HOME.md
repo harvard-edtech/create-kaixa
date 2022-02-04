@@ -88,7 +88,7 @@ Kaixa.done();
 ## **Interactions** – interact with stuff on the page
 
 - [chooseFile](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseFile) - set the file for a file chooser
-- [chooseSelectByLabel](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseSelectByLabel) - choose select item by value
+- [chooseSelectByLabel](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseSelectByLabel) - choose select item by label
 - [chooseSelectByValue](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#chooseSelectByValue) - choose select item by value
 - [click](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#click) - click something
 - [clickByContents](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#clickByContents) - click something (find it by its contents)

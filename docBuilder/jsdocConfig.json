@@ -15,8 +15,8 @@
     "plugins/commentsOnly"
   ],
   "templates": {
-    "systemName": "caccl-api",
-    "systemSummary": "A class that defines a set of smart Canvas endpoints that actually behave how you'd expect them to.",
+    "systemName": "create-kaixa",
+    "systemSummary": "Wrapper for Katalon for easier script-driven Katalon tests.",
     "footer": "Created by Gabe Abrams in the Harvard Division of Continuing Education",
     "copyright": "All code, materials, documentation, and other parts of this project under MIT license",
     "showTableOfContents": true,
