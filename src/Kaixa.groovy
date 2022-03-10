@@ -1843,10 +1843,10 @@ public class Kaixa {
 		// Wait for two factor (max 30s to resolve)
 		if (handlingTwoFactor) {
 			// Wait for continue button
-			Kaixa.waitForElementWithContentsVisible('Continue to application', '.continue-button', 30);
+			Kaixa.waitForElementWithContentsVisible('Yes, trust browser', '#trust-browser-button', 30);
 
 			// Click the continue button
-			Kaixa.click('.continue-button');
+			Kaixa.click('#trust-browser-button');
 		}
 	}
 }
