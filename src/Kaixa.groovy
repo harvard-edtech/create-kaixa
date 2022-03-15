@@ -1278,6 +1278,24 @@ public class Kaixa {
 	}
 
 	/**
+	 * Get the list of labels in a select
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method listSelectLabels
+	 * @param {String} selector - the css selector for the select element
+	 * @return {String[]} list of labels
+	 */
+	public static String[] listSelectLabels(String selector) {
+		try {
+			String[] labels = Kaixa.runScript('try { return Array.from(document.querySelectorAll(\'' + selector + ' > option\')).map((option) => { return option.innerHTML; }).filter((x, i) => { return i > 0; }); } catch (err) { alert(err.message);}');
+			return labels;
+		} catch (err) {
+			throw new Exception('Could not get the list of labels inside of the select dropdown with selector "' + selector + '". Check the browser console for more information on the issue.');
+		}
+	}
+
+	/**
 	 * Choose a file for a file chooser
 	 * @author Gabe Abrams
 	 * @instance
