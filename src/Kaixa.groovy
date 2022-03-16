@@ -359,7 +359,7 @@ public class Kaixa {
 	 */
 	public static String padNumber(int number, int digits) {
 		String out = number.toString();
-		while (out.length < digits) {
+		while (out.length() < digits) {
 			out = '0' + out;
 		}
 		return out;
@@ -387,7 +387,7 @@ public class Kaixa {
 	 * @return {String} date in form mm/dd/yyyy
 	 */
 	 public static String getDateStringAfterDays(int days) {
-		 return Kaixa.padNumber(Kaixa.getMonthAfterDays(days), 2) + '/' + Kaixa.padNumber(Kaixa.getDayAfterDays(days), 2) + '/' + Kaixa.padNumber(Kaixa.getYearAfterDays());
+		 return Kaixa.padNumber(Kaixa.getMonthAfterDays(days), 2) + '/' + Kaixa.padNumber(Kaixa.getDayAfterDays(days), 2) + '/' + Kaixa.getYearAfterDays(days);
 	 }
 
 	/* -------------------- Logging -------------------- */
