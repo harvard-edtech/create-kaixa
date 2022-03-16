@@ -307,7 +307,7 @@ public class Kaixa {
 	 * @instance
 	 * @memberof Kaixa
 	 * @method getYearAfterDays
-	 * @param {int} number of days that will have passed (can be negative)
+	 * @param {int} days - number of days that will have passed (can be negative)
 	 * @return {int} year
 	 */
 	public static int getYearAfterDays(int days) {
@@ -322,7 +322,7 @@ public class Kaixa {
 	 * @instance
 	 * @memberof Kaixa
 	 * @method getMonthAfterDays
-	 * @param {int} number of days that will have passed (can be negative)
+	 * @param {int} days - number of days that will have passed (can be negative)
 	 * @return {int} month
 	 */
 	public static int getMonthAfterDays(int days) {
@@ -337,7 +337,7 @@ public class Kaixa {
 	 * @instance
 	 * @memberof Kaixa
 	 * @method getDayAfterDays
-	 * @param {int} number of days that will have passed (can be negative)
+	 * @param {int} days - number of days that will have passed (can be negative)
 	 * @return {int} day
 	 */
 	public static int getDayAfterDays(int days) {
@@ -345,6 +345,50 @@ public class Kaixa {
 		int date = now.getDate();
 		return date;
 	}
+
+	/**
+	 * Pad a number with zeros
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method padWithZeros
+	 * @param {int} number - the number to pad
+	 * @param {int} digits - number of digits to require (must be at least this
+	 *   long
+	 * @return {String} padded number
+	 */
+	public static String padNumber(int number, int digits) {
+		String out = number.toString();
+		while (out.length < digits) {
+			out = '0' + out;
+		}
+		return out;
+	}
+
+	/**
+	 * Get the current date as a fully-formed string
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method getDateString
+	 * @return {String} date in form mm/dd/yyyy
+	 */
+	public static String getDateString() {
+		return Kaixa.padNumber(Kaixa.getCurrentMonth(), 2) + '/' + Kaixa.padNumber(Kaixa.getCurrentDay(), 2) + '/' + Kaixa.padNumber(Kaixa.getCurrentYear());
+	}
+
+	/**
+	 * Get the current date as a fully-formed string
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method getDateString
+	 * @param {int} days - number of days that will have passed (can be negative)
+	 * @return {String} date in form mm/dd/yyyy
+	 */
+	 public static String getDateStringAfterDays(int days) {
+		 return Kaixa.padNumber(Kaixa.getMonthAfterDays(days), 2) + '/' + Kaixa.padNumber(Kaixa.getDayAfterDays(days), 2) + '/' + Kaixa.padNumber(Kaixa.getYearAfterDays());
+	 }
 
 	/* -------------------- Logging -------------------- */
 
