@@ -163,6 +163,15 @@ Kaixa.done();
 - [getText](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getText) - get the text inside an element
 - [getTitle](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getTitle) - get the title of the page
 - [getURL](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getURL) - get the URL of the current tab
+- [getCurrentMonth](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getCurrentMonth) - get the current month
+- [getCurrentDay](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getCurrentDay) - get the current day
+- [getCurrentYear](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getCurrentYear) - get the current year
+- [getDateString](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getDateString) - get the current date in mm/dd/yyyy format
+- [getMonthAfterDays](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getMonthAfterDays) - get the month that it will be after a certain number of days
+- [getDayAfterDays](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getDayAfterDays) - get the day that it will be after a certain number of days
+- [getYearAfterDays](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getYearAfterDays) - get the year that it will be after a certain number of days
+- [getDateStringAfterDays](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getDateStringAfterDays) - get the date in mm/dd/yyyy format as it will be after a certain number of days
+- [padNumber](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#padNumber) - pad a number so that it will be at least a certain number of digits
 
 ## **Logging** – write to the log
 
