@@ -374,7 +374,7 @@ public class Kaixa {
 	 * @return {String} date in form mm/dd/yyyy
 	 */
 	public static String getDateString() {
-		return Kaixa.padNumber(Kaixa.getCurrentMonth(), 2) + '/' + Kaixa.padNumber(Kaixa.getCurrentDay(), 2) + '/' + Kaixa.padNumber(Kaixa.getCurrentYear());
+		return Kaixa.padNumber(Kaixa.getCurrentMonth(), 2) + '/' + Kaixa.padNumber(Kaixa.getCurrentDay(), 2) + '/' + Kaixa.getCurrentYear();
 	}
 
 	/**
