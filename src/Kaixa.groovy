@@ -301,6 +301,51 @@ public class Kaixa {
 		return date;
 	}
 
+	/**
+	 * Get the year after a certain number of days have passed
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method getYearAfterDays
+	 * @param {int} number of days that will have passed (can be negative)
+	 * @return {int} year
+	 */
+	public static int getYearAfterDays(int days) {
+		Date now = (new Date()).plus(days);
+		int year = now.getYear() + 1900;
+		return year;
+	}
+
+	/**
+	 * Get the month after a certain number of days have passed
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method getMonthAfterDays
+	 * @param {int} number of days that will have passed (can be negative)
+	 * @return {int} month
+	 */
+	public static int getMonthAfterDays(int days) {
+		Date now = (new Date()).plus(days);
+		int month = now.getMonth() + 1;
+		return month;
+	}
+
+	/**
+	 * Get the day after a certain number of days have passed
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method getDayAfterDays
+	 * @param {int} number of days that will have passed (can be negative)
+	 * @return {int} day
+	 */
+	public static int getDayAfterDays(int days) {
+		Date now = (new Date()).plus(days);
+		int date = now.getDate();
+		return date;
+	}
+
 	/* -------------------- Logging -------------------- */
 
 	/**
