@@ -1817,10 +1817,63 @@ public class Kaixa {
 			throw new Exception('Could not launch as "' + name + '" because that user is not listed in the profile variables.');
 		}
 		
+		// Log action
 		Kaixa.log('🚀 Launch as ' + name);
+		
+		// Check if this is a local launch
+		boolean isLocal = (Kaixa.getProfileValue('local') == 'true');
 
 		// Get the user info
 		JSONObject obj = new JSONObject(GlobalVariable[name]);
+		
+		// Handle local launch
+		if (isLocal) {
+			// Get user type
+			String userType = 'teacher';
+			if (obj.has('type') && obj.getString('type') == 'student') {
+				userType = 'student';
+			}
+			if (obj.has('type') && obj.getString('type') == 'ta') {
+				userType = 'ta';
+			}
+			
+			// Get simulator index
+			String simIndex = '0';
+			if (obj.has('simIndex')) {
+				simIndex = obj.getString('simIndex');
+			}
+			
+			// Create a simulator button id
+			String simLaunchButtonId = userType + '_' + simIndex + '-launch-button';
+			
+			// Visit the simulator
+			Kaixa.visit('https://localhost:8088/simulator');
+			
+			// Bypass certificate issue
+			String foundItem = Kaixa.waitForAtLeastOneElementPresent([
+				'.ssl',
+				'#instructor_0-launch-button',
+			]);
+			if (foundItem == '.ssl') {
+				// Chrome: handle ssl issue
+				Kaixa.click('#details-button');
+				Kaixa.click('#proceed-link');
+			}
+			
+			// Launch the app
+			Kaixa.openAnchorInSameTab('#' + simLaunchButtonId);
+
+			// Check for authorization screen
+			Kaixa.waitFor(1000);
+			if (Kaixa.elementExists('.authorize-button')) {
+				Kaixa.click('.authorize-button');
+			}
+			
+			// Finish
+			return;
+		}
+
+		// Get access token
 		String accessToken = null;
 		if (obj.has('accessToken')) {
 			accessToken = obj.getString('accessToken');
