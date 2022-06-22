@@ -135,6 +135,7 @@ Kaixa.done();
 ## **Handy Functions** – useful utilities
 
 - [uniquify](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#uniquify) - add a unique, random tag to a string
+- [uniquifySimple](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#uniquifySimple) - add a simple unique, random tag to a string
 - [prompt](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#prompt) - ask the user to provide text
 - [promptPassword](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#promptPassword) - ask the user to provide a password
 - [getProfileValue](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getProfileValue) - get a value from the profile

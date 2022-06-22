@@ -115,6 +115,33 @@ public class Kaixa {
 		return name.toString() + tag;
 	}
 
+	/**
+	 * Add a simple unique tag to an object name, where the simple tag is just
+	 *   numbers. Tag will be at most 16 chars
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method uniquifySimple
+	 * @param {String} name - the name of the item
+	 * @return {String} the new name of the item with the unique tag
+	 */
+	public static String uniquifySimple(Object name) {
+		// Start tracking name if not already in map
+		if (!nameToNumInstances.containsKey(name.toString())) {
+			nameToNumInstances.put(name.toString(), 0);
+		}
+		
+		// Increment the number of instances
+		int numInstances = nameToNumInstances.get(name.toString()) + 1;
+		nameToNumInstances.put(name.toString(), numInstances);
+		
+		// Create a unique tag
+		String tag = (numInstances % 1000).toString() + (new Date()).getTime().toString();
+		
+		// Concatenate
+		return name.toString() + tag;
+	}
+
 	// Prompt helper
 	public static String _prompt(String label, String title, boolean isPass) {
 		// Ask user for text
