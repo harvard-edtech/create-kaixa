@@ -90,6 +90,24 @@ public class Kaixa {
 	static HashMap<String, Integer> nameToNumInstances = new HashMap<String, Integer>();
 
 	/**
+	 * Converts a number to an ascii representation (same string length)
+	 * @author Gabe Abrams
+	 * @param {int} num - the number to convert to an ascii representation
+	 * @return {String} alpha ascii representation
+	 */
+	private static String _numToAscii(int num) {
+		String[] letters = 'abcdefghij'.split('');
+		String[] digits = (new Integer(num)).toString().split('');
+
+		String output = '';
+		for (int i = 0; i < digits.length; i++) {
+			output = output + letter[parseInt(digits[i], 10)];
+		}
+
+    return output;
+	}
+
+	/**
 	 * Add a unique tag to an object name. Tag may add up to 20 chars.
 	 * @author Gabe Abrams
 	 * @instance
@@ -136,7 +154,7 @@ public class Kaixa {
 		nameToNumInstances.put(name.toString(), numInstances);
 		
 		// Create a unique tag
-		String tag = (numInstances % 1000).toString() + (new Date()).getTime().toString();
+		String tag = _numToAscii(numInstances % 1000) + _numToAscii((new Date()).getTime());
 		
 		// Concatenate
 		return name.toString() + tag;
