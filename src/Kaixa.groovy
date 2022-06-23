@@ -101,7 +101,7 @@ public class Kaixa {
 
 		String output = '';
 		for (int i = 0; i < digits.length; i++) {
-			output = output + letter[parseInt(digits[i], 10)];
+			output = output + letters[parseInt(digits[i], 10)];
 		}
 
     return output;
