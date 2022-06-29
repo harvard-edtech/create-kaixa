@@ -95,13 +95,13 @@ public class Kaixa {
 	 * @param {int} num - the number to convert to an ascii representation
 	 * @return {String} alpha ascii representation
 	 */
-	private static String _numToAscii(int num) {
+	private static String _numToAscii(long num) {
 		String[] letters = 'abcdefghij'.split('');
-		String[] digits = (new Integer(num)).toString().split('');
+		String[] digits = (new Long(num)).toString().split('');
 
 		String output = '';
 		for (int i = 0; i < digits.length; i++) {
-			output = output + letters[parseInt(digits[i], 10)];
+			output = output + letters[Integer.parseInt(digits[i])];
 		}
 
     return output;
@@ -1897,7 +1897,7 @@ public class Kaixa {
 			// Bypass certificate issue
 			String foundItem = Kaixa.waitForAtLeastOneElementPresent([
 				'.ssl',
-				'#instructor_0-launch-button',
+				'#teacher_0-launch-button',
 			]);
 			if (foundItem == '.ssl') {
 				// Chrome: handle ssl issue
