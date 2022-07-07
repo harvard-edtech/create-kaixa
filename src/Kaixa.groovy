@@ -1702,31 +1702,6 @@ public class Kaixa {
 		}
 	}
 
-
-	/**
-	 * Get the value of a Canvas GET API endpoint. Automatically adds a per_page=200 param. A valid Canvas session
-	 *   must be active already.
-	 * @author Gabe Abrams
-	 * @instance
-	 * @memberof Kaixa
-	 * @method visitCanvasEndpoint
-	 * @param {String} path - the path of the API, excluding https://canvas.harvard.edu/api/v1, example: "/users"
-	 * @param {String} [accessToken] - a Canvas access token. If none is included, user must be logged into Canvas
-	 * @return {JSONArray|JSONObject} Canvas response
-	 */
-	public static Object visitCanvasEndpoint(String path, String accessToken = null) {
-		Kaixa.log('🖥 Canvas API: ' + path);
-
-		// Create the Canvas URL
-		String url = 'https://canvas.harvard.edu/api/v1' + path + (path.indexOf('?') >= 0 ? '&per_page=200' : '?per_page=200');
-		if (accessToken) {
-			url += (url.indexOf('?') >= 0 ? '&access_token=' + accessToken : '?access_token=' + accessToken);
-		}
-
-		// Send the GET request
-		return Kaixa.sendGETRequest(url, true);
-	}
-
 	/**
 	 * Extract info from a class
 	 * @author Gabe Abrams
