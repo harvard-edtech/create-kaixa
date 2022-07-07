@@ -1703,6 +1703,76 @@ public class Kaixa {
 	}
 
 	/**
+	 * Send a POST request to a Canvas API endpoint
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method visitCanvasPOSTEndpoint
+	 * @param {Map}
+	 * @param {String} path the path of the API, excluding https://canvas.harvard.edu, example: "/api/v1/users"
+	 * @param {String} accessToken a Canvas access token
+	 * @param {String} payload the body of the post request
+	 * @returns {JSONArray|JSONObject} Canvas response
+	 */
+	public static Object visitCanvasPOSTEndpoint(String path, String accessToken, String payload) {
+		Kaixa.log('🖥 POST Request: ' + path);
+
+		URL post = new URL('https://canvas.harvard.edu' + path).openConnection();
+		post.setRequestMethod('POST')
+		post.setDoOutput(true);
+		post.setRequestProperty('Content-Type', 'application/json');
+		post.setRequestProperty('Authorization', 'Bearer ' + accessToken);
+		post.getOutputStream().write(payload.getBytes('UTF-8'));
+
+		// Get the response
+		String content = post.getInputStream().getText();
+		
+		// Process as JSON
+		if (content.charAt(0) == '[') {
+			// This is an array
+			return new JSONArray(content);
+		} else {
+			// This is an object
+			return new JSONObject(content);
+		}
+	}
+
+	/**
+	 * Send a DELETE request to a Canvas API endpoint
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method visitCanvasDELETEEndpoint
+	 * @param {Map}
+	 * @param {String} path the path of the API, excluding https://canvas.harvard.edu, example: "/api/v1/users"
+	 * @param {String} accessToken a Canvas access token
+	 * @param {String} payload the body of the post request
+	 * @returns {JSONArray|JSONObject} Canvas response
+	 */
+	public static Object visitCanvasDELETEEndpoint(String path, String accessToken, String payload) {
+		Kaixa.log('🖥 POST Request: ' + path);
+
+		URL post = new URL('https://canvas.harvard.edu' + path).openConnection();
+		post.setRequestMethod('DELETE')
+		post.setDoOutput(true);
+		post.setRequestProperty('Content-Type', 'application/json');
+		post.setRequestProperty('Authorization', 'Bearer ' + accessToken);
+		post.getOutputStream().write(payload.getBytes('UTF-8'));
+
+		// Get the response
+		String content = post.getInputStream().getText();
+		
+		// Process as JSON
+		if (content.charAt(0) == '[') {
+			// This is an array
+			return new JSONArray(content);
+		} else {
+			// This is an object
+			return new JSONObject(content);
+		}
+	}
+
+	/**
 	 * Extract info from a class
 	 * @author Gabe Abrams
 	 * @instance
