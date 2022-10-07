@@ -173,6 +173,7 @@ Kaixa.done();
 - [getYearAfterDays](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getYearAfterDays) - get the year that it will be after a certain number of days
 - [getDateStringAfterDays](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#getDateStringAfterDays) - get the date in mm/dd/yyyy format as it will be after a certain number of days
 - [padNumber](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#padNumber) - pad a number so that it will be at least a certain number of digits
+- [isSafari](https://harvard-edtech.github.io/create-kaixa/Kaixa.html#isSafari) - check if the current browser is Safari
 
 ## **Logging** – write to the log
 

@@ -435,6 +435,18 @@ public class Kaixa {
 		 return Kaixa.padNumber(Kaixa.getMonthAfterDays(days), 2) + '/' + Kaixa.padNumber(Kaixa.getDayAfterDays(days), 2) + '/' + Kaixa.getYearAfterDays(days);
 	 }
 
+	 /**
+		* Check if the currently-opened window is a Safari browser window
+		* @author Gabe Abrams
+		* @instance
+		* @memberof Kaixa
+		* @method isSafari
+		* @return {boolean} true if the browser is Safari
+		*/
+		public static boolean isSafari() {
+			return Kaixa.runScript('return /^((?!chrome|android).)*safari/i.test(navigator.userAgent)');
+		}
+
 	/* -------------------- Logging -------------------- */
 
 	/**
@@ -1309,7 +1321,13 @@ public class Kaixa {
 				throw e;
 			}
 		}
-		WebUI.click(obj);
+		// TODO: remove this workaround for Safari clicks
+		if (Kaixa.isSafari() && item instanceof String) {
+		  // Click using JavaScript instead of possible because Safari for some reason can't click things
+		  Kaixa.runScript('document.querySelector("' + item.toString() + '").click()');
+		} else {
+		  WebUI.click(obj);
+		}
 	}
 
 	/**
