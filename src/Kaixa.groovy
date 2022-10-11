@@ -1368,15 +1368,24 @@ public class Kaixa {
 	 * @method typeInto
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {String} text - the text to type
-	 * @param {boolean} newline - if newline should be added after text
+	 * @param {boolean} pressEnter - if true, after typing into the text field,
+	 *   simulate pressing enter
 	 */
-	public static void typeInto(Object item, Object text, boolean newline = false) {
+	public static void typeInto(Object item, Object text, boolean pressEnter = false) {
 		Kaixa.log('⌨️ Type "' + text + '" into ' + item);
 		TestObject obj = Kaixa.ensureTestObject(item);
 		Kaixa.waitForElementVisible(obj);
-		WebUI.setText(obj, text.toString());
+		// Check if the text contains an enter key press
+		boolean enterAtEndOfText = text.toString().endsWith('\n');
+		// Type the text without a trailing enter if there was one
+		String textWithoutTrailingEnter = (
+			enterAtEndOfText
+				? text.toString().substring(0, text.toString().length())
+				: text.toString()
+		);
+		WebUI.setText(obj, textWithoutTrailingEnter);
 		// Workaround for typing "\n" not working in Safari and Firefox.
-		if (newline) {
+		if (newline || enterAtEndOfText) {
 			WebUI.sendKeys(obj, Keys.chord(Keys.ENTER));
 		}
 	}
