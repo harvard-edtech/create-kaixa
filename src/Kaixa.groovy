@@ -30,6 +30,7 @@ import com.kms.katalon.core.webui.common.WebUiCommonHelper
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.By
+import org.openqa.selenium.Keys
 
 import internal.GlobalVariable
 import java.nio.file.Paths
@@ -1367,12 +1368,17 @@ public class Kaixa {
 	 * @method typeInto
 	 * @param {TestObject|String} item - the TestObject or CSS selector of interest
 	 * @param {String} text - the text to type
+	 * @param {boolean} newline - if newline should be added after text
 	 */
-	public static void typeInto(Object item, Object text) {
+	public static void typeInto(Object item, Object text, boolean newline = false) {
 		Kaixa.log('⌨️ Type "' + text + '" into ' + item);
 		TestObject obj = Kaixa.ensureTestObject(item);
 		Kaixa.waitForElementVisible(obj);
 		WebUI.setText(obj, text.toString());
+		// Workaround for typing "\n" not working in Safari and Firefox.
+		if (newline) {
+			WebUI.sendKeys(obj, Keys.chord(Keys.ENTER));
+		}
 	}
 
 	/**
