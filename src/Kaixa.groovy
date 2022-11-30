@@ -625,6 +625,7 @@ public class Kaixa {
 			contentsEscaped = 'concat(\'' + contents.toString().replace('\'', '\',"\'", \'') + '\')';
 		}
 		String xpath = '//' + start + '[text()[contains(.,' + contentsEscaped + ')]]';
+		console.log('xpath: ' + xpath)
 
 		return xpath;
 	}
