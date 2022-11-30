@@ -929,7 +929,7 @@ public class Kaixa {
 		WebElement el = Kaixa.convertToWebElement(obj);
 
 		// Get the descendant
-		TestObject descendant = el.findElement(By.css(selector));
+		WebElement descendant = el.findElement(By.cssSelector(selector));
 
 		// Convert back to TestObject
 		return Kaixa.convertToTestObject(descendant);
