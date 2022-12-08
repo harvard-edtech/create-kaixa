@@ -571,7 +571,7 @@ public class Kaixa {
 	 * All Child Elements of p: "p > *"
 	 * Element By ID: "#foo"
 	 * Element By Class: ".foo"
-	 * Element With Attribute: "*[title]"
+	 * Element With Attribute: "*[title]", "a[title='foo']"
 	 * First Child of P: "p > *:first-child"
 	 * Next Element after P: "p + *"
 	 * @return {String} xpath to use to find the element
@@ -587,7 +587,7 @@ public class Kaixa {
 			start = '*[contains(@class,\'' + selector.substring(1) + '\')]';
 		} else if (selector.startsWith('*[')) {
 			// element with attribute
-			start = '*[@' + selector.substring(2) +']';
+			start = '*[@' + selector.substring(2);
 		} else if (selector == '*') {
 			// Wild card
 			start = '*';
@@ -605,6 +605,10 @@ public class Kaixa {
 					// assume looking for all children
 					start = tagName + '/*';
 				}
+			} else if (selector.indexOf('[') >= 0) {
+				int pos = selector.indexOf('[');
+				// insert '@' after '['
+				start = tagName.substring(0, pos + 1) + "@" + tagName.substring(pos + 1)
 			} else {
 				// assume just a tag name
 				start = tagName;
@@ -621,6 +625,7 @@ public class Kaixa {
 			contentsEscaped = 'concat(\'' + contents.toString().replace('\'', '\',"\'", \'') + '\')';
 		}
 		String xpath = '//' + start + '[text()[contains(.,' + contentsEscaped + ')]]';
+		console.log('xpath: ' + xpath)
 
 		return xpath;
 	}
