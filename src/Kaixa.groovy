@@ -1389,7 +1389,7 @@ public class Kaixa {
 		);
 		WebUI.setText(obj, textWithoutTrailingEnter);
 		// Workaround for typing "\n" not working in Safari and Firefox.
-		if (newline || enterAtEndOfText) {
+		if (pressEnter || enterAtEndOfText) {
 			WebUI.sendKeys(obj, Keys.chord(Keys.ENTER));
 		}
 	}
