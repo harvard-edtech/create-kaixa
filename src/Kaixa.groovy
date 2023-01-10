@@ -723,7 +723,9 @@ public class Kaixa {
 		if (args.containsKey('ancestor') || args.containsKey('ancestorLevel')) {
 			if (args.containsKey('ancestor')) {
 				// String
-				if (args.get('ancestor').toLowerCase() == 'grandparent') {
+				if (args.get('ancestor').toLowerCase() == 'parent') {
+					ancestorLevel = 1;
+				} else if (args.get('ancestor').toLowerCase() == 'grandparent') {
 					ancestorLevel = 2;
 				} else if (args.get('ancestor').toLowerCase() == 'greatgrandparent') {
 					ancestorLevel = 3;
