@@ -1742,6 +1742,27 @@ public class Kaixa {
 	}
 
 	/**
+	 * Get the value of a Canvas GET API endpoint. Automatically adds a per_page=200 param
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method visitCanvasGETEndpoint
+	 * @param {String} path - the path of the API, excluding https://canvas.harvard.edu/api/v1, example: "/users"
+	 * @param {String} accessToken - a Canvas access token
+	 * @return {JSONArray|JSONObject} Canvas response
+	 */
+	public static Object visitCanvasGETEndpoint(String path, String accessToken) {
+		Kaixa.log('🖥 Canvas API: ' + path);
+
+		// Create the Canvas URL
+		String url = 'https://canvas.harvard.edu/api/v1' + path + (path.indexOf('?') >= 0 ? '&per_page=200' : '?per_page=200');
+		url += '&access_token=' + accessToken;
+
+		// Send the GET request
+		return Kaixa.sendGETRequest(url, true);
+	}
+
+	/**
 	 * Send a POST request to a Canvas API endpoint
 	 * @author Gabe Abrams
 	 * @instance
@@ -1879,7 +1900,7 @@ public class Kaixa {
 		}
 
 		// Get the external tool URL
-		JSONArray externalTools = Kaixa.visitCanvasEndpoint('/courses/' + courseId + '/external_tools', accessToken);
+		JSONArray externalTools = Kaixa.visitCanvasGETEndpoint('/courses/' + courseId + '/external_tools', accessToken);
 		
 		// Find the external tool of interest
 		int toolId = 0;
@@ -1918,7 +1939,7 @@ public class Kaixa {
 		}
 
 		// Get a sessionless launch URL
-		JSONObject sessionlessLaunchInfo = Kaixa.visitCanvasEndpoint('/courses/' + courseId + '/external_tools/sessionless_launch?id=' + toolId, accessToken);
+		JSONObject sessionlessLaunchInfo = Kaixa.visitCanvasGETEndpoint('/courses/' + courseId + '/external_tools/sessionless_launch?id=' + toolId, accessToken);
 		String launchURL = sessionlessLaunchInfo.getString('url');
 
 		// Launch the tool
