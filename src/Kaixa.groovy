@@ -1880,6 +1880,33 @@ public class Kaixa {
 		return Kaixa.extractDataFromClass(obj, classPrefix);
 	}
 
+	/* ---------------------------- iFrame ------------------------------- */
+
+	/**
+	 * Start controlling an iframe
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method startControllingIFrame
+	 * @param {TestObject|String} item - the TestObject or CSS selector of the iframe
+	 */
+	public static void startControllingIFrame(Object item) {
+		Kaixa.log('🖼 Start Controlling iFrame: ' + item);
+		WebUI.switchToFrame(Kaixa.ensureTestObject(item), 10, FailureHandling.STOP_ON_FAILURE);
+	}
+
+	/**
+	 * Stop controlling an iframe and return to the main page
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method stopControllingIFrame
+	 */
+	public static void stopControllingIFrame() {
+		Kaixa.log('🖼 Stop Controlling iFrame');
+		WebUI.switchToDefaultContent();
+	}
+
 	/* -------------------- Harvard-specific Commands -------------------- */
 
 	/**
@@ -2146,14 +2173,14 @@ public class Kaixa {
 
 		// Check if two factor showed up
 		boolean handlingTwoFactor = (
-			Kaixa.elementWithContentsExists('Check your phone for a Duo Push', '.instruction-text p')
+			Kaixa.elementWithContentsExists('Check your phone for a Duo Push', '.instruction-text')
 			|| Kaixa.getURL().contains('duosecurity.com')
 		);
 
 		// Wait for two factor (max 30s to resolve)
 		if (handlingTwoFactor) {
 			// Wait for continue button
-			Kaixa.waitForElementWithContentsVisible('Yes, trust browser', '#trust-browser-button', 30);
+			Kaixa.waitForElementPresent('#trust-browser-button', 30);
 
 			// Click the continue button
 			Kaixa.click('#trust-browser-button');
