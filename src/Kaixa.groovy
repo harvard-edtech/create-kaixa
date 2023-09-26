@@ -1092,10 +1092,51 @@ public class Kaixa {
 					return item;
 				}
 			}
+
+			// Wait
+			Kaixa.waitFor(100);
 		}
 		
 		// No element shown
 		throw new Exception('Checked every 1/10th second but none of the elements were present within ' + timeoutSec + ' second(s)');
+	}
+
+	/**
+	 * Wait until a custom function returns true. Here's how you do it:
+	 *   Kaixa.waitForFunctionToReturnTrue(x -> {
+   *     return [test if wait should end ];
+	 *   });
+	 * @author Gabe Abrams
+	 * @instance
+	 * @memberof Kaixa
+	 * @method waitForFunctionToReturnTrue
+	 * @param {Function} testFunction - a function that returns true when the
+	 *   wait should finish
+	 * @param {int} [timeoutSec=10] - the number of seconds to wait before
+	 *   timing out
+	 */
+	public static void waitForFunctionToReturnTrue(Closure testFunction, int timeoutSec = 10) {
+		Kaixa.log('⏱🤖 Wait for a function to return true');
+
+		// Attempt to check many times
+		int numChecks = (timeoutSec * 10);
+		for (int i = 0; i < numChecks; i++) {
+			// Check the function
+			try {
+				boolean success = testFunction();
+				if (success) {
+					return;
+				}
+			} catch (Exception e) {
+				// Do nothing
+			}
+
+			// Wait
+			Kaixa.waitFor(100);
+		}
+		
+		// No element shown
+		throw new Exception('Checked every 1/10th second but the function didn\'t become true within ' + timeoutSec + ' second(s)');
 	}
 
 	/* -------------------- Assertions -------------------- */
