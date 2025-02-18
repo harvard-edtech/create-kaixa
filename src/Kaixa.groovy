@@ -584,8 +584,16 @@ public class Kaixa {
 			// id
 			start = '*[@id=\'' + selector.substring(1) + '\']';
 		} else if (selector.startsWith('.')) {
-			// class
-			start = '*[contains(@class,\'' + selector.substring(1) + '\')]';
+			// Class selector
+			String[] parts = selector.split(Pattern.quote(" "));
+			String baseClass = parts[0].substring(1); // Extract class name
+
+			if (selector.contains(">")) {
+				// Class with child selector (e.g., .foo > *)
+				start = "[contains(@class, '" + baseClass + "')]/";
+			} else {
+				start = "*[contains(@class, '" + baseClass + "')]";
+			}
 		} else if (selector.startsWith('*[')) {
 			// element with attribute
 			start = '*[@' + selector.substring(2);
