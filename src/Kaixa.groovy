@@ -2237,10 +2237,10 @@ public class Kaixa {
 	}
 
   /**
-   * Generate repeated text of a specific length
+	 * Generate repeated text of a specific length
 	 * @author Gardenia Liu
-   * @instance
-	 * @memberof Kaixa
+	 * @instance
+   * @memberof Kaixa
    * @method generateTextOfLength
    * @param {String} text - text to be repeated 
    * @param {int} length - the length of the text to generate
@@ -2256,9 +2256,9 @@ public class Kaixa {
 	 * @author Gardenia Liu
 	 * @instance
 	 * @memberof Kaixa
-   * @method generateTextOfLength
-   * @param {int} length - the length of the text to generate
-   */
+	 * @method generateTextOfLength
+	 * @param {int} length - the length of the text to generate
+	 */
   public static String generateTextOfLength(int length) {
     return generateTextOfLength('123456789x', length);
   }
