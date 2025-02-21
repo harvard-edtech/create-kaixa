@@ -2245,11 +2245,11 @@ public class Kaixa {
 	 * @param {String} text - text to be repeated 
 	 * @param {int} length - the length of the text to generate
 	 */
-  public static String generateTextOfLength(String text, int length) {
-    // Calculate the number of times text can repeat
-    int repeatCount = (int) Math.ceil(length / (double) text.length());
-    return (text * repeatCount).substring(0, length);
-  }
+	public static String generateTextOfLength(String text, int length) {
+		// Calculate the number of times text can repeat
+		int repeatCount = (int) Math.ceil(length / (double) text.length());
+		return (text * repeatCount).substring(0, length);
+	}
 
 	/**
 	 * Generate default text of a specific length
@@ -2259,7 +2259,7 @@ public class Kaixa {
 	 * @method generateTextOfLength
 	 * @param {int} length - the length of the text to generate
 	 */
-  public static String generateTextOfLength(int length) {
-    return generateTextOfLength('123456789x', length);
-  }
+	public static String generateTextOfLength(int length) {
+		return generateTextOfLength('123456789x', length);
+	}
 }
