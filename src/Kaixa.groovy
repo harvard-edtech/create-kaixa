@@ -2237,10 +2237,10 @@ public class Kaixa {
 	}
 
   /**
-	 * Generate repeated text of a specific length
-   * @author Gardenia Liu
+   * Generate repeated text of a specific length
+	 * @author Gardenia Liu
    * @instance
-   * @memberof Kaixa
+	 * @memberof Kaixa
    * @method generateTextOfLength
    * @param {String} text - text to be repeated 
    * @param {int} length - the length of the text to generate
@@ -2251,8 +2251,8 @@ public class Kaixa {
     return (text * repeatCount).substring(0, length);
   }
 
-	/**
-	 * Generate default text of a specific length
+  /**
+   * Generate default text of a specific length
    * @author Gardenia Liu
    * @instance
    * @memberof Kaixa
