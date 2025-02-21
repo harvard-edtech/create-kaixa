@@ -2236,7 +2236,7 @@ public class Kaixa {
 		}
 	}
 
-  /** 
+  /**
 	 * Generate repeated text of a specific length
    * @author Gardenia Liu
    * @instance
