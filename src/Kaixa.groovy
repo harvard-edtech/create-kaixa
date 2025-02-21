@@ -2252,10 +2252,10 @@ public class Kaixa {
   }
 
   /**
-   * Generate default text of a specific length
-   * @author Gardenia Liu
-   * @instance
-   * @memberof Kaixa
+	 * Generate default text of a specific length
+	 * @author Gardenia Liu
+	 * @instance
+	 * @memberof Kaixa
    * @method generateTextOfLength
    * @param {int} length - the length of the text to generate
    */
