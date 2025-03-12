@@ -58,24 +58,24 @@ public class Kaixa {
 
   // Default URL info
   static String defaultHost = (
-  	GlobalVariable.metaClass.hasProperty(GlobalVariable, 'defaultHost')
-  		? GlobalVariable.defaultHost
-  		: 'https://'
+    GlobalVariable.metaClass.hasProperty(GlobalVariable, 'defaultHost')
+      ? GlobalVariable.defaultHost
+      : 'https://'
   );
   static String defaultProtocol = (
-  	(GlobalVariable.metaClass.hasProperty(GlobalVariable, 'dontUseHTTPS') && GlobalVariable.dontUseHTTPS)
-  		? 'http://'
-  		: 'https://'
+    (GlobalVariable.metaClass.hasProperty(GlobalVariable, 'dontUseHTTPS') && GlobalVariable.dontUseHTTPS)
+      ? 'http://'
+      : 'https://'
   );
   static int defaultCourseId = (
-  	(GlobalVariable.metaClass.hasProperty(GlobalVariable, 'courseId'))
-  		? GlobalVariable.courseId
-  		: 12345
+    (GlobalVariable.metaClass.hasProperty(GlobalVariable, 'courseId'))
+      ? GlobalVariable.courseId
+      : 12345
   );
   static String defaultAppName = (
-  	(GlobalVariable.metaClass.hasProperty(GlobalVariable, 'appName'))
-  		? GlobalVariable.appName
-  		: 'No App Name'
+    (GlobalVariable.metaClass.hasProperty(GlobalVariable, 'appName'))
+      ? GlobalVariable.appName
+      : 'No App Name'
   );
 
   // Cache usernames
@@ -184,15 +184,15 @@ public class Kaixa {
 
     // Prompt user
     JOptionPane.showOptionDialog(
-        null,
-        panel,
-        title,
-        JOptionPane.NO_OPTION,
-        JOptionPane.PLAIN_MESSAGE,
-        null,
-        options,
-        options[0]
-        );
+      null,
+      panel,
+      title,
+      JOptionPane.NO_OPTION,
+      JOptionPane.PLAIN_MESSAGE,
+      null,
+      options,
+      options[0]
+    );
 
     // Get the value
     String value = input.getText();
@@ -1118,9 +1118,9 @@ public class Kaixa {
     } catch (Exception e) {
       // Could not find!
       throw new Exception(
-      message == ''
-      ? 'Element "' + item + '" did not exist, but it should have been there.'
-      : message
+        message == ''
+          ? 'Element "' + item + '" did not exist, but it should have been there.'
+          : message
       );
     }
   }
@@ -1143,9 +1143,9 @@ public class Kaixa {
     if (!absent) {
       // Found but shouldn't have
       throw new Exception(
-      message == ''
-      ? 'Element "' + item + '" exists, but it should have been absent.'
-      : message
+        message == ''
+          ? 'Element "' + item + '" exists, but it should have been absent.'
+          : message
       );
     }
   }
@@ -1170,9 +1170,9 @@ public class Kaixa {
     } catch (Exception e) {
       // Could not find!
       throw new Exception(
-      	message == ''
-      		? 'Element "' + selector + '" with contents + "' + contents + '" did not exist, but it should have been there.'
-      		: message
+        message == ''
+          ? 'Element "' + selector + '" with contents + "' + contents + '" did not exist, but it should have been there.'
+          : message
       );
     }
   }
@@ -1196,9 +1196,9 @@ public class Kaixa {
     if (!absent) {
       // Found but shouldn't have
       throw new Exception(
-      	message == ''
-      		? 'Element "' + selector + '" with contents "' + contents + '" exist, but it should have been absent.'
-      		: message
+        message == ''
+          ? 'Element "' + selector + '" with contents "' + contents + '" exist, but it should have been absent.'
+          : message
       );
     }
   }
@@ -1222,9 +1222,9 @@ public class Kaixa {
 
     if (!hasClass) {
       throw new Exception(
-      	message == ''
-      		? 'Element "' + item + '" did not have class "' + className + '" but it should have had it.'
-      		: message
+        message == ''
+          ? 'Element "' + item + '" did not have class "' + className + '" but it should have had it.'
+          : message
       );
     }
   }
@@ -1248,9 +1248,9 @@ public class Kaixa {
 
     if (hasClass) {
       throw new Exception(
-      	message == ''
-      		? 'Element "' + item + '" had class "' + className + '" but it shouldn\'t have had it.'
-      		: message
+        message == ''
+          ? 'Element "' + item + '" had class "' + className + '" but it shouldn\'t have had it.'
+          : message
       );
     }
   }
@@ -1650,16 +1650,16 @@ public class Kaixa {
 
     // Get the contents of the formatted pre tag
     return Kaixa.runScript(
-			'const preElems = document.getElementsByTagName("pre");',
-			'if (preElems.length > 0) {',
-			'  const contents = preElems[0].innerHTML;',
-			'  return (',
-			'    contents.startsWith("while(1);")',
-			'      ? contents.replace("while(1);", "")',
-			'      : contents',
-			'  );',
-			'}',
-			'return "{}"'
+      'const preElems = document.getElementsByTagName("pre");',
+      'if (preElems.length > 0) {',
+      '  const contents = preElems[0].innerHTML;',
+      '  return (',
+      '    contents.startsWith("while(1);")',
+      '      ? contents.replace("while(1);", "")',
+      '      : contents',
+      '  );',
+      '}',
+      'return "{}"'
     );
   }
 
@@ -1783,23 +1783,23 @@ public class Kaixa {
     Kaixa.log('🖥 API Request: ' + path + ' with body: ' + stringBody);
 
     String results = Kaixa.runScript(
-			'const bodyJSON = JSON.parse(atob(`' + Base64.getEncoder().encodeToString(stringBody.getBytes()) + '`))',
-			'console.log(bodyJSON);',
-			'const body = new URLSearchParams(bodyJSON);',
-			'console.log(body);',
-			'const response = await fetch(',
-			'  "' + path + '",',
-			'  {',
-			'    method: "' + method + '",',
-			'    headers: {',
-			'      "Content-Type": "application/x-www-form-urlencoded",',
-			'    },',
-			'    body',
-			'  },',
-			');',
-			'const results = await response.json();',
-			'return JSON.stringify(results);'
-		);
+      'const bodyJSON = JSON.parse(atob(`' + Base64.getEncoder().encodeToString(stringBody.getBytes()) + '`))',
+      'console.log(bodyJSON);',
+      'const body = new URLSearchParams(bodyJSON);',
+      'console.log(body);',
+      'const response = await fetch(',
+      '  "' + path + '",',
+      '  {',
+      '    method: "' + method + '",',
+      '    headers: {',
+      '      "Content-Type": "application/x-www-form-urlencoded",',
+      '    },',
+      '    body',
+      '  },',
+      ');',
+      'const results = await response.json();',
+      'return JSON.stringify(results);'
+    );
 
     // Parse results
     JSONObject responseBody = new JSONObject(results);
@@ -1994,7 +1994,7 @@ public class Kaixa {
 
       // Skip non-nav items
       if (
-      	!externalTool.has('course_navigation')
+        !externalTool.has('course_navigation')
         || !(externalTool.get('course_navigation') instanceof JSONObject)
       ) {
         continue;
@@ -2136,15 +2136,15 @@ public class Kaixa {
 
       // Prompt user
       JOptionPane.showOptionDialog(
-				null,
-				panel,
-				'Access Token for "' + name + '"',
-				JOptionPane.NO_OPTION,
-				JOptionPane.PLAIN_MESSAGE,
-				null,
-				options,
-				options[0]
-			);
+        null,
+        panel,
+        'Access Token for "' + name + '"',
+        JOptionPane.NO_OPTION,
+        JOptionPane.PLAIN_MESSAGE,
+        null,
+        options,
+        options[0]
+      );
 
       // Get the password
       accessToken = new String(pass.getPassword());
