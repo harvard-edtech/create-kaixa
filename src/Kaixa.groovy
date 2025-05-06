@@ -580,12 +580,21 @@ public class Kaixa {
   public static String getContentsXPath(Object contents, String selector) {
     // Generate the start of the xpath
     String start = '*';
-    if (selector.startsWith('#')) {
-      // id
-      start = '*[@id=\'' + selector.substring(1) + '\']';
-    } else if (selector.startsWith('.')) {
-      // class
-      start = '*[contains(@class,\'' + selector.substring(1) + '\')]';
+    if (selector.startsWith("#") || selector.startsWith(".")) {
+      // Find the attribute name
+      String[] selectorParts = selector.split(Pattern.quote(" "));
+      String identifier = selectorParts[0].substring(1);
+      // Add to xpath
+      if (selector.startsWith("#")) {
+        start = "*[@id='" + identifier + "']";
+      } else {
+        start = "*[contains(@class, '" + identifier + "')]";
+      }
+      // If there are more parts, add them to the xpath
+      if (selectorParts.length > 2 && selectorParts[1].startsWith(">")) {
+        // Find the child element
+        start += "/descendant::" + selectorParts[2];
+      }
     } else if (selector.startsWith('*[')) {
       // element with attribute
       start = '*[@' + selector.substring(2);
