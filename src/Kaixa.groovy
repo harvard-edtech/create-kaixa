@@ -2239,4 +2239,54 @@ public class Kaixa {
       }
     }
   }
+
+    /**
+   * Generate repeated text of a specific length
+   * @author Gardenia Liu
+   * @instance
+   * @memberof Kaixa
+   * @method generateTextOfLength
+   * @param {String} text - text to be repeated 
+   * @param {int} length - the length of the text to generate
+   */
+  public static String generateTextOfLength(String text, int length) {
+    // Calculate the number of times text can repeat
+    int repeatCount = (int) Math.ceil(length / (double) text.length());
+    return (text * repeatCount).substring(0, length);
+  }
+
+  /**
+   * Generate default text of a specific length
+   * @author Gardenia Liu
+   * @instance
+   * @memberof Kaixa
+   * @method generateTextOfLength
+   * @param {int} length - the length of the text to generate
+   */
+  public static String generateTextOfLength(int length) {
+    return generateTextOfLength('123456789x', length);
+  }
+
+  /**
+   * Returns a string that contains ASCII characters in an interval between
+   * user-defined start and end values
+   * @author Allison Zhang
+   * @instance
+   * @memberof Kaixa
+   * @method generateAsciiText
+   * @param {int} start - the starting value of the ASCII characters
+   * @param {int} end - the ending value of the ASCII characters
+   */
+  public static String generateAsciiText(int start, int end) {
+    // Check if the start and end values are within the ASCII range
+    if (start < 0 || end > 255 || start > end) {
+      throw new Error('Invalid ASCII range');
+    }
+
+    StringBuilder allAscii = new StringBuilder('');
+    for (int i = start; i <= end; i++) {
+      allAscii.append((char) i);
+    }
+    return allAscii.toString();
+  }
 }
