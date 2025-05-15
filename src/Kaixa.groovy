@@ -2240,16 +2240,16 @@ public class Kaixa {
     }
   }
 
-    /**
+  /**
    * Generate repeated text of a specific length
    * @author Gardenia Liu
    * @instance
    * @memberof Kaixa
-   * @method generateTextOfLength
+   * @method genTextOfLength
    * @param {String} text - text to be repeated 
    * @param {int} length - the length of the text to generate
    */
-  public static String generateTextOfLength(String text, int length) {
+  public static String genTextOfLength(String text, int length) {
     // Calculate the number of times text can repeat
     int repeatCount = (int) Math.ceil(length / (double) text.length());
     return (text * repeatCount).substring(0, length);
@@ -2263,8 +2263,8 @@ public class Kaixa {
    * @method generateTextOfLength
    * @param {int} length - the length of the text to generate
    */
-  public static String generateTextOfLength(int length) {
-    return generateTextOfLength('123456789x', length);
+  public static String genTextOfLength(int length) {
+    return genTextOfLength('123456789x', length);
   }
 
   /**
@@ -2273,7 +2273,7 @@ public class Kaixa {
    * @author Allison Zhang
    * @instance
    * @memberof Kaixa
-   * @method generateAsciiText
+   * @method genAsciiText
    * @param {int} start - the starting value of the ASCII characters
    * @param {int} end - the ending value of the ASCII characters
    */
