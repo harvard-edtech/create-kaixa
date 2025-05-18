@@ -2268,25 +2268,13 @@ public class Kaixa {
   }
 
   /**
-   * Returns a string that contains ASCII characters in an interval between
-   * user-defined start and end values
+   * Returns a string that contains all the printable special characters
    * @author Allison Zhang
    * @instance
    * @memberof Kaixa
-   * @method genAsciiText
-   * @param {int} start - the starting value of the ASCII characters
-   * @param {int} end - the ending value of the ASCII characters
+   * @method getSpecialChars
    */
-  public static String generateAsciiText(int start, int end) {
-    // Check if the start and end values are within the ASCII range
-    if (start < 0 || end > 255 || start > end) {
-      throw new Error('Invalid ASCII range');
-    }
-
-    StringBuilder allAscii = new StringBuilder('');
-    for (int i = start; i <= end; i++) {
-      allAscii.append((char) i);
-    }
-    return allAscii.toString();
+  public static String getSpecialChars() {
+    return '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š› œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ';
   }
 }
