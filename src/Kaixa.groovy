@@ -2248,6 +2248,7 @@ public class Kaixa {
    * @method genTextOfLength
    * @param {String} text - text to be repeated 
    * @param {int} length - the length of the text to generate
+   * @return {String} the generated text using a user-defined text
    */
   public static String genTextOfLength(String text, int length) {
     // Calculate the number of times text can repeat
@@ -2262,31 +2263,21 @@ public class Kaixa {
    * @memberof Kaixa
    * @method generateTextOfLength
    * @param {int} length - the length of the text to generate
+   * @return {String} the generated text using the default text
    */
   public static String genTextOfLength(int length) {
     return genTextOfLength('123456789x', length);
   }
 
   /**
-   * Returns a string that contains ASCII characters in an interval between
-   * user-defined start and end values
+   * Returns a string that contains all the printable special characters
    * @author Allison Zhang
    * @instance
    * @memberof Kaixa
-   * @method genAsciiText
-   * @param {int} start - the starting value of the ASCII characters
-   * @param {int} end - the ending value of the ASCII characters
+   * @method getSpecialChars
+   * @return {String} a string that contains all the printable characters
    */
-  public static String generateAsciiText(int start, int end) {
-    // Check if the start and end values are within the ASCII range
-    if (start < 0 || end > 255 || start > end) {
-      throw new Error('Invalid ASCII range');
-    }
-
-    StringBuilder allAscii = new StringBuilder('');
-    for (int i = start; i <= end; i++) {
-      allAscii.append((char) i);
-    }
-    return allAscii.toString();
+  public static String getSpecialChars() {
+    return '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ≤≥≠÷…£¢∞§¶•º';
   }
 }
