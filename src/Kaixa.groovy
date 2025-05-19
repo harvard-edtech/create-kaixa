@@ -2248,6 +2248,7 @@ public class Kaixa {
    * @method genTextOfLength
    * @param {String} text - text to be repeated 
    * @param {int} length - the length of the text to generate
+   * @return {String} the generated text using a user-defined text
    */
   public static String genTextOfLength(String text, int length) {
     // Calculate the number of times text can repeat
@@ -2262,6 +2263,7 @@ public class Kaixa {
    * @memberof Kaixa
    * @method generateTextOfLength
    * @param {int} length - the length of the text to generate
+   * @return {String} the generated text using the default text
    */
   public static String genTextOfLength(int length) {
     return genTextOfLength('123456789x', length);
@@ -2273,8 +2275,9 @@ public class Kaixa {
    * @instance
    * @memberof Kaixa
    * @method getSpecialChars
+   * @return {String} a string that contains all the printable characters
    */
   public static String getSpecialChars() {
-    return '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š› œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ';
+    return '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ';
   }
 }
