@@ -30,7 +30,7 @@ print.savePrompt(prompt);
 module.exports = () => {
   const targetFilename = path.join(
     process.env.PWD,
-    'Include/scripts/groovy/Kaixa.groovy'
+    'Keywords/Kaixa.groovy'
   );
   const updating = fs.existsSync(targetFilename);
 
