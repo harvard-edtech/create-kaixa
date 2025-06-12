@@ -2280,4 +2280,33 @@ public class Kaixa {
   public static String getSpecialChars() {
     return '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ≤≥≠÷…£¢∞§¶•º';
   }
+
+  /**
+   * Returns a list of random numbers of a random amount given a minimum and maximum. No duplicates are allowed.
+   * @author Allison Zhang
+   * @instance
+   * @memberof Kaixa
+   * @method genRandomNumberList
+   * @param {int} min - the minimum possible value for a random integer in the list
+   * @param {int} max - the upper bound of possible random ints (exclusive)
+   * @return {int[]} an array of random ints (unsorted)
+   */
+  public static int[] genRandomNumberList(int min, int max) {
+    // Determine the number of random ints to generate
+    int numRands = rand.nextInt(1, max - min + 1);
+    Set<Integer> rands = new HashSet<>();
+
+    while (rands.size() < numRands) {
+      int next = rand.nextInt(min, max);
+      rands.add(next);
+    }
+
+    int[] intRands = new int[numRands];
+    int i = 0;
+    for (int val : rands) {
+      intRands[i++] = val;
+    }
+
+    return intRands;
+  }
 }
