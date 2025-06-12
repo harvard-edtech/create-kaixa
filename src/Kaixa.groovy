@@ -52,6 +52,9 @@ import java.text.SimpleDateFormat
  * @author gabeabrams
  */
 public class Kaixa {
+  // Random instance
+  static Random rand = new Random();
+
   // Date constants
   static Date start = Calendar.getInstance().getTime();
   static int msSinceEpoch = start.getTime();
@@ -2292,9 +2295,6 @@ public class Kaixa {
    * @return {int[]} an array of random ints (unsorted)
    */
   public static int[] genRandomNumberList(int min, int max) {
-    // New random instance
-    Random rand = new Random();
-
     // Determine the number of random ints to generate
     int numRands = rand.nextInt(1, max - min + 1);
     Set<Integer> rands = new HashSet<>();
