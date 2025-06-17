@@ -2261,7 +2261,7 @@ public class Kaixa {
    * @author Gardenia Liu
    * @instance
    * @memberof Kaixa
-   * @method generateTextOfLength
+   * @method genTextOfLength
    * @param {int} length - the length of the text to generate
    * @return {String} the generated text using the default text
    */

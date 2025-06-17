@@ -71,11 +71,7 @@ module.exports = () => {
   console.log('');
   if (updating) {
     console.log(`We updated to Kaixa version ${packageJSON.version} for this project.\n`);
-    console.log('What to do next:');
-    console.log('In a text editor, open Include/scripts/groovy/Kaixa.groovy and check the version.');
   } else {
     console.log(`We added Kaixa version ${packageJSON.version} to this project.\n`);
-    console.log('What to do next:');
-    console.log('In Katalon, make sure there is a Include/scripts/groovy/Kaixa.groovy file but do not open it.');
   }
 };
