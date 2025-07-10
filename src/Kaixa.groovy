@@ -56,34 +56,78 @@ public class Kaixa {
   static Date start = Calendar.getInstance().getTime();
   static int msSinceEpoch = start.getTime();
 
-  // Default URL info
-  static String defaultHost = (
-    GlobalVariable.metaClass.hasProperty(GlobalVariable, 'defaultHost')
-      ? GlobalVariable.defaultHost
-      : 'https://'
-  );
-  static String defaultProtocol = (
-    (GlobalVariable.metaClass.hasProperty(GlobalVariable, 'dontUseHTTPS') && GlobalVariable.dontUseHTTPS)
-      ? 'http://'
-      : 'https://'
-  );
-  static int defaultCourseId = (
-    (GlobalVariable.metaClass.hasProperty(GlobalVariable, 'courseId'))
-      ? GlobalVariable.courseId
-      : 12345
-  );
-  static String defaultAppName = (
-    (GlobalVariable.metaClass.hasProperty(GlobalVariable, 'appName'))
-      ? GlobalVariable.appName
-      : 'No App Name'
-  );
-
   // Cache usernames
   static HashMap<String,String> cachedUsernames = new HashMap<String,String>();
   // Cache passwords
   static HashMap<String,String> cachedPasswords = new HashMap<String,String>();
   // Cache access tokens
   static HashMap<String,String> cachedAccessTokens = new HashMap<String,String>();
+
+  /* ------------------------ Default Values ------------------------ */
+
+  /**
+   * Get the default host
+   * @author Gabe Abrams
+   * @instance
+   * @memberof Kaixa
+   * @method getDefaultHost
+   * @return {String} the default host
+   */
+  public static String getDefaultHost() {
+    return (
+      Kaixa.hasProfileValue('defaultHost')
+        ? Kaixa.getProfileValue('defaultHost')
+        : 'https://'
+    );
+  }
+
+  /**
+   * Get the default protocol
+   * @author Gabe Abrams
+   * @instance
+   * @memberof Kaixa
+   * @method getDefaultProtocol
+   * @return {String} the default protocol (http:// or https://)
+   */
+  public static String getDefaultProtocol() {
+    return (
+      Kaixa.hasProfileValue('dontUseHTTPS') && Kaixa.getProfileValue('dontUseHTTPS') == 'true'
+        ? 'http://'
+        : 'https://'
+    );
+  }
+
+  /**
+   * Get the default course ID
+   * @author Gabe Abrams
+   * @instance
+   * @memberof Kaixa
+   * @method getDefaultCourseId
+   * @return {int} the default course ID
+   */
+  public static int getDefaultCourseId() {
+    return (
+      Kaixa.hasProfileValue('courseId')
+        ? Integer.parseInt(Kaixa.getProfileValue('courseId'))
+        : 12345
+    );
+  }
+
+  /**
+   * Get the default app name
+   * @author Gabe Abrams
+   * @instance
+   * @memberof Kaixa
+   * @method getDefaultAppName
+   * @return {String} the default app name
+   */
+  public static String getDefaultAppName() {
+    return (
+      Kaixa.hasProfileValue('appName')
+        ? Kaixa.getProfileValue('appName')
+        : 'No App Name'
+    );
+  }
 
   /* -------------------- Variables, Names, URLs -------------------- */
 
@@ -235,34 +279,6 @@ public class Kaixa {
   }
 
   /**
-   * Set the default host
-   * @author Gabe Abrams
-   * @instance
-   * @memberof Kaixa
-   * @method setDefaultHost
-   * @param {String} host name
-   */
-  public static void setDefaultHost(String host) {
-    defaultHost = host.replace('/', '');
-  }
-
-  /**
-   * Set whether or not to use HTTPS by default
-   * @author Gabe Abrams
-   * @instance
-   * @memberof Kaixa
-   * @method setDontUseHTTPS
-   * @param {boolean} dontUseHTTPS - true if not using HTTPS by default
-   */
-  public static void setDontUseHTTPS(boolean dontUseHTTPS) {
-    if (dontUseHTTPS) {
-      defaultProtocol = 'http://';
-    } else {
-      defaultProtocol = 'https://';
-    }
-  }
-
-  /**
    * Turn a location into a URL
    * @author Gabe Abrams
    * @instance
@@ -283,11 +299,45 @@ public class Kaixa {
     String slashSeparator = (location.startsWith('/') ? '' : '/');
 
     // Turn into a URL
-    return defaultProtocol + defaultHost + slashSeparator + location;
+    return getDefaultProtocol() + getDefaultHost() + slashSeparator + location;
   }
 
   /**
-   * Get a value from the profile
+   * Get a global variable that depends on another global variable
+   * @author Gabe Abrams
+   * @instance
+   * @memberof Kaixa
+   * @method getDependentProfileValue
+   * @param {Map<String,String>} value the value of the dependent profile variable
+   * @return {String} the value
+   */
+  private static String getDependentProfileValue(Map<String,String> value) {
+    // Get the variable that this depends on
+    if (!value.containsKey('dependsOn')) {
+      return null;
+    }
+    String dependsOn = value['dependsOn'];
+    
+    // Get the value of the dependency
+    String dependencyValue = Kaixa.getProfileValue(dependsOn);
+    
+    // Check if a value exists in the map
+    if (!value.containsKey(dependencyValue)) {
+      // No value exists. Use the default value
+      if (value.containsKey('default')) {
+        return value['default'];
+      }
+
+      // No default value exists, use null
+      return null;
+    } 
+    
+    // Get the value from the map
+    return value[dependencyValue];
+  }
+
+  /**
+   * Get a profile/global value
    * @author Gabe Abrams
    * @instance
    * @memberof Kaixa
@@ -296,13 +346,63 @@ public class Kaixa {
    * @return {String} the value
    */
   public static String getProfileValue(String name) {
-    String value = (
-      (GlobalVariable.metaClass.hasProperty(GlobalVariable, name))
-        ? GlobalVariable[name]
-        : null
-    );
+    // If it exists in the profile, return that
+    if (GlobalVariable.metaClass.hasProperty(GlobalVariable, name) && GlobalVariable[name] != null) {
+      String value = GlobalVariable[name];
+      return value;
+    }
 
-    return value;
+    // Class exists, so check if it has the property
+    if (GlobalCredentials.metaClass.hasProperty(GlobalCredentials, name) && GlobalCredentials[name] != null) {
+      // Dependent value
+      if (GlobalCredentials[name] instanceof Map<String,String>) {
+        return getDependentProfileValue(GlobalCredentials[name]);
+      }
+      
+      // Non-dependent value
+      String value = GlobalCredentials[name];
+      return value;
+    }
+
+    // Class exists, so check if it has the property
+    if (GlobalResources.metaClass.hasProperty(GlobalResources, name) && GlobalResources[name] != null) {
+      // Dependent value
+      if (GlobalResources[name] instanceof Map<String,String>) {
+        return getDependentProfileValue(GlobalResources[name]);
+      }
+      
+      // Non-dependent value
+      String value = GlobalResources[name];
+      return value;
+    }
+
+    // Class exists, so check if it has the property
+    if (GlobalValues.metaClass.hasProperty(GlobalValues, name) && GlobalValues[name] != null) {
+      // Dependent value
+      if (GlobalValues[name] instanceof Map<String,String>) {
+        return getDependentProfileValue(GlobalValues[name]);
+      }
+      
+      // Non-dependent value
+      String value = GlobalValues[name];
+      return value;
+    }
+
+    // Doesn't exist in any global location or profile
+    return null;
+  }
+
+  /**
+   * Check if a profile/global value exists
+   * @author Gabe Abrams
+   * @instance
+   * @memberof Kaixa
+   * @method hasProfileValue
+   * @param {String} name - the name of the profile variable
+   * @return {boolean} true if the value exists
+   */
+  public static boolean hasProfileValue(String name) {
+    return (Kaixa.getProfileValue(name) != null);
   }
 
   /**
@@ -1985,7 +2085,17 @@ public class Kaixa {
    * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
    * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav
    */
-  public static void launchLTIUsingToken(String accessToken, int courseId = defaultCourseId, String appName = defaultAppName) {
+  public static void launchLTIUsingToken(String accessToken, int courseId = -1, String appName = '') {
+    // If no course ID is provided, use the default course ID from the profile
+    if (courseId < 0) {
+      courseId = getDefaultCourseId();
+    }
+
+    // If no app name is provided, use the default app name from the profile
+    if (appName == '') {
+      appName = getDefaultAppName();
+    }
+
     // Try to quit the previous session
     try {
       WebUI.closeBrowser();
@@ -2055,9 +2165,19 @@ public class Kaixa {
    * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
    * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav
    */
-  public static void launchAs(String name, int courseId = defaultCourseId, String appName = defaultAppName) {
+  public static void launchAs(String name, int courseId = -1, String appName = '') {
+    // If no course ID is provided, use the default course ID from the profile
+    if (courseId < 0) {
+      courseId = getDefaultCourseId();
+    }
+
+    // If no app name is provided, use the default app name from the profile
+    if (appName == '') {
+      appName = getDefaultAppName();
+    }
+
     // Make sure the user exists
-    if (!GlobalVariable.metaClass.hasProperty(GlobalVariable, name)) {
+    if (!Kaixa.hasProfileValue(name)) {
       throw new Exception('Could not launch as "' + name + '" because that user is not listed in the profile variables.');
     }
 
@@ -2068,7 +2188,7 @@ public class Kaixa {
     boolean isLocal = (Kaixa.getProfileValue('local') == 'true');
 
     // Get the user info
-    JSONObject obj = new JSONObject(GlobalVariable[name]);
+    JSONObject obj = new JSONObject(Kaixa.getProfileValue(name));
 
     // Handle local launch
     if (isLocal) {
@@ -2181,7 +2301,7 @@ public class Kaixa {
    */
   public static void handleHarvardKey(name) {
     // Get the user info
-    JSONObject obj = new JSONObject(GlobalVariable[name]);
+    JSONObject obj = new JSONObject(Kaixa.getProfileValue(name));
     String username;
     String password;
     if (obj.has('username')) {
@@ -2202,8 +2322,8 @@ public class Kaixa {
     }
 
     // Wait for discovery page to load
-    Kaixa.waitForElementPresent('#idp_1561034504_text');
-    Kaixa.click('#idp_1561034504_button');
+    Kaixa.waitForElementPresent('#idp_1001962798_button');
+    Kaixa.click('#idp_1001962798_button');
 
     // Wait for the page to load
     Kaixa.waitForElementVisible('#username');
@@ -2214,7 +2334,7 @@ public class Kaixa {
     Kaixa.typeInto('#password', password);
 
     // Click "submit"
-    Kaixa.click('button[type=submit]');
+    Kaixa.click('.btn-primary');
 
     // Wait for URL to not be HarvardKey
     for (int i = 0; i <= 200; i++) {
