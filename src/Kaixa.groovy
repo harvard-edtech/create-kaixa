@@ -2386,7 +2386,7 @@ public class Kaixa {
    * @param {String} sizeName - the name of the window size to set
    */
   public static void setWindowSize(String sizeName) {
-    Kaixa.log('📱 Set window size to: ' + sizeName);
+    Kaixa.log('Set window size to: ' + sizeName);
     Map<String, Integer> dimensions = Kaixa.getWindowSizeDimensions(sizeName);
     int width = dimensions.get('width');
     int height = dimensions.get('height');
