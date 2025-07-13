@@ -134,7 +134,8 @@ public class Kaixa {
     (GlobalVariable.metaClass.hasProperty(GlobalVariable, 'defaultWindowSize'))
       ? GlobalVariable.defaultWindowSize
       : 'medium'
-  );
+    );
+  }
 
   /* -------------------- Variables, Names, URLs -------------------- */
 
