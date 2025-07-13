@@ -2518,8 +2518,7 @@ public class Kaixa {
    * @return {String[]} array of available window size names
    */
   public static String[] listWindowSizes() {
-    return new String[] {
-      'iphone-landscape',
+    return ['iphone-landscape',
       'iphone-portrait',
       'iphone-mini-landscape',
       'iphone-mini-portrait',
@@ -2528,7 +2527,6 @@ public class Kaixa {
       'large',
       'medium',
       'small',
-      'xsmall'
-    };
+      'xsmall'];
   }
 }
