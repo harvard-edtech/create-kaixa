@@ -2201,9 +2201,6 @@ public class Kaixa {
       }
     }
 
-    // Set window size
-    Kaixa.setWindowSize(windowSize);
-
     // Make sure the user exists
     if (!Kaixa.hasProfileValue(name)) {
       throw new Exception('Could not launch as "' + name + '" because that user is not listed in the profile variables.');
@@ -2240,6 +2237,9 @@ public class Kaixa {
 
       // Visit the simulator
       Kaixa.visit('https://localhost:8088/simulator');
+
+      // Set window size after browser is opened
+      Kaixa.setWindowSize(windowSize);
 
       // Bypass certificate issue
       String foundItem = Kaixa.waitForAtLeastOneElementPresent([
