@@ -2519,16 +2519,16 @@ public class Kaixa {
    */
   public static String[] listWindowSizes() {
     return new String[] {
-      "iphone-landscape",
-      "iphone-portrait",
-      "iphone-mini-landscape",
-      "iphone-mini-portrait",
-      "ipad-landscape",
-      "ipad-portrait",
-      "large",
-      "medium",
-      "small",
-      "xsmall"
+      'iphone-landscape',
+      'iphone-portrait',
+      'iphone-mini-landscape',
+      'iphone-mini-portrait',
+      'ipad-landscape',
+      'ipad-portrait',
+      'large',
+      'medium',
+      'small',
+      'xsmall'
     };
   }
 }
