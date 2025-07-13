@@ -2428,7 +2428,6 @@ public class Kaixa {
   }
 }
 
-
   /* -------------------- Window Size Management -------------------- */
 
   /**
