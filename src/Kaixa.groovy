@@ -2108,8 +2108,6 @@ public class Kaixa {
     if (windowSize == '') {
       windowSize = getDefaultWindowSize();
     }
-    // Set window size
-    Kaixa.setWindowSize(windowSize);
 
     // Try to quit the previous session
     try {
@@ -2163,6 +2161,9 @@ public class Kaixa {
 
     // Launch the tool
     Kaixa.visit(launchURL);
+    
+    // Set window size after browser is opened
+    Kaixa.setWindowSize(windowSize);
   }
 
   /**
