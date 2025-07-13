@@ -2427,7 +2427,6 @@ public class Kaixa {
   public static String getSpecialChars() {
     return '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ≤≥≠÷…£¢∞§¶•º';
   }
-}
 
   /* -------------------- Window Size Management -------------------- */
 
@@ -2533,3 +2532,4 @@ public class Kaixa {
     };
   }
 }
+
