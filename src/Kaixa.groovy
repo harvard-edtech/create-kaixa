@@ -317,10 +317,10 @@ public class Kaixa {
       return null;
     }
     String dependsOn = value['dependsOn'];
-    
+
     // Get the value of the dependency
     String dependencyValue = Kaixa.getProfileValue(dependsOn);
-    
+
     // Check if a value exists in the map
     if (!value.containsKey(dependencyValue)) {
       // No value exists. Use the default value
@@ -330,8 +330,8 @@ public class Kaixa {
 
       // No default value exists, use null
       return null;
-    } 
-    
+    }
+
     // Get the value from the map
     return value[dependencyValue];
   }
@@ -358,7 +358,7 @@ public class Kaixa {
       if (GlobalCredentials[name] instanceof Map<String,String>) {
         return getDependentProfileValue(GlobalCredentials[name]);
       }
-      
+
       // Non-dependent value
       String value = GlobalCredentials[name];
       return value;
@@ -370,7 +370,7 @@ public class Kaixa {
       if (GlobalResources[name] instanceof Map<String,String>) {
         return getDependentProfileValue(GlobalResources[name]);
       }
-      
+
       // Non-dependent value
       String value = GlobalResources[name];
       return value;
@@ -382,7 +382,7 @@ public class Kaixa {
       if (GlobalValues[name] instanceof Map<String,String>) {
         return getDependentProfileValue(GlobalValues[name]);
       }
-      
+
       // Non-dependent value
       String value = GlobalValues[name];
       return value;
@@ -1036,7 +1036,7 @@ public class Kaixa {
    * @method descendantOf
    * @param {TestObject|String} item - the TestObject or CSS selector of the parent
    * @param {String} selector - the selector to use to search for the descendant
-   * @return {TestObject} child element 
+   * @return {TestObject} child element
    */
   public static TestObject descendantOf(Object item, String selector) {
     TestObject obj = Kaixa.ensureTestObject(item);
@@ -1109,7 +1109,7 @@ public class Kaixa {
    * @param {String} selector - a CSS selector corresponding to the item
    * @param {int} [timeoutSec=10] - the number of seconds to wait before timing out
    */
-  public static void waitForElementWithContentsVisible(Object contents, String selector, int timeoutSec) {
+  public static void waitForElementWithContentsVisible(Object contents, String selector, int timeoutSec = 10) {
     Kaixa.log('⏱👁 Wait for ' + selector + ' with contents "' + contents + '" to be visible');
     try {
       assert WebUI.waitForElementVisible(Kaixa.findByContents(contents, selector), timeoutSec);
@@ -1451,7 +1451,7 @@ public class Kaixa {
    * @instance
    * @memberof Kaixa
    * @method openAnchorInSameTab
-   * @param {TestObject|String} item - the TestObject or CSS selector of interest 
+   * @param {TestObject|String} item - the TestObject or CSS selector of interest
    */
   public static void openAnchorInSameTab(Object item) {
     Kaixa.log('🖱 Open Anchor in Same Tab ' + item);
@@ -1714,7 +1714,7 @@ public class Kaixa {
    * @instance
    * @memberof Kaixa
    * @method getQuery
-   * @return {Map<String, String>} map of query parameters 
+   * @return {Map<String, String>} map of query parameters
    */
   public static Map<String, String> getQuery() throws UnsupportedEncodingException {
     Map<String, String> queryPairs = new LinkedHashMap<String, String>();
@@ -1876,7 +1876,7 @@ public class Kaixa {
    * @instance
    * @memberof Kaixa
    * @method sendAPIRequest
-   * @param {Map} args all arguments in one map 
+   * @param {Map} args all arguments in one map
    * @param {String} host the host of the API
    * @param {String} path the path of the API
    * @param {JSONObject} body the body of the post request
@@ -2292,13 +2292,17 @@ public class Kaixa {
   }
 
   /**
-   * Handle a HarvardKey login page for a user
+   * Handle a HarvardKey login page for a user.
+   * This method assumes the Cirrus discovery page is shown.
+   * For HarvardKey users (with isHarvardKey=true in GlobalCredentials),
+   * it chooses the option 'Okta verify' and requires some user action. This
+   * can be improved when we have a test HUID user.
    * @author Gabe Abrams
    * @instance
    * @memberof Kaixa
    * @method handleHarvardKey
    * @param {String} name - the name of the variable containing the credentials for the user
-   */
+    */
   public static void handleHarvardKey(name) {
     // Get the user info
     JSONObject obj = new JSONObject(Kaixa.getProfileValue(name));
@@ -2322,19 +2326,48 @@ public class Kaixa {
     }
 
     // Wait for discovery page to load
-    Kaixa.waitForElementPresent('#idp_1001962798_button');
-    Kaixa.click('#idp_1001962798_button');
+    Kaixa.waitForAtLeastOneElementPresent([
+      '#idp_1001962798_button', // HarvardGuest
+      '#idp_1824601020_button', // HarvardKey
+    ]);
 
-    // Wait for the page to load
-    Kaixa.waitForElementVisible('#username');
-    Kaixa.waitForElementVisible('#password');
+    if (!obj.has('isHarvardKey') || !obj.getBoolean('isHarvardKey')) {
+      // HarvardGuest credentials
+      Kaixa.click('#idp_1001962798_button');
 
-    // Add credentials
-    Kaixa.typeInto('#username', username);
-    Kaixa.typeInto('#password', password);
+      // Wait for the page to load
+      Kaixa.waitForElementVisible('#username');
+      Kaixa.waitForElementVisible('#password');
 
-    // Click "submit"
-    Kaixa.click('.btn-primary');
+      // Add credentials
+      Kaixa.typeInto('#username', username);
+      Kaixa.typeInto('#password', password);
+
+      // Click "submit"
+      Kaixa.click('.btn-primary');
+    } else {
+      // HarvardKey credentials
+      Kaixa.click('#idp_1824601020_button');
+
+      // Wait for the page to load
+      Kaixa.waitForElementVisible('#identifier');
+      // Add user name
+      Kaixa.typeInto('#identifier', username);
+      Kaixa.click("button[type='submit']");
+
+      // Wait for the page to load
+      Kaixa.waitForElementVisible("button[aria-label='Select Okta Verify.']");
+      // Select Okta verify
+      Kaixa.click("button[aria-label='Select Okta Verify.']");
+
+      // User has to take manual action when prompted...
+      // This needs to be improved when we have a test HUID account...
+
+      // Wait for the page to load
+      Kaixa.waitForElementWithContentsVisible('Yes, this is my device', 'button', 30);
+      // Select Okta verify
+      Kaixa.clickByContents('Yes, this is my device', 'button');
+    }
 
     // Wait for URL to not be HarvardKey
     for (int i = 0; i <= 200; i++) {
@@ -2342,10 +2375,11 @@ public class Kaixa {
       Kaixa.waitFor(50);
 
       // Get current URL
+
       String url = Kaixa.getURL();
 
       // Check if URL changed
-      boolean changed = !url.contains('harvard.edu/cas/login');
+      boolean changed = !url.contains('cirrusidentity.com') && !url.contains('login.harvard.edu');
 
       // Check if URL never changed
       if (i == 200 && !changed) {
@@ -2366,7 +2400,7 @@ public class Kaixa {
    * @instance
    * @memberof Kaixa
    * @method genTextOfLength
-   * @param {String} text - text to be repeated 
+   * @param {String} text - text to be repeated
    * @param {int} length - the length of the text to generate
    * @return {String} the generated text using a user-defined text
    */
