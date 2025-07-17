@@ -2426,7 +2426,7 @@ public class Kaixa {
    * @return {String} a string that contains all the printable characters
    */
   public static String getSpecialChars() {
-    return '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ≤≥≠÷…£¢∞§¶•º';
+    return '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’"”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ≤≥≠÷…£¢∞§¶•º';
   }
 
   /* -------------------- Window Size Management -------------------- */
@@ -2506,8 +2506,13 @@ public class Kaixa {
     int width = dimensions.get('width');
     int height = dimensions.get('height');
     WebDriver driver = DriverFactory.getWebDriver();
-    driver.manage().window().setSize(new org.openqa.selenium.Dimension(width, height));
-    Kaixa.log('Window size set to ' + width + 'x' + height);
+    
+    // Calculate browser UI overhead dynamically
+    int uiOverhead = Kaixa.runScript('return window.outerHeight - window.innerHeight;');
+    int totalHeight = height + uiOverhead;
+    
+    driver.manage().window().setSize(new org.openqa.selenium.Dimension(width, totalHeight));
+    Kaixa.log('Window size set to ' + width + 'x' + totalHeight + ' (viewport: ' + width + 'x' + height + ', UI overhead: ' + uiOverhead + ')');
   }
 
   /**
