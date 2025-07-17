@@ -129,6 +129,14 @@ public class Kaixa {
     );
   }
 
+  public static String getDefaultWindowSize() {
+    return (
+    (GlobalVariable.metaClass.hasProperty(GlobalVariable, 'defaultWindowSize'))
+      ? GlobalVariable.defaultWindowSize
+      : 'medium'
+    );
+  }
+
   /* -------------------- Variables, Names, URLs -------------------- */
 
   // Track number of instances for each name
@@ -2085,7 +2093,7 @@ public class Kaixa {
    * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
    * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav
    */
-  public static void launchLTIUsingToken(String accessToken, int courseId = -1, String appName = '') {
+  public static void launchLTIUsingToken(String accessToken, int courseId = -1, String appName = '', String windowSize = '') {
     // If no course ID is provided, use the default course ID from the profile
     if (courseId < 0) {
       courseId = getDefaultCourseId();
@@ -2094,6 +2102,11 @@ public class Kaixa {
     // If no app name is provided, use the default app name from the profile
     if (appName == '') {
       appName = getDefaultAppName();
+    }
+
+    // If no window size is provided, use the default window size from the profile
+    if (windowSize == '') {
+      windowSize = getDefaultWindowSize();
     }
 
     // Try to quit the previous session
@@ -2148,6 +2161,9 @@ public class Kaixa {
 
     // Launch the tool
     Kaixa.visit(launchURL);
+    
+    // Set window size after browser is opened
+    Kaixa.setWindowSize(windowSize);
   }
 
   /**
@@ -2162,18 +2178,27 @@ public class Kaixa {
    * @memberof Kaixa
    * @method launchAs
    * @param {String} name - the name of the variable containing the credentials for the user
-   * @param {int} [courseId=courseId from profile] - the Canvas ID of the course to launch from
-   * @param {String} [appName=appName from profile] - the name of the app as it appears in the course's left-hand nav
+      * @param {Map} [opts] optional arguments
+   * @param {int} [opts.courseId] - the Canvas ID of the course to launch from
+   * @param {String} [opts.appName] - the name of the app as it appears in the course's left-hand nav
+   * @param {String} [opts.windowSize] - the window size to use
    */
-  public static void launchAs(String name, int courseId = -1, String appName = '') {
-    // If no course ID is provided, use the default course ID from the profile
-    if (courseId < 0) {
-      courseId = getDefaultCourseId();
-    }
+  public static void launchAs(String name, Map opts = null) {
 
-    // If no app name is provided, use the default app name from the profile
-    if (appName == '') {
-      appName = getDefaultAppName();
+    // Parse options
+    int courseId = getDefaultCourseId();
+    String appName = getDefaultAppName();
+    String windowSize = getDefaultWindowSize();
+    if (opts != null) {
+      if (opts.containsKey('courseId')) {
+        courseId = opts.get('courseId');
+      }
+      if (opts.containsKey('appName')) {
+        appName = opts.get('appName');
+      }
+      if (opts.containsKey('windowSize')) {
+        windowSize = opts.get('windowSize');
+      }
     }
 
     // Make sure the user exists
@@ -2213,6 +2238,9 @@ public class Kaixa {
       // Visit the simulator
       Kaixa.visit('https://localhost:8088/simulator');
 
+      // Set window size after browser is opened
+      Kaixa.setWindowSize(windowSize);
+
       // Bypass certificate issue
       String foundItem = Kaixa.waitForAtLeastOneElementPresent([
         '.ssl',
@@ -2247,7 +2275,7 @@ public class Kaixa {
 
     // Handle accessToken-based launch
     if (accessToken) {
-      Kaixa.launchLTIUsingToken(accessToken, courseId, appName);
+      Kaixa.launchLTIUsingToken(accessToken, courseId, appName, windowSize);
     } else {
       // Ask user for access token
       JPanel panel = new JPanel();
@@ -2287,7 +2315,7 @@ public class Kaixa {
       cachedAccessTokens.put(name, accessToken);
 
       // Launch
-      Kaixa.launchLTIUsingToken(accessToken, courseId, appName);
+      Kaixa.launchLTIUsingToken(accessToken, courseId, appName, windowSize);
     }
   }
 
@@ -2399,5 +2427,112 @@ public class Kaixa {
    */
   public static String getSpecialChars() {
     return '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ≤≥≠÷…£¢∞§¶•º';
+	}
+
+  /* -------------------- Window Size Management -------------------- */
+
+  /**
+   * Get the dimensions for a named window size
+   * @author Yuen Ler Chow
+   * @instance
+   * @memberof Kaixa
+   * @method getWindowSizeDimensions
+   * @param {String} sizeName - the name of the window size
+   * @return {Map<String, Integer>} map with 'width' and 'height' keys
+   */
+  private static Map<String, Integer> getWindowSizeDimensions(String sizeName) {
+    Map<String, Integer> dimensions = new HashMap<String, Integer>();
+    switch (sizeName.toLowerCase()) {
+      case 'iphone-landscape':
+        dimensions.put('width', 844);
+        dimensions.put('height', 390);
+        break;
+      case 'iphone-portrait':
+        dimensions.put('width', 390);
+        dimensions.put('height', 844);
+        break;
+      case 'iphone-mini-landscape':
+        dimensions.put('width', 780);
+        dimensions.put('height', 360);
+        break;
+      case 'iphone-mini-portrait':
+        dimensions.put('width', 360);
+        dimensions.put('height', 780);
+        break;
+      case 'ipad-landscape':
+        dimensions.put('width', 1024);
+        dimensions.put('height', 768);
+        break;
+      case 'ipad-portrait':
+        dimensions.put('width', 768);
+        dimensions.put('height', 1024);
+        break;
+      case 'large':
+        dimensions.put('width', 1200);
+        dimensions.put('height', 800);
+        break;
+      case 'medium':
+        dimensions.put('width', 992);
+        dimensions.put('height', 600);
+        break;
+      case 'small':
+        dimensions.put('width', 768);
+        dimensions.put('height', 500);
+        break;
+      case 'xsmall':
+        dimensions.put('width', 576);
+        dimensions.put('height', 400);
+        break;
+      default:
+        // Default to medium if unknown size
+        dimensions.put('width', 992);
+        dimensions.put('height', 600);
+        break;
+    }
+    return dimensions;
+  }
+
+  /**
+   * Set the browser window size
+   * @author Yuen Ler Chow
+   * @instance
+   * @memberof Kaixa
+   * @method setWindowSize
+   * @param {String} sizeName - the name of the window size to set
+   */
+  public static void setWindowSize(String sizeName) {
+    Kaixa.log('Set window size to: ' + sizeName);
+    Map<String, Integer> dimensions = Kaixa.getWindowSizeDimensions(sizeName);
+    int width = dimensions.get('width');
+    int height = dimensions.get('height');
+    WebDriver driver = DriverFactory.getWebDriver();
+    
+    // Calculate browser UI overhead dynamically
+    int uiOverhead = Kaixa.runScript('return window.outerHeight - window.innerHeight;');
+    int totalHeight = height + uiOverhead;
+    
+    driver.manage().window().setSize(new org.openqa.selenium.Dimension(width, totalHeight));
+    Kaixa.log('Window size set to ' + width + 'x' + totalHeight + ' (viewport: ' + width + 'x' + height + ', UI overhead: ' + uiOverhead + ')');
+  }
+
+  /**
+   * Get a list of available window sizes
+   * @author Yuen Ler Chow
+   * @instance
+   * @memberof Kaixa
+   * @method listWindowSizes
+   * @return {String[]} array of available window size names
+   */
+  public static String[] listWindowSizes() {
+    return ['iphone-landscape',
+      'iphone-portrait',
+      'iphone-mini-landscape',
+      'iphone-mini-portrait',
+      'ipad-landscape',
+      'ipad-portrait',
+      'large',
+      'medium',
+      'small',
+      'xsmall'];
   }
 }
