@@ -2293,17 +2293,21 @@ public class Kaixa {
 
   /**
    * Handle a HarvardKey login page for a user.
-   * This method assumes the Cirrus discovery page is shown.
-   * For HarvardKey users (with isHarvardKey=true in GlobalCredentials),
-   * it chooses the option 'Okta verify' and requires some user action. This
-   * can be improved when we have a test HUID user.
+	 * Pass expectDiscoveryPage = false when testing applications that are Okta-only.
+	 * The default is to expect a Cirrus discovery page.
+	 * For HarvardKey users with two factor authentication (i.e. isHarvardKey=true and
+	 * 2FA = true in GlobalCredentials), it chooses the option 'Okta verify' and requires
+	 * some user action.
    * @author Gabe Abrams
+   * @author Rute Santos
    * @instance
    * @memberof Kaixa
    * @method handleHarvardKey
    * @param {String} name - the name of the variable containing the credentials for the user
-    */
-  public static void handleHarvardKey(name) {
+	 * @param {boolean} expectDiscoveryPage - if the application being tested uses a discovery
+	 * page for the user to choose between HarvardKey and Harvard Guest credentials
+   */
+  public static void handleHarvardKey(String name, boolean expectDiscoveryPage = true) {
     // Get the user info
     JSONObject obj = new JSONObject(Kaixa.getProfileValue(name));
     String username;
@@ -2325,49 +2329,62 @@ public class Kaixa {
       cachedPasswords.put(name, password);
     }
 
-    // Wait for discovery page to load
-    Kaixa.waitForAtLeastOneElementPresent([
-      '#idp_1001962798_button', // HarvardGuest
-      '#idp_1824601020_button', // HarvardKey
-    ]);
+		boolean isHarvardKey  = obj.has('isHarvardKey') && obj.getBoolean('isHarvardKey');
+		boolean needs2FA = isHarvardKey && obj.has('needs2FA') && obj.getBoolean('needs2FA');
 
-    if (!obj.has('isHarvardKey') || !obj.getBoolean('isHarvardKey')) {
-      // HarvardGuest credentials
-      Kaixa.click('#idp_1001962798_button');
+		if (expectDiscoveryPage) {
+			// Wait for discovery page to load
+			Kaixa.waitForAtLeastOneElementPresent([
+				'#idp_1001962798_button', // HarvardGuest
+				'#idp_1824601020_button', // HarvardKey
+			]);
 
-      // Wait for the page to load
-      Kaixa.waitForElementVisible('#username');
-      Kaixa.waitForElementVisible('#password');
+			if (!isHarvardKey) {
+				// Harvard Guest credentials
+				Kaixa.click('#idp_1001962798_button');
 
-      // Add credentials
-      Kaixa.typeInto('#username', username);
-      Kaixa.typeInto('#password', password);
+				// Wait for the page to load
+				Kaixa.waitForElementVisible('#username');
+				Kaixa.waitForElementVisible('#password');
 
-      // Click "submit"
-      Kaixa.click('.btn-primary');
-    } else {
-      // HarvardKey credentials
-      Kaixa.click('#idp_1824601020_button');
+				// Add credentials
+				Kaixa.typeInto('#username', username);
+				Kaixa.typeInto('#password', password);
 
-      // Wait for the page to load
-      Kaixa.waitForElementVisible('#identifier');
-      // Add user name
-      Kaixa.typeInto('#identifier', username);
-      Kaixa.click("button[type='submit']");
+				// Click "submit"
+				Kaixa.click('.btn-primary');
+			} else {
+				// HarvardKey credentials
+				Kaixa.click('#idp_1824601020_button');
+			}
+		}
 
-      // Wait for the page to load
-      Kaixa.waitForElementVisible("button[aria-label='Select Okta Verify.']");
-      // Select Okta verify
-      Kaixa.click("button[aria-label='Select Okta Verify.']");
+		if (isHarvardKey) {
+			// Wait for the page to load
+			Kaixa.waitForElementVisible('#identifier');
+			// Add user name
+			Kaixa.typeInto('#identifier', username);
+			Kaixa.click("button[type='submit']");
 
-      // User has to take manual action when prompted...
-      // This needs to be improved when we have a test HUID account...
+			if (!needs2FA) {
+				// Wait for the page to load
+				Kaixa.waitForElementVisible("input[id='credentials.passcode']");
+				Kaixa.typeInto("input[id='credentials.passcode']", password);
+				Kaixa.click("button[type='submit']");
+			} else {
+				// Wait for the page to load
+				Kaixa.waitForElementVisible("button[aria-label='Select Okta Verify.']");
+				// Select Okta verify
+				Kaixa.click("button[aria-label='Select Okta Verify.']");
 
-      // Wait for the page to load
-      Kaixa.waitForElementWithContentsVisible('Yes, this is my device', 'button', 30);
-      // Select Okta verify
-      Kaixa.clickByContents('Yes, this is my device', 'button');
-    }
+				// User has to take manual action when prompted...
+
+				// Wait for the page to load
+				Kaixa.waitForElementWithContentsVisible('Yes, this is my device', 'button', 30);
+				// Select Okta verify
+				Kaixa.clickByContents('Yes, this is my device', 'button');
+			}
+		}
 
     // Wait for URL to not be HarvardKey
     for (int i = 0; i <= 200; i++) {
