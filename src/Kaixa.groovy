@@ -2392,7 +2392,6 @@ public class Kaixa {
       Kaixa.waitFor(50);
 
       // Get current URL
-
       String url = Kaixa.getURL();
 
       // Check if URL changed
