@@ -2304,10 +2304,8 @@ public class Kaixa {
    * @memberof Kaixa
    * @method handleHarvardKey
    * @param {String} name - the name of the variable containing the credentials for the user
-	 * @param {boolean} expectDiscoveryPage - if the application being tested uses a discovery
-	 * page for the user to choose between HarvardKey and Harvard Guest credentials
    */
-  public static void handleHarvardKey(String name, boolean expectDiscoveryPage = true) {
+  public static void handleHarvardKey(String name) {
     // Get the user info
     JSONObject obj = new JSONObject(Kaixa.getProfileValue(name));
     String username;
@@ -2329,18 +2327,22 @@ public class Kaixa {
       cachedPasswords.put(name, password);
     }
 
-		boolean isHarvardKey  = obj.has('isHarvardKey') && obj.getBoolean('isHarvardKey');
-		boolean needs2FA = isHarvardKey && obj.has('needs2FA') && obj.getBoolean('needs2FA');
+    boolean isHarvardGuest  = obj.has('isHarvardGuest') && obj.getBoolean('isHarvardGuest');
+    boolean needs2FA = !isHarvardGuest && obj.has('needs2FA') && obj.getBoolean('needs2FA');
 
-		if (expectDiscoveryPage) {
-			// Wait for discovery page to load
-			Kaixa.waitForAtLeastOneElementPresent([
-				'#idp_1001962798_button', // HarvardGuest
-				'#idp_1824601020_button', // HarvardKey
-			]);
+    // Expect either the HarvardKey login page or the discovery page (Cirrus)
+    String foundItem = Kaixa.waitForAtLeastOneElementPresent([
+      '#idp_1001962798_button', // Guest button, indicates discovery page
+      '#identifier', // HarvardKey login page
+    ]);
 
-			if (!isHarvardKey) {
-				// Harvard Guest credentials
+    if (foundItem == '#idp_1001962798_button') {
+      // Discovery page
+      // Wait for the page to load
+      Kaixa.waitForElementVisible('#idp_1001962798_button');
+
+      if (isHarvardGuest) {
+        // Guest credentials
 				Kaixa.click('#idp_1001962798_button');
 
 				// Wait for the page to load
@@ -2359,7 +2361,7 @@ public class Kaixa {
 			}
 		}
 
-		if (isHarvardKey) {
+		if (!isHarvardGuest) {
 			// Wait for the page to load
 			Kaixa.waitForElementVisible('#identifier');
 			// Add user name
